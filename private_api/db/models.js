@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
 
   _id:         mongoose.Schema.Types.ObjectId,
+
   email:       {type: String,  required: true},
   phone:       {type: String,  required: true},
   password:    {type: String,  required: true},
@@ -13,56 +14,83 @@ const userSchema = mongoose.Schema({
   surname:     {type: String,  required: true},
   branch:      {type: String,  required: true},
   group:       {type: String,  required: true},
-  created:     {type: Date,    required: true},
+
+  created:     {
+
+    type:     Date,
+    required: true,
+    default:  Date.now
+
+  },
+
   status:      {type: Boolean, required: true},
-  permissions: {type: String,  required: false},
+  permissions: {type: String,  required: true},
 
 });
 
 const ticketSchema = mongoose.Schema({
 
   _id:         mongoose.Schema.Types.ObjectId,
+
   message:     {type: String,  required: true},
   note:        {type: String,  required: true},
   status:      {type: String,  required: true},
-  created:     {type: Date,    required: true},
+
+  created:     {
+
+    type:     Date,
+    required: true,
+    default:  Date.now
+
+  },
 
 });
 
 const messageSchema = mongoose.Schema({
 
   _id:         mongoose.Schema.Types.ObjectId,
+
   subject:     {type: String,  required: true},
   message:     {type: String,  required: true},
-  created:     {type: Date,    required: true},
+
+  created:     {
+
+    type:     Date,
+    required: true,
+    default:  Date.now
+
+  },
 
 });
 
 const branchSchema = mongoose.Schema({
 
   _id:         mongoose.Schema.Types.ObjectId,
+
   name:        {type: String,  required: true},
   phone:       {type: String,  required: true},
   fax:         {type: String,  required: true},
   address:     {type: String,  required: true},
   information: {type: String,  required: true},
   status:      {type: Boolean, required: true},
-  //number of employees ???
+
 
 });
 
 const groupSchema = mongoose.Schema({
 
   _id:          mongoose.Schema.Types.ObjectId,
-  status:      {type: Boolean, required: true},
+  name:        {type: String,  required: true},
   description: {type: String,  required: true},
-  //available for permissions ???
+  active:      {type: Boolean, required: true},
+  permissions: {type: Boolean, required: true}
 
 });
 
 const roleSchema = mongoose.Schema({
 
   _id: mongoose.Schema.Types.ObjectId,
+
   name:        {type: String,  required: true},
   code:        {type: String,  required: true},
   description: {type: String,  required: true},
