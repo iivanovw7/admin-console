@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
-
-  _id: mongoose.Schema.Types.ObjectId,
+const UserSchema = mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: String, required: true },
   password: { type: String, required: true },
@@ -10,10 +8,9 @@ const userSchema = mongoose.Schema({
   surname: { type: String, required: true },
   branch: { type: String, required: true },
   group: { type: String, required: true },
-  created: { type: Date, required: true },
+  created: { type: Date, required: false, default: Date.now },
   status: { type: Boolean, required: true },
-  permissions: { type: String, required: false }
-
+  role: { type: String, required: true }
 });
 
-module.exports = mongoose.model('User', userSchema, 'users');
+module.exports = mongoose.model('User', UserSchema, 'users');

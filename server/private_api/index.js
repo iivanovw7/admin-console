@@ -16,7 +16,6 @@ require('../db/models/message');
 require('../db/models/role');
 require('../db/models/ticket');
 require('../db/models/user');
-require('../db/models/client');
 
 // Start our app!
 const app = require('./app');

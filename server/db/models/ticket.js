@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const ticketSchema = mongoose.Schema({
-
-  _id: mongoose.Schema.Types.ObjectId,
+const TicketSchema = mongoose.Schema({
   message: { type: String, required: true },
   note: { type: String, required: true },
   status: { type: String, required: true },
-  created: { type: Date, required: true }
-
+  authorId: { type: String, required: true },
+  branchId: { type: String, required: true },
+  created: { type: Date, required: false, default: Date.now },
+  closed: { type: Date, required: false }
 });
 
-module.exports = mongoose.model('Ticket', ticketSchema, 'tickets');
+module.exports = mongoose.model('Ticket', TicketSchema, 'tickets');
