@@ -1,9 +1,0 @@
-{
-  "env": {
-    "PORT_PUBLIC": 6465,
-    "PORT_PRIVATE": 7465,
-    "PORT_STATIC": 9465,
-    "DATABASE": "mongodb://root:o95Q3PaB93ip@ds159185.mlab.com:59185/admin-console"
-  }
-}
-
