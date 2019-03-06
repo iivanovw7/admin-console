@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const app = require('./app');
 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true }).then(
   () => {
@@ -9,18 +10,7 @@ mongoose.connect(process.env.DATABASE, { useNewUrlParser: true }).then(
   }
 );
 
-// Import all our models
-require('../db/models/Branch');
-require('../db/models/Group');
-require('../db/models/Message');
-require('../db/models/Role');
-require('../db/models/Ticket');
-require('../db/models/User');
-
-// Start our app!
-const app = require('./app');
-
-app.set('port', process.env.PORT || 7465);
+app.set('port', process.env.PORT_PRIVATE || 7425);
 
 const server = app.listen(app.get('port'),
   () => {
