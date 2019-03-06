@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "admin-console server application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "nodemon ./private_api/index.js",
+    "purge": "node ./samples/loadSampleData.js --delete",
+    "load": "node ./samples/loadSampleData.js",
+    "reload": "concurrently 'npm run purge' 'sleep 15 && npm run load'"
+  },
+  "keywords": [
+    "server",
+    "api",
+    "public",
+    "private"
+  ],
+  "author": "iivanovw7",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "eslint": "^5.15.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.17",
+    "nodemon": "^1.18.10"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

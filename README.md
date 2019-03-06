@@ -21,8 +21,6 @@ Admin console of some IT company. Allows to manage specific company's data.
 
 
 
-
-
 ## Requirements
 
 - [Install NodeJS](https://nodejs.org/en/) 
