@@ -13,7 +13,7 @@ router.route('/')
 module.exports = router;
 
 
-
+//TODO :
 // /** POST /api/users - Create new user */
 // //.post(validate(paramValidation.createUser), userCtrl.create);
 //

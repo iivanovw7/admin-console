@@ -4,11 +4,10 @@ const authRoutes = require('./routes/auth.route');
 const router = express.Router();
 
 /**
- * Contains Routes structure for private api logic
- * GET /check - testing if api is alive
+ * Contains Routes structure for "Private API" logic
  **/
 
-/** Check if server application oi alive */
+/** Check if server application is alive */
 router.get('/check', (req, res) =>
   res.send('OK')
 );

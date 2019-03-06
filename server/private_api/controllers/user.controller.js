@@ -1,4 +1,6 @@
 const User = require('../../db/models/User');
+const httpStatus = require('http-status');
+const APIError = require('../api-error');
 
 /**
  * Get user list.
@@ -6,22 +8,19 @@ const User = require('../../db/models/User');
  * @property {number} req.query.limit - Limit number of users to be returned.
  * @returns {User[]}
  */
-function list(req, res, next) {
-
-  console.log('get users');
-
-  User.find({}, (err, users) => {
-    if (err)
-      return done(err);
-    if (users) {
-      console.log('Users count : ' + users.length);
-      res.json(users);
-    }
-  });
-
+async function list(req, res, next) {
+  console.log('Getting users from API...');
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch {
+    const err = new APIError('Nothing found', httpStatus.NOT_FOUND, true);
+    return next(err);
+  }
 }
 
 
+//TODO :
 // /**
 //  * Load user and append to req.
 //  */
