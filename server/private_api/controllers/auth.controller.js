@@ -32,30 +32,35 @@ function login(req, res, next) {
   User.findOne({ email: req.body.email })
       .exec()
       .then(user => {
-        getStatus(user.role)
-          .then(result => {
-            if (result) {
-              if (getStatus(user.role)) {
-                if (req.body.password === tempUser.password) {
-                  console.log(user);
-                  return res.status(200).json({
-                    success: 'Success',
-                    name: user.name,
-                    surname: user.surname,
-                    email: user.email,
-                    created: user.created,
-                    status: true,
-                  });
-                } else {
-                  const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-                  return next(err);
+        if (user) {
+          getStatus(user.role)
+            .then(result => {
+              if (result) {
+                if (getStatus(user.role)) {
+                  if (req.body.password === tempUser.password) {
+                    console.log(user);
+                    return res.status(200).json({
+                      success: 'Success',
+                      name: user.name,
+                      surname: user.surname,
+                      email: user.email,
+                      created: user.created,
+                      status: true,
+                    });
+                  } else {
+                    const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+                    return next(err);
+                  }
                 }
+              } else {
+                const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+                return next(err);
               }
-            } else {
-              const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-              return next(err);
-            }
-          });
+            });
+        } else {
+          const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+          return next(err);
+        }
       });
 }
 
