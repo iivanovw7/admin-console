@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 const app = require('./app');
 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true }).then(
