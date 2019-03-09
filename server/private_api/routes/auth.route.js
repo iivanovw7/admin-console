@@ -7,4 +7,7 @@ const router = express.Router();
 
 /** POST /api/auth/login - Checks username and password */
 router.post('/login', validate(paramValidation.login), authCtrl.login);
+
+router.route('/logout').get(authCtrl.logout);
+
 module.exports = router;

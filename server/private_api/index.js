@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 const app = require('./app');
 
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true }).then(
   () => {
     console.log('Connected');

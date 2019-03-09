@@ -1,47 +1,47 @@
-const User = require('../../db/models/User');
-const Role = require('../../db/models/Role');
-const httpStatus = require('http-status');
-const { authRoles } = require('../config/param-auth');
+const passport = require('passport');
+
+const catchErrors = fn => {
+  return function (req, res, next) {
+    return fn(req, res, next).catch(next);
+  };
+};
 
 
-//function checks if user status belongs to current access list
-function checkStatus(user) {
-  for (const auth of authRoles) {
-    if (auth === user.role.code) {
-      return true;
-    }
-  }
-  return false;
-}
+/** Authentication handling,
+ * according to parameters in auth.passport.js
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+function login(req, res, next) {
 
-//function checks password and user group and returns
-//user data if everything is good
-// .orFail(new Error('No docs found!'))
-function login(req, res) {
-
-  User.findOne({ email: req.body.email })
-      .populate({ path: 'role', model: Role })
-      .then(user => {
-        if (checkStatus(user)) {
-          user.comparePassword(req.body.password, function (err, isMatch) {
-            if (isMatch) {
-              res.status(200).json({
-                user
-              });
-            } else {
-              res.send(httpStatus.UNAUTHORIZED);
-            }
-          });
-        } else {
-          res.send(httpStatus.UNAUTHORIZED);
+  catchErrors(
+    passport.authenticate('local', function (err, user) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        res.redirect('/login');
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
         }
-      })
-      .catch(err =>
-        res.send(httpStatus.NOT_FOUND)
-      );
+        return res.redirect('/users');
+      });
+    })(req, res, next)
+  );
 
 }
 
-module.exports = { login };
+
+function logout(req, res) {
+  req.logout();
+  console.log('User logged out');
+  res.redirect('/login');
+}
+
+module.exports = { login, logout };
 
 

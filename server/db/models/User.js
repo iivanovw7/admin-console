@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -7,11 +8,11 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: false },
   name: { type: String, required: true },
   surname: { type: String, required: true },
-  branch: { type: String, required: false },
-  group: { type: String, required: false },
+  branch: { type: mongoose.Schema.ObjectId, ref: 'Branch', required: false },
+  group: { type: mongoose.Schema.ObjectId, ref: 'Group', required: false },
   created: { type: Date, required: false, default: Date.now },
   status: { type: Boolean, required: false },
-  role: { type: String, required: true }
+  role: { type: mongoose.Schema.ObjectId, ref: 'Role', required: true }
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
@@ -20,5 +21,10 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
     cb(null, isMatch);
   });
 };
+
+userSchema.plugin(passportLocalMongoose, {
+  usernameField : 'email',
+  passwordField: 'password',
+});
 
 module.exports = mongoose.model('User', userSchema, 'users');
