@@ -31,10 +31,10 @@ module.exports = {
       id: Joi.objectId().required()
     },
     headers: {
-      group: Joi.string(),
-      branch: Joi.string(),
-      role: Joi.objectId(),
-      status: Joi.string()
+      group: Joi.string().required(),
+      branch: Joi.string().required(),
+      role: Joi.objectId().required(),
+      status: Joi.string().required()
     }
   },
   // GET /api/users/page

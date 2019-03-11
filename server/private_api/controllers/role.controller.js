@@ -1,54 +1,9 @@
 const User = require('../../db/models/User');
 const Role = require('../../db/models/Role');
+import { catchErrors, formPage } from './helper-functions/index';
+
 const httpStatus = require('http-status');
-const { defaultRoles, serviceRoles } = require('../config/param-roles');
-
-const catchErrors = fn => {
-  return function (req, res, next) {
-    return fn(req, res, next).catch(next);
-  };
-};
-
-/**
- * Function forms one page of objects out of incoming list of objects
- * no mater what list it got in parameters
- *
- * @param currPage: {number}, current page number
- * @param currLimit: {number}, number of elements for one page
- * @param list: {[]}, array of objects
- * @param elements: {number}, total count of elements
- *
- * @returns {Promise.<void>}
- */
-const formPage =
-  async (currPage = 1,
-         currLimit = 10,
-         list = [],
-         elements = 0) => {
-
-    //needed to keep input numbers inside certain limits
-    //in order to prevent unpredicted outputs
-    Number.prototype.limited = function (min, max) {
-      return Math.min(Math.max(this, min), max);
-    };
-
-    //applying limits of elements for one page
-    const limit = currLimit.limited(1, 25);
-    //applying limits for maximum page number value
-    const pages = Math.ceil(elements / limit);
-    //applying limits for input pageNumber value
-    const page = currPage.limited(1, pages);
-
-    const skipped = (page * limit) - limit;
-    const output = list.slice(skipped, skipped + limit);
-
-    return {
-      page,
-      limit,
-      pages,
-      output
-    };
-  };
+const { defaultRoles } = require('../config/param-roles');
 
 //function checks if role status belongs to list of default roles
 function checkRole(role) {
@@ -64,18 +19,19 @@ function checkRole(role) {
  * Get roles list.
  * @returns {Role[]}
  */
-function list(req, res, next) {
-  catchErrors(
-    Role.find({}).then(roles => {
-      res.json(
-        [
-          { Total: roles.length },
-          roles
-        ]
-      );
-    })
-  );
-}
+export const list = async (req, res) => {
+
+  const roles = await Role.find({});
+
+  if (roles) {
+    res.status(200).json([
+      { Total: roles.length },
+      { Results: roles }]
+    );
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
 
 /**Get one page of roles
  *
@@ -83,49 +39,47 @@ function list(req, res, next) {
  * @requires {number} limit: req.headers.limit
  *
  */
-function page(req, res, next) {
-  catchErrors(
-    Role.find({})
-        .then(roles => {
-          formPage(
-            req.headers.page,
-            req.headers.limit,
-            roles,
-            roles.length
-          ).then(page =>
-            res.json({
-              page
-            })
-          ).catch(e => next(e));
-        })
-  );
-}
+export const page = async (req, res) => {
+
+  const roles = await Role.find({});
+
+  if (roles) {
+    const page = await
+      formPage(
+        req.headers.page,
+        req.headers.limit,
+        roles,
+        roles.length
+      );
+    res.status(200).json(page);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
 
 /**
  * Get role
  * @requires {objectId} id: req.params.id
  * @returns {role, [users]}
  */
-function get(req, res, next) {
-  catchErrors(
-    Role.findOne({ _id: req.params.id })
-        .then(role => {
-          if (!role) {
-            return res.send(httpStatus.NOT_FOUND);
-          }
-          User.find({ role: req.params.id })
-              .then(users => {
-                res.status(200).json(
-                  [
-                    { role: role },
-                    { users: users }
-                  ]);
-              })
-              .catch(e => next(e));
-        })
-        .catch(e => next(e))
-  );
-}
+export const get = async (req, res) => {
+
+  const role = await
+    Role.findOne({ _id: req.params.id });
+
+  if (role) {
+    const users = await User.find({ role: req.params.id });
+    res.status(200).json(
+      [
+        { role: role },
+        { users: users }
+      ]
+    );
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+
+};
 
 /**
  * Update existing role
@@ -136,35 +90,38 @@ function get(req, res, next) {
  *
  * @returns {Role} Returns updated role
  */
-function update(req, res, next) {
+export const update = async (req, res) => {
 
-  catchErrors(
-    Role.findOne({ _id: req.params.id })
-        .then(role => {
+  const role = await
+    Role.findOne({ _id: req.params.id });
 
-          const data = {
-            description: req.headers.description,
-            active:
-              req.headers.active ?
-                true
-                :
-                (role.code === 'ADMIN' || role.code === 'USER'),
-            public: req.headers.public,
-            editable: req.headers.editable
-          };
+  if (role) {
+    const data = {
+      description: req.headers.description,
+      active:
+        req.headers.active ?
+          true
+          :
+          (role.code === 'ADMIN' || role.code === 'USER'),
+      public: req.headers.public,
+      editable: req.headers.editable
+    };
 
-          Role.findOneAndUpdate(
-            { _id: req.params.id },
-            { $set: data },
-            { new: true })
-              .then(updatedRole =>
-                res.status(200).json({
-                  updatedRole
-                }))
-              .catch(e => next(e));
-        })
-  );
-}
+    const updatedRole = await
+      Role.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: data },
+        { new: true }
+      );
+
+    res.status(200).json(
+      { NewRole: updatedRole }
+    );
+
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
 
 /**
  * Function changes current to a USER
@@ -219,40 +176,49 @@ function swap(req, res, next, params) {
  * editable: req.headers.editable
  * @param req
  * @param res
- * @param next
  *
  * @returns
  * {Role}
  */
-function add(req, res, next) {
+export const add = async (req, res) => {
 
-  Role.findOne({ code: req.headers.code, name: req.headers.name })
-      .then(role => {
-        if (role) {
-          return res.send(
-            httpStatus.BAD_REQUEST
-          );
-        } else {
+  const role = await
+    Role.findOne(
+      {
+        code: req.headers.code,
+        name: req.headers.name
+      }
+    );
 
-          const newRole = new Role({
-            name: req.headers.name,
-            code: req.headers.code,
-            description: req.headers.description,
-            active: req.headers.active,
-            public: req.headers.public,
-            editable: req.headers.editable
-          });
+  if (role) {
+    return res.send(
+      httpStatus.BAD_REQUEST
+    );
+  } else {
 
-          newRole.save()
-                 .then(saved => {
-                   return res.status(201).json(
-                     { created: saved }
-                   );
-                 }).catch(e => next(e));
-        }
-      }).catch(e => next(e));
+    const newRole = await new Role({
+      name: req.headers.name,
+      code: req.headers.code,
+      description: req.headers.description,
+      active: req.headers.active,
+      public: req.headers.public,
+      editable: req.headers.editable
+    });
 
-}
+    const savedRole = await newRole.save();
+
+    if (savedRole) {
+      res.status(201).json(
+        { Created: savedRole }
+      );
+    } else {
+      return res.send(
+        httpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+};
 
 /**
  * Deletes role, removes all same roles in Users list
@@ -264,37 +230,34 @@ function add(req, res, next) {
  * if role parameter passed in headers, if not - removes roles)
  * )
  */
-function remove(req, res, next) {
+export const remove = async (req, res, next) => {
 
-  catchErrors(
-    Role.findOne({ _id: req.params.id })
-        .then(role => {
-          if (!checkRole(role)) {
-            Role.findByIdAndRemove(
-              { _id: req.params.id })
-                .then(removedRole => {
-                    if (!removedRole) {
-                      return res.send(
-                        httpStatus.NOT_FOUND
-                      );
-                    } else {
-                      return swap(
-                        req,
-                        res,
-                        next,
-                        { removedRole: removedRole }
-                      );
-                    }
-                  }
-                ).catch(e => next(e));
-          } else {
-            res.send(
-              httpStatus.BAD_REQUEST
-            );
-          }
-        }).catch(e => next(e))
-  );
+  const role = await Role.findOne({ _id: req.params.id });
 
+  if (role) {
+    if (!checkRole(role)) {
+      const removedRole = await
+        Role.findByIdAndRemove(
+          { _id: req.params.id }
+        );
+      if (removedRole) {
+        return (
+          swap(
+            req,
+            res,
+            next,
+            { removedRole: removedRole }
+          )
+        )
+      } else {
+        return res.send(httpStatus.NOT_FOUND);
+      }
+    } else {
+      res.send(httpStatus.BAD_REQUEST);
+    }
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
 };
 
 module.exports = { list, get, update, remove, add, page };

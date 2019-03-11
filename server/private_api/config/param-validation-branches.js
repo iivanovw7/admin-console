@@ -25,13 +25,13 @@ module.exports = {
       id: Joi.objectId().required(),
     },
     headers: {
-      name: Joi.string(),
-      email: Joi.string(),
-      phone: Joi.string(),
-      fax: Joi.string(),
-      address: Joi.string(),
-      information: Joi.string(),
-      active: Joi.bool()
+      name: Joi.string().required(),
+      email: Joi.string().required(),
+      phone: Joi.string().required(),
+      fax: Joi.string().required(),
+      address: Joi.string().required(),
+      information: Joi.string().required(),
+      active: Joi.bool().required()
     }
   }
 };

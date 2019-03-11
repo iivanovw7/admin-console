@@ -1,10 +1,5 @@
 const passport = require('passport');
-
-const catchErrors = fn => {
-  return function (req, res, next) {
-    return fn(req, res, next).catch(next);
-  };
-};
+import { catchErrors } from './helper-functions';
 
 
 /** Authentication handling,
@@ -38,7 +33,6 @@ function login(req, res, next) {
 
 function logout(req, res) {
   req.logout();
-  console.log('User logged out');
   res.redirect('/login');
 }
 

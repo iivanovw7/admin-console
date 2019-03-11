@@ -1,71 +1,28 @@
 const Branch = require('../../db/models/Branch');
 const httpStatus = require('http-status');
-
-
-const catchErrors = fn => {
-  return function (req, res, next) {
-    return fn(req, res, next).catch(next);
-  };
-};
-
-/**
- * Function forms one page of objects out of incoming list of objects
- * no mater what list it got in parameters
- *
- * @param currPage: {number}, current page number
- * @param currLimit: {number}, number of elements for one page
- * @param list: {[]}, array of objects
- * @param elements: {number}, total count of elements
- *
- * @returns {Promise.<void>}
- */
-const formPage =
-  async (currPage = 1,
-         currLimit = 10,
-         list = [],
-         elements = 0) => {
-
-    //needed to keep input numbers inside certain limits
-    //in order to prevent unpredicted outputs
-    Number.prototype.limited = function (min, max) {
-      return Math.min(Math.max(this, min), max);
-    };
-
-    //applying limits of elements for one page
-    const limit = currLimit.limited(1, 25);
-    //applying limits for maximum page number value
-    const pages = Math.ceil(elements / limit);
-    //applying limits for input pageNumber value
-    const page = currPage.limited(1, pages);
-
-    const skipped = (page * limit) - limit;
-    const output = list.slice(skipped, skipped + limit);
-
-    return {
-      page,
-      limit,
-      pages,
-      output
-    };
-  };
+import { formPage } from './helper-functions';
 
 /**
  * Get branches list.
- * @returns {Branches[]}
+ * @returns {[
+ * { Total: branches.length },
+ * { Results: branches }
+ * ]}
  */
-function list(req, res, next) {
-  catchErrors(
-    Branch.find({})
-          .then(branches => {
-            res.json(
-              [
-                { Total: branches.length },
-                branches
-              ]
-            );
-          })
-  );
-}
+export const list = async (req, res) => {
+
+  const branches = await Branch.find({});
+
+  if (branches) {
+    res.status(200).json([
+      { Total: branches.length },
+      { Results: branches }]
+    );
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
+
 
 /**Get one page of branches
  *
@@ -73,41 +30,40 @@ function list(req, res, next) {
  * @requires {number} limit: req.headers.limit
  *
  */
-function page(req, res, next) {
-  catchErrors(
-    Branch.find({})
-        .then(branches => {
-          formPage(
-            req.headers.page,
-            req.headers.limit,
-            branches,
-            branches.length
-          ).then(page =>
-            res.json({
-              page
-            })
-          ).catch(e => next(e));
-        })
-  );
-}
+export const page = async (req, res) => {
+
+  const branches = await Branch.find({});
+
+  if (branches) {
+    const page = await
+      formPage(
+        req.headers.page,
+        req.headers.limit,
+        branches,
+        branches.length
+      );
+    res.status(200).json(page);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
+
 
 /**
  * Get branch
  * @requires {objectId} id: req.params.id
  * @returns {Branch}
  */
-function get(req, res, next) {
-  catchErrors(
-    Branch.findOne({ _id: req.params.id })
-          .then(branch => {
-            if (!branch) {
-              return res.send(httpStatus.NOT_FOUND);
-            }
-            return res.json(branch);
-          })
-          .catch(e => next(e))
-  );
-}
+export const get = async (req, res) => {
+
+  const branch = await Branch.find({});
+
+  if (branch) {
+    res.status(200).json(branch);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
 
 
 /**
@@ -123,9 +79,9 @@ function get(req, res, next) {
  *
  * @returns {Branch}
  */
-function update(req, res, next) {
+export const update = async (req, res) => {
 
-  const data = {
+  const data = await {
     name: req.headers.name,
     email: req.headers.email,
     phone: req.headers.phone,
@@ -134,18 +90,21 @@ function update(req, res, next) {
     information: req.headers.information
   };
 
-  catchErrors(
+  const newBranch = await
     Branch.findOneAndUpdate(
       { _id: req.params.id },
       { $set: data },
-      { new: true })
-          .then(updatedBranch =>
-            res.status(200).json({
-              updatedBranch
-            }))
-          .catch(e => next(e))
-  );
-}
+      { new: true }
+    );
+
+  if (newBranch) {
+    res.status(200).json({
+      Added: newBranch
+    })
+  } else {
+    res.send(httpStatus.BAD_REQUEST);
+  }
+};
 
 
 module.exports = { list, get, update, page };

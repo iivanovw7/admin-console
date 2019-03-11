@@ -34,8 +34,8 @@ module.exports = {
     headers: {
       description: Joi.string().required(),
       active: Joi.bool().required(),
-      public: Joi.bool(),
-      editable: Joi.bool()
+      public: Joi.bool().required(),
+      editable: Joi.bool().required(),
     }
   },
   // POST /api/roles/
