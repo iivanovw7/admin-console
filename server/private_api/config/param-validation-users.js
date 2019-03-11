@@ -1,6 +1,10 @@
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
+/**
+ * Validation for Users
+ *
+ * */
 module.exports = {
   // POST /api/users
   createUser: {
@@ -9,29 +13,22 @@ module.exports = {
       password: Joi.string().required()
     }
   },
-  // POST /api/auth/login
-  login: {
-    body: {
-      email: Joi.string().required(),
-      password: Joi.string().required()
-    }
-  },
   // GET /api/users/:id
   getUser: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     }
   },
   // DELETE /api/users/:id
   deleteUser: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     }
   },
   // PUT /api/users/:id
   updateUser: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     },
     headers: {
       group: Joi.string(),
@@ -50,7 +47,7 @@ module.exports = {
   // GET /api/users/branch/:id
   getPageBranch: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     },
     headers: {
       page: Joi.number().required(),
@@ -60,7 +57,7 @@ module.exports = {
   // GET /api/users/group/:id
   getPageGroup: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     },
     headers: {
       page: Joi.number().required(),

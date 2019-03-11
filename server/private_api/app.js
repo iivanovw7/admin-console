@@ -15,8 +15,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Express Session
 app.use(session({
   secret: process.env.SECRET || 'secret',
-  saveUninitialized: true,
-  resave: true
+  saveUninitialized: false,
+  resave: true,
+  rolling: true,
+  cookie: {
+    maxAge: 10 * 60 * 1000,
+    httpOnly: false,
+  },
 }));
 
 app.use(passport.initialize());

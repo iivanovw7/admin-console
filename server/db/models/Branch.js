@@ -7,7 +7,7 @@ const branchSchema = mongoose.Schema({
   fax: { type: String, required: true, unique: true },
   address: { type: String, required: true },
   information: { type: String, required: false },
-  status: { type: Boolean, required: false }
+  status: { type: Boolean, required: false, default: false }
 });
 
 module.exports = mongoose.model('Branch', branchSchema, 'branches');

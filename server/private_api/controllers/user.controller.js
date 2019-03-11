@@ -32,7 +32,7 @@ const formPage =
     };
 
     //applying limits of elements for one page
-    const limit = currLimit.limited(1, 20);
+    const limit = currLimit.limited(1, 25);
     //applying limits for maximum page number value
     const pages = Math.ceil(elements / limit);
     //applying limits for input pageNumber value
@@ -55,18 +55,17 @@ const formPage =
  * @returns {User[]}
  */
 function list(req, res, next) {
-
-  console.log('Getting full list of users from API...');
-
   catchErrors(
-    User.find({}).then(users => {
-      res.json(
-        [
-          { Total: users.length },
-          users
-        ]
-      );
-    })
+    User.find({})
+        .populate({ path: 'role', model: Role })
+        .then(users => {
+          res.json(
+            [
+              { Total: users.length },
+              users
+            ]
+          );
+        })
   );
 }
 

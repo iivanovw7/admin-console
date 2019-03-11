@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
   branch: { type: mongoose.Schema.ObjectId, ref: 'Branch', required: false },
   group: { type: mongoose.Schema.ObjectId, ref: 'Group', required: false },
   created: { type: Date, required: false, default: Date.now },
-  status: { type: Boolean, required: false },
+  status: { type: Boolean, required: false, default: false },
   role: { type: mongoose.Schema.ObjectId, ref: 'Role', required: true }
 });
 

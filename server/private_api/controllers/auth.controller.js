@@ -17,7 +17,7 @@ const catchErrors = fn => {
 function login(req, res, next) {
 
   catchErrors(
-    passport.authenticate('local', function (err, user) {
+    passport.authenticate('local', { session: true }, function (err, user) {
       if (err) {
         return next(err);
       }
