@@ -1,8 +1,8 @@
 import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../config/param-validation-roles';
-import * as roles from '../controllers/role.controller';
 import { catchErrors } from '../controllers/helper-functions';
+import * as roles from '../controllers/role.controller';
 
 const router = express.Router();
 

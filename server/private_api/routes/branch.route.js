@@ -1,8 +1,8 @@
 import express from 'express';
 import validate from 'express-validation';
 import paramValidation from '../config/param-validation-branches';
-import { catchErrors } from '../controllers/helper-functions';
 import * as branches from '../controllers/branch.controller';
+import { catchErrors } from '../controllers/helper-functions';
 
 const router = express.Router();
 
