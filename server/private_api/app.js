@@ -1,10 +1,11 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const routes = require('./app-routes');
-const passport = require('passport');
-const session = require('express-session');
-const pass = require('./controllers/auth.passport.js');
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import session from 'express-session';
+import passport from 'passport';
+import { routes } from './app-routes';
+import { isLoggedIn } from './controllers/auth.passport.js';
+
 const app = express();
 
 // Takes the raw requests and turns them into usable properties on req.body
@@ -20,8 +21,8 @@ app.use(session({
   rolling: true,
   cookie: {
     maxAge: 10 * 60 * 1000,
-    httpOnly: false,
-  },
+    httpOnly: false
+  }
 }));
 
 app.use(passport.initialize());
@@ -36,7 +37,7 @@ const path = require('path');
  */
 app.use(['/login'], (req, res) => {
 
-  res.sendFile(path.join(__dirname, './login.html')), function(err) {
+  res.sendFile(path.join(__dirname, './login.html')), function (err) {
     if (err) {
       res.status(500).send(err);
     }
@@ -49,8 +50,8 @@ app.use(['/login'], (req, res) => {
  *
  * TODO Remove after testing
  */
-app.use(['/users'], pass.isLoggedIn, (req, res) => {
-  res.sendFile(path.join(__dirname, './users.html')), function(err) {
+app.use(['/users'], isLoggedIn, (req, res) => {
+  res.sendFile(path.join(__dirname, './users.html')), function (err) {
     if (err) {
       res.status(500).send(err);
     }
@@ -61,7 +62,8 @@ app.use(['/users'], pass.isLoggedIn, (req, res) => {
  * mount all routes on "/api" path
  */
 app.use('/api', routes);
-module.exports = app;
+
+export { app };
 
 
 

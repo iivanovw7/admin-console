@@ -6,10 +6,10 @@ Joi.objectId = require('joi-objectid')(Joi);
  *
  * */
 module.exports = {
-  // POST /api/auth/login
+  //POST /api/auth/login
   login: {
     body: {
-      email: Joi.string().required(),
+      email: Joi.string().email({ minDomainAtoms: 2 }).required(),
       password: Joi.string().required()
     }
   }

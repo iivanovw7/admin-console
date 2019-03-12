@@ -1,4 +1,4 @@
-const passport = require('passport');
+import passport from 'passport';
 import { catchErrors } from './helper-functions';
 
 
@@ -30,12 +30,11 @@ function login(req, res, next) {
 
 }
 
-
 function logout(req, res) {
   req.logout();
   res.redirect('/login');
 }
 
-module.exports = { login, logout };
+export { login, logout };
 
 

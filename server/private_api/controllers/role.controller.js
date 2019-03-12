@@ -1,9 +1,8 @@
-const User = require('../../db/models/User');
-const Role = require('../../db/models/Role');
+import httpStatus from 'http-status';
+import Role from '../../db/models/Role';
+import User from '../../db/models/User';
+import { defaultRoles } from '../config/param-roles';
 import { catchErrors, formPage } from './helper-functions/index';
-
-const httpStatus = require('http-status');
-const { defaultRoles } = require('../config/param-roles');
 
 //function checks if role status belongs to list of default roles
 function checkRole(role) {
@@ -14,114 +13,6 @@ function checkRole(role) {
   }
   return false;
 }
-
-/**
- * Get roles list.
- * @returns {Role[]}
- */
-export const list = async (req, res) => {
-
-  const roles = await Role.find({});
-
-  if (roles) {
-    res.status(200).json([
-      { Total: roles.length },
-      { Results: roles }]
-    );
-  } else {
-    res.send(httpStatus.NOT_FOUND);
-  }
-};
-
-/**Get one page of roles
- *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
- *
- */
-export const page = async (req, res) => {
-
-  const roles = await Role.find({});
-
-  if (roles) {
-    const page = await
-      formPage(
-        req.headers.page,
-        req.headers.limit,
-        roles,
-        roles.length
-      );
-    res.status(200).json(page);
-  } else {
-    res.send(httpStatus.NOT_FOUND);
-  }
-};
-
-/**
- * Get role
- * @requires {objectId} id: req.params.id
- * @returns {role, [users]}
- */
-export const get = async (req, res) => {
-
-  const role = await
-    Role.findOne({ _id: req.params.id });
-
-  if (role) {
-    const users = await User.find({ role: req.params.id });
-    res.status(200).json(
-      [
-        { role: role },
-        { users: users }
-      ]
-    );
-  } else {
-    res.send(httpStatus.NOT_FOUND);
-  }
-
-};
-
-/**
- * Update existing role
- *
- * @requires {objectId} id: req.params.id
- * @parameter {string} description: req.headers.description
- * @parameter {string} active: req.headers.active
- *
- * @returns {Role} Returns updated role
- */
-export const update = async (req, res) => {
-
-  const role = await
-    Role.findOne({ _id: req.params.id });
-
-  if (role) {
-    const data = {
-      description: req.headers.description,
-      active:
-        req.headers.active ?
-          true
-          :
-          (role.code === 'ADMIN' || role.code === 'USER'),
-      public: req.headers.public,
-      editable: req.headers.editable
-    };
-
-    const updatedRole = await
-      Role.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: data },
-        { new: true }
-      );
-
-    res.status(200).json(
-      { NewRole: updatedRole }
-    );
-
-  } else {
-    res.send(httpStatus.NOT_FOUND);
-  }
-};
 
 /**
  * Function changes current to a USER
@@ -162,8 +53,93 @@ function swap(req, res, next, params) {
         })
         .catch(e => next(e))
   );
-
 }
+
+/**
+ * Get roles list.
+ * @returns {Role[]}
+ */
+const list = async (req, res) => {
+
+  const roles = await Role.find({});
+
+  if (roles) {
+    res.json(roles);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
+
+/**Get one page of roles
+ *
+ * @requires {number} page: req.headers.page
+ * @requires {number} limit: req.headers.limit
+ *
+ */
+const page = async (req, res) => {
+
+  const roles = await Role.find({});
+
+  if (roles) {
+    const page = await formPage(req.headers.page, req.headers.limit, roles);
+    res.json(page);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
+
+/**
+ * Get role
+ * @requires {objectId} id: req.params.id
+ * @returns {role, [users]}
+ */
+const get = async (req, res) => {
+
+  const role = await
+    Role.findOne({ _id: req.params.id });
+
+  if (role) {
+    const users = await User.find({ role: req.params.id });
+    res.json(users);
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+
+};
+
+/**
+ * Update existing role
+ *
+ * @requires {objectId} id: req.params.id
+ * @parameter {string} description: req.headers.description
+ * @parameter {string} active: req.headers.active
+ *
+ * @returns {Role} Returns updated role
+ */
+const update = async (req, res) => {
+
+  const role = await Role.findOne({ _id: req.params.id });
+
+  if (role) {
+
+    const data = {
+      description: req.headers.description,
+      active:
+        req.headers.active ?
+          true
+          :
+          (role.code === 'ADMIN' || role.code === 'USER'),
+      public: req.headers.public,
+      editable: req.headers.editable
+    };
+
+    const updatedRole = await
+      Role.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
+    res.json({ NewRole: updatedRole });
+  } else {
+    res.send(httpStatus.NOT_FOUND);
+  }
+};
 
 /**
  * Function creates new Role if it doesn`t exists in db
@@ -180,20 +156,15 @@ function swap(req, res, next, params) {
  * @returns
  * {Role}
  */
-export const add = async (req, res) => {
+const add = async (req, res) => {
 
   const role = await
-    Role.findOne(
-      {
-        code: req.headers.code,
-        name: req.headers.name
-      }
-    );
+    Role.findOne({ code: req.headers.code, name: req.headers.name });
 
+  // If another object with same parameters exists,
+  // return error
   if (role) {
-    return res.send(
-      httpStatus.BAD_REQUEST
-    );
+    return res.send(httpStatus.BAD_REQUEST);
   } else {
 
     const newRole = await new Role({
@@ -205,16 +176,13 @@ export const add = async (req, res) => {
       editable: req.headers.editable
     });
 
+    //Saving new object in to collection
     const savedRole = await newRole.save();
 
     if (savedRole) {
-      res.status(201).json(
-        { Created: savedRole }
-      );
+      res.status(201).json({ Created: savedRole });
     } else {
-      return res.send(
-        httpStatus.INTERNAL_SERVER_ERROR
-      );
+      return res.send(httpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -230,25 +198,15 @@ export const add = async (req, res) => {
  * if role parameter passed in headers, if not - removes roles)
  * )
  */
-export const remove = async (req, res, next) => {
+const remove = async (req, res, next) => {
 
   const role = await Role.findOne({ _id: req.params.id });
 
   if (role) {
     if (!checkRole(role)) {
-      const removedRole = await
-        Role.findByIdAndRemove(
-          { _id: req.params.id }
-        );
+      const removedRole = await Role.findByIdAndRemove({ _id: req.params.id });
       if (removedRole) {
-        return (
-          swap(
-            req,
-            res,
-            next,
-            { removedRole: removedRole }
-          )
-        )
+        return swap(req, res, next, { removedRole: removedRole });
       } else {
         return res.send(httpStatus.NOT_FOUND);
       }
@@ -260,5 +218,5 @@ export const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { list, get, update, remove, add, page };
+export { list, get, update, remove, add, page };
 

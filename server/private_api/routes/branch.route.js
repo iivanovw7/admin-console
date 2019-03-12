@@ -1,35 +1,26 @@
-const express = require('express');
-const validate = require('express-validation');
-const paramValidation = require('../config/param-validation-branches');
-const branchCtrl = require('../controllers/branch.controller');
+import express from 'express';
+import validate from 'express-validation';
+import paramValidation from '../config/param-validation-branches';
 import { catchErrors } from '../controllers/helper-functions';
+import * as branches from '../controllers/branch.controller';
 
 const router = express.Router();
 
 router.route('/')
       /** GET /api/branches - Get full list of branches */
-      .get(
-        catchErrors(branchCtrl.list)
-      );
+      .get(catchErrors(branches.list))
+      /** POST /api/branches - Create new branch */
+      .post(validate(paramValidation.addBranch), catchErrors(branches.add));
 
 router.route('/page')
       /** GET /api/branches/page - Get page from branches list */
-      .get(
-        validate(paramValidation.getPageBranches),
-        catchErrors(branchCtrl.page)
-      );
+      .get(validate(paramValidation.getPageBranches), catchErrors(branches.page));
 
 router.route('/:id')
-      /** GET /api/branches/:id - Get branch by id */
-      .get(
-        validate(paramValidation.getBranchById),
-        catchErrors(branchCtrl.get)
-      )
+      /** Gimportpi/branches/:id - Get branch by id */
+      .get(validate(paramValidation.getBranchById), catchErrors(branches.get))
       /** PUT /api/branches/:id - Update branch fields */
-      .put(
-        validate(paramValidation.updateBranch),
-        catchErrors(branchCtrl.update)
-      );
+      .put(validate(paramValidation.updateBranch), catchErrors(branches.update));
 
-module.exports = router;
+export { router as branchRoutes };
 

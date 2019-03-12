@@ -1,10 +1,11 @@
-const express = require('express');
-const userRoutes = require('./routes/user.route');
-const authRoutes = require('./routes/auth.route');
-const roleRoutes = require('./routes/role.route');
-const branchRoutes = require('./routes/branch.route');
+import express from 'express';
+import { authRoutes } from './routes/auth.route';
+import { branchRoutes } from './routes/branch.route';
+import { groupRoutes } from './routes/group.route';
+import { roleRoutes } from './routes/role.route';
+import { userRoutes } from './routes/user.route';
+
 const router = express.Router();
-const pass = require('./controllers/auth.passport.js');
 
 /**
  * Contains Routes structure for "Private API" logic
@@ -17,11 +18,17 @@ router.get('/check', (req, res) =>
 
 /**
  * Mount user routes at "/users"
- * Blocks unauthorised access to users and roles
+ * Blocks unauthorised access to users, roles,
+ * branches, groups, tickets, messages and statistics
  * removed for development
- * TODO //router.use('/users', pass.isLoggedIn, userRoutes);
- * TODO //router.use('/roles', pass.isLoggedIn, roleRoutes);
- * TODO //router.use('/branches', pass.isLoggedIn, branchRoutes);
+ *
+ * TODO //router.use('/users', isLoggedIn, userRoutes);
+ * TODO //router.use('/roles', isLoggedIn, roleRoutes);
+ * TODO //router.use('/branches', isLoggedIn, branchRoutes);
+ * TODO //router.use('/groups', isLoggedIn, groupsRoutes);
+ * TODO //router.use('/tickets', isLoggedIn, ticketsRoutes);
+ * TODO //router.use('/messages', isLoggedIn, messagesRoutes);
+ * TODO //router.use('/statistics', isLoggedIn, statisticsRoutes);
  *
  */
 
@@ -37,4 +44,7 @@ router.use('/roles', roleRoutes);
 /** Mount branches routes at /branches */
 router.use('/branches', branchRoutes);
 
-module.exports = router;
+/** Mount branches routes at /groups */
+router.use('/groups', groupRoutes);
+
+export { router as routes };

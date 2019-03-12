@@ -1,8 +1,10 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('../../db/models/User');
-const Role = require('../../db/models/Role');
-const { authRoles } = require('../config/param-auth');
+import passport from 'passport';
+import PassportLocal from 'passport-local';
+import Role from '../../db/models/Role';
+import User from '../../db/models/User';
+import { authRoles } from '../config/param-auth';
+
+const LocalStrategy = PassportLocal.Strategy;
 
 //function checks if user status belongs to current access list
 function checkStatus(user) {
@@ -59,7 +61,7 @@ passport.deserializeUser(function (id, done) {
 /**
  *  Used for handling protected routes
  */
-exports.isLoggedIn = function isLoggedIn(request, response, next) {
+export function isLoggedIn(request, response, next) {
   // passport adds this to the request object
   if (request.isAuthenticated()) {
     return next();

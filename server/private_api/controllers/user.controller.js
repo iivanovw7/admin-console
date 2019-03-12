@@ -1,23 +1,22 @@
-const User = require('../../db/models/User');
-const Role = require('../../db/models/Role');
-const httpStatus = require('http-status');
+import httpStatus from 'http-status';
+import Group from '../../db/models/Group';
+import Role from '../../db/models/Role';
+import User from '../../db/models/User';
 import { formPage } from './helper-functions';
 
 /**
  * Get user list.
  * @returns {User[]}
  */
-export const list = async (req, res) => {
+const list = async (req, res) => {
 
   const users = await
     User.find({})
-        .populate({ path: 'role', model: Role });
+        .populate({ path: 'role', model: Role })
+        .populate({ path: 'group', model: Group });
 
   if (users) {
-    res.status(200).json([
-      { Total: users.length },
-      { Results: users }]
-    );
+    res.json(users);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -29,17 +28,15 @@ export const list = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {User}
  */
-export const get = async (req, res) => {
+const get = async (req, res) => {
 
   const user = await
     User.findOne({ _id: req.params.id })
-        .populate({ path: 'role', model: Role });
+        .populate({ path: 'role', model: Role })
+        .populate({ path: 'group', model: Group });
 
   if (user) {
-    res.status(200).json(
-      [
-        { Results: user }
-      ]);
+    res.json(user);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -52,21 +49,15 @@ export const get = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  *
  */
-export const page = async (req, res) => {
+const page = async (req, res) => {
 
   const users = await
     User.find({})
         .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await
-      formPage(
-        req.headers.page,
-        req.headers.limit,
-        users,
-        users.length
-      );
-    res.status(200).json(page);
+    const page = await formPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -78,20 +69,14 @@ export const page = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  * @requires {objectId} id: req.params.id
  */
-export const group = async (req, res) => {
+const group = async (req, res) => {
   const users = await
     User.find({ group: req.params.id })
         .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await
-      formPage(
-        req.headers.page,
-        req.headers.limit,
-        users,
-        users.length
-      );
-    res.status(200).json(page);
+    const page = await formPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -104,21 +89,15 @@ export const group = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  *
  */
-export const branch = async (req, res) => {
+const branch = async (req, res) => {
 
   const users = await
     User.find({ group: req.params.id })
         .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await
-      formPage(
-        req.headers.page,
-        req.headers.limit,
-        users,
-        users.length
-      );
-    res.status(200).json(page);
+    const page = await formPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -130,7 +109,7 @@ export const branch = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
-export const search = async (req, res) => {
+const search = async (req, res) => {
 
   const users = await User.find({
     $or: [
@@ -141,14 +120,8 @@ export const search = async (req, res) => {
   }).sort({ surname: 'asc' });
 
   if (users) {
-    const page = await
-      formPage(
-        req.headers.page,
-        req.headers.limit,
-        users,
-        users.length
-      );
-    res.status(200).json(page);
+    const page = await formPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -164,7 +137,7 @@ export const search = async (req, res) => {
  * @parameter {string} status: req.headers.status
  * @returns {User}
  */
-export const update = async (req, res) => {
+const update = async (req, res) => {
 
   const data = {
     group: req.headers.group,
@@ -174,14 +147,10 @@ export const update = async (req, res) => {
   };
 
   const user = await
-    User.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: data },
-      { new: true }
-    );
+    User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
 
   if (user) {
-    res.status(200).json(user);
+    res.json(user);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -191,20 +160,18 @@ export const update = async (req, res) => {
  * Delete user.
  * @returns {User}
  */
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
 
   const user = await
-    User.findByIdAndRemove(
-      { _id: req.params.id }
-    );
+    User.findByIdAndRemove({ _id: req.params.id });
 
   if (user) {
-    res.status(200).json(user);
+    res.json(user);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
 };
 
 
-module.exports = { list, get, page, group, branch, search, update, remove };
+export { list, get, page, group, branch, search, update, remove };
 

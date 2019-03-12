@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { app } from './app';
+
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
-const app = require('./app');
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);

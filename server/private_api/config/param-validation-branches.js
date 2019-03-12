@@ -11,27 +11,39 @@ module.exports = {
     headers: {
       page: Joi.number().required(),
       limit: Joi.number().required()
-    },
+    }
   },
   //GET /api/branches/:id
   getBranchById: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     }
   },
   //PUT /api/branches/:id
   updateBranch: {
     params: {
-      id: Joi.objectId().required(),
+      id: Joi.objectId().required()
     },
     headers: {
       name: Joi.string().required(),
-      email: Joi.string().required(),
+      email: Joi.string().email({ minDomainAtoms: 2 }).required(),
       phone: Joi.string().required(),
       fax: Joi.string().required(),
       address: Joi.string().required(),
       information: Joi.string().required(),
-      active: Joi.bool().required()
+      status: Joi.bool().required()
+    }
+  },
+  //POST /api/branches/
+  addBranch: {
+    headers: {
+      name: Joi.string().required(),
+      email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+      phone: Joi.string().required(),
+      fax: Joi.string().required(),
+      address: Joi.string().required(),
+      information: Joi.string().required(),
+      status: Joi.bool().required()
     }
   }
 };
