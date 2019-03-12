@@ -41,12 +41,12 @@ function swap(req, res, next, params) {
             { role: { _id: req.params.id } },
             { $set: { role: { _id: role._id } } })
               .then(result => {
-                res.status(200).json(
+                res.json(
                   [
-                    { RequestRoleId: req.params.id },
-                    { RemovedRole: params.removedRole },
-                    { NewRole: role },
-                    { Changes: result }
+                    { requestRoleId: req.params.id },
+                    { removedRole: params.removedRole },
+                    { newRole: role },
+                    { changes: result }
                   ]
                 );
               }).catch(e => next(e));
@@ -135,7 +135,7 @@ const update = async (req, res) => {
 
     const updatedRole = await
       Role.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
-    res.json({ NewRole: updatedRole });
+    res.json({ newRole: updatedRole });
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -180,7 +180,7 @@ const add = async (req, res) => {
     const savedRole = await newRole.save();
 
     if (savedRole) {
-      res.status(201).json({ Created: savedRole });
+      res.status(201).json({ created: savedRole });
     } else {
       return res.send(httpStatus.INTERNAL_SERVER_ERROR);
     }

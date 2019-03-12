@@ -44,10 +44,10 @@ function swap(req, res, next, params) {
                .then(result => {
                  res.json(
                    [
-                     { RequestGroupId: req.params.id },
-                     { RemovedGroup: params.removedGroup },
-                     { NewGroup: group },
-                     { Changes: result }
+                     { requestGroupId: req.params.id },
+                     { removedGroup: params.removedGroup },
+                     { newGroup: group },
+                     { changes: result }
                    ]
                  );
                }).catch(e => next(e));
@@ -111,7 +111,7 @@ const add = async (req, res) => {
 
     if (savedGroup) {
       res.status(201).json(
-        { Created: savedGroup }
+        { created: savedGroup }
       );
     } else {
       return res.send(
