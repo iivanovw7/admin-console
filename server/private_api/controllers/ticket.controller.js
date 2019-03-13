@@ -1,6 +1,4 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
-import Role from '../../db/models/Role';
 import Ticket from '../../db/models/Ticket';
 import User from '../../db/models/User';
 import Branch from '../../db/models/Branch';
@@ -149,10 +147,23 @@ const add = async (req, res) => {
     const savedTicket = await newTicket.save();
 
     if (savedTicket) {
+      await notification(savedTicket);
       res.status(201).json(savedTicket);
     } else {
       res.send(httpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+};
+
+const notification = async (ticket) => {
+
+  const user = await User.findOne({ _id: ticket.authorId});
+
+  if (user) {
+    console.log('Send notification to ' + user.email);
+    console.log(ticket)
+
   }
 
 };
@@ -183,12 +194,14 @@ const update = async (req, res) => {
     } else {
       const updatedTicket = await
         Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
+      await notification(ticket);
       res.json(updatedTicket);
     }
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
 };
+
 
 
 export { list, page, get, search, add, update };

@@ -165,7 +165,7 @@ const remove = async (req, res) => {
     User.findByIdAndRemove({ _id: req.params.id });
 
   if (user) {
-    res.json(user);
+    res.send(httpStatus.NO_CONTENT);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }

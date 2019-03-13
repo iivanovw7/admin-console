@@ -7,18 +7,23 @@ import { catchErrors } from '../controllers/helper-functions';
 const router = express.Router();
 
 router.route('/')
+
       /** GET /api/branches - Get full list of branches */
       .get(catchErrors(branches.list))
+
       /** POST /api/branches - Create new branch */
       .post(validate(paramValidation.addBranch), catchErrors(branches.add));
 
 router.route('/page')
+
       /** GET /api/branches/page - Get page from branches list */
       .get(validate(paramValidation.getPageBranches), catchErrors(branches.page));
 
 router.route('/:id')
+
       /** Gimportpi/branches/:id - Get branch by id */
       .get(validate(paramValidation.getBranchById), catchErrors(branches.get))
+
       /** PUT /api/branches/:id - Update branch fields */
       .put(validate(paramValidation.updateBranch), catchErrors(branches.update));
 
