@@ -1,7 +1,7 @@
 import express from 'express';
 import validate from 'express-validation';
-import paramValidation from '../config/param-validation-users';
 import { catchErrors } from '../controllers/helper-functions';
+import * as paramValidation from '../config/param-validation-users';
 import * as users from '../controllers/user.controller';
 
 const router = express.Router();

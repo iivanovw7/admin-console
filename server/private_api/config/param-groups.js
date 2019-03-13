@@ -1,6 +1,6 @@
-module.exports = {
-  //List of groups, which cannot be deleted and/or deactivated
-  defaultGroups: [
-    'Other'
-  ]
-};
+//List of groups, which cannot be deleted and/or deactivated
+export const defaultGroups = [
+  'Other'
+];
+
+

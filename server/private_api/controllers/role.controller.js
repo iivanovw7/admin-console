@@ -1,18 +1,9 @@
 import httpStatus from 'http-status';
 import Role from '../../db/models/Role';
 import User from '../../db/models/User';
-import { defaultRoles } from '../config/param-roles';
-import { catchErrors, formPage } from './helper-functions/index';
+import { defaultRoles, mainRoles } from '../config/param-roles';
+import { catchErrors, formPage, checkElement } from './helper-functions';
 
-//function checks if role status belongs to list of default roles
-function checkRole(role) {
-  for (const mainRole of defaultRoles) {
-    if (mainRole === role.code) {
-      return true;
-    }
-  }
-  return false;
-}
 
 /**
  * Function changes current to a USER
@@ -33,25 +24,21 @@ function swap(req, res, next, params) {
     Role.findOne({ code: 'USER' })
         .then(role => {
           if (!role) {
-            return res.send(
-              httpStatus.INTERNAL_SERVER_ERROR
-            );
+            return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+          } else {
+            User.updateMany({ role: { _id: req.params.id } }, { $set: { role: { _id: role._id } } })
+                .then(result => {
+                  res.json(
+                    [
+                      { requestRoleId: req.params.id },
+                      { removedRole: params.removedRole },
+                      { newRole: role },
+                      { changes: result }
+                    ]
+                  );
+                }).catch(e => next(e));
           }
-          User.updateMany(
-            { role: { _id: req.params.id } },
-            { $set: { role: { _id: role._id } } })
-              .then(result => {
-                res.json(
-                  [
-                    { requestRoleId: req.params.id },
-                    { removedRole: params.removedRole },
-                    { newRole: role },
-                    { changes: result }
-                  ]
-                );
-              }).catch(e => next(e));
-        })
-        .catch(e => next(e))
+        }).catch(e => next(e))
   );
 }
 
@@ -95,12 +82,10 @@ const page = async (req, res) => {
  */
 const get = async (req, res) => {
 
-  const role = await
-    Role.findOne({ _id: req.params.id });
+  const role = await Role.findOne({ _id: req.params.id });
 
   if (role) {
-    const users = await User.find({ role: req.params.id });
-    res.json(users);
+    res.json(role);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -124,11 +109,7 @@ const update = async (req, res) => {
 
     const data = {
       description: req.headers.description,
-      active:
-        req.headers.active ?
-          true
-          :
-          (role.code === 'ADMIN' || role.code === 'USER'),
+      active: req.headers.active ? true : checkElement(role.code, mainRoles),
       public: req.headers.public,
       editable: req.headers.editable
     };
@@ -158,8 +139,7 @@ const update = async (req, res) => {
  */
 const add = async (req, res) => {
 
-  const role = await
-    Role.findOne({ code: req.headers.code, name: req.headers.name });
+  const role = await Role.findOne({ code: req.headers.code, name: req.headers.name });
 
   // If another object with same parameters exists,
   // return error
@@ -180,7 +160,7 @@ const add = async (req, res) => {
     const savedRole = await newRole.save();
 
     if (savedRole) {
-      res.status(201).json({ created: savedRole });
+      res.status(201).json(savedRole);
     } else {
       return res.send(httpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -203,7 +183,7 @@ const remove = async (req, res, next) => {
   const role = await Role.findOne({ _id: req.params.id });
 
   if (role) {
-    if (!checkRole(role)) {
+    if (!checkElement(role.code, defaultRoles)) {
       const removedRole = await Role.findByIdAndRemove({ _id: req.params.id });
       if (removedRole) {
         return swap(req, res, next, { removedRole: removedRole });

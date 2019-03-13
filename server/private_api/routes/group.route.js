@@ -20,7 +20,9 @@ router.route('/:id')
       /** GET /api/groups/:id - Get group and users by id */
       .get(validate(paramValidation.getGroup), catchErrors(groups.get))
       /** DELETE /api/groups/:id - deletes group by id and applies default group to users */
-      .delete(validate(paramValidation.removeGroup), catchErrors(groups.remove));
+      .delete(validate(paramValidation.removeGroup), catchErrors(groups.remove))
+      /** PUT /api/groups/:id - Update group fields */
+      .put(validate(paramValidation.updateGroup), catchErrors(groups.update));
 
 export { router as groupRoutes };
 

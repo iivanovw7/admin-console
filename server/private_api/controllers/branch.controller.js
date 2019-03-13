@@ -46,7 +46,7 @@ const page = async (req, res) => {
  */
 const get = async (req, res) => {
 
-  const branch = await Branch.find({});
+  const branch = await Branch.findOne({ _id: req.params.id });
 
   if (branch) {
     res.json(branch);
@@ -70,7 +70,7 @@ const get = async (req, res) => {
  */
 const update = async (req, res) => {
 
-  const data = await {
+  const data = {
     name: req.headers.name,
     email: req.headers.email,
     phone: req.headers.phone,

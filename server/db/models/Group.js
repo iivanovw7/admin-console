@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const groupSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
@@ -7,4 +7,4 @@ const groupSchema = mongoose.Schema({
   permissions: { type: Boolean, required: false, default: false}
 });
 
-module.exports = mongoose.model('Group', groupSchema, 'groups');
+export default  mongoose.model('Group', groupSchema, 'groups');

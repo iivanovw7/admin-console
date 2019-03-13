@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const branchSchema = mongoose.Schema({
   name: { type: String, required: false, unique: true },
@@ -10,4 +10,4 @@ const branchSchema = mongoose.Schema({
   status: { type: Boolean, required: false, default: false }
 });
 
-module.exports = mongoose.model('Branch', branchSchema, 'branches');
+export default mongoose.model('Branch', branchSchema, 'branches');

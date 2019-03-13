@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
 /**
@@ -32,7 +32,7 @@ module.exports = {
       id: Joi.objectId().required()
     },
     headers: {
-      description: Joi.string().required(),
+      description: Joi.string().min(3).max(500).required(),
       active: Joi.bool().required(),
       public: Joi.bool().required(),
       editable: Joi.bool().required()
@@ -41,9 +41,9 @@ module.exports = {
   // POST /api/roles/
   addRole: {
     headers: {
-      name: Joi.string().required(),
-      code: Joi.string().required(),
-      description: Joi.string().required(),
+      name: Joi.string().min(3).max(30).required(),
+      code: Joi.string().min(3).max(30).required(),
+      description: Joi.string().min(3).max(500).required(),
       active: Joi.bool().required(),
       public: Joi.bool(),
       editable: Joi.bool()

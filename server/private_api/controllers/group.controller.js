@@ -2,21 +2,11 @@ import httpStatus from 'http-status';
 import Group from '../../db/models/Group';
 import User from '../../db/models/User';
 import { defaultGroups } from '../config/param-groups';
-
-import { catchErrors, formPage } from './helper-functions/index';
-
-//function checks if group status belongs to list of default groups
-function checkGroup(group) {
-  for (const mainGroup of defaultGroups) {
-    if (mainGroup === group.name) {
-      return true;
-    }
-  }
-  return false;
-}
+import { catchErrors, formPage, checkElement } from './helper-functions';
 
 /**
- * Function changes removed Group to Other
+ * Function changes removed Group
+ * and add Other group to users
  *
  * @param req
  * @param res
@@ -51,8 +41,7 @@ function swap(req, res, next, params) {
                    ]
                  );
                }).catch(e => next(e));
-         })
-         .catch(e => next(e))
+         }).catch(e => next(e))
   );
 }
 
@@ -94,7 +83,7 @@ const add = async (req, res) => {
   });
 
   // If another object with same parameters exists,
-  // return error
+  // returns error
   if (group) {
     return res.send(httpStatus.BAD_REQUEST);
   } else {
@@ -110,9 +99,7 @@ const add = async (req, res) => {
     const savedGroup = await newGroup.save();
 
     if (savedGroup) {
-      res.status(201).json(
-        { created: savedGroup }
-      );
+      res.status(201).json(savedGroup);
     } else {
       return res.send(
         httpStatus.INTERNAL_SERVER_ERROR
@@ -129,12 +116,10 @@ const add = async (req, res) => {
  */
 const get = async (req, res) => {
 
-  const group = await
-    Group.findOne({ _id: req.params.id });
+  const group = await Group.findOne({ _id: req.params.id });
 
   if (group) {
-    const users = await User.find({ group: req.params.id });
-    res.json(users);
+    res.json(group);
   } else {
     res.send(httpStatus.NOT_FOUND);
   }
@@ -155,7 +140,9 @@ const update = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
-  if (group) {
+  if (!group) {
+    res.send(httpStatus.NOT_FOUND);
+  } else {
 
     const data = {
       name: req.headers.name,
@@ -170,9 +157,8 @@ const update = async (req, res) => {
         { $set: data },
         { new: true }
       );
+
     res.json(updatedGroup);
-  } else {
-    res.send(httpStatus.NOT_FOUND);
   }
 };
 
@@ -195,8 +181,7 @@ const page = async (req, res) => {
 };
 
 
-/**TODO REMOVE AND SWITCH Groups
- /**
+/**
  * Deletes group, removes all same groups in Users list
  * @requires {objectId} id: req.params.id
  * @param {objectId} req.headers.group
@@ -204,59 +189,23 @@ const page = async (req, res) => {
  * (Calls swap groups function to change deleted group to 'Other'
  * )
  */
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
+
   const group = await Group.findOne({ _id: req.params.id });
 
-  if (group) {
-    if (!checkGroup(group)) {
-      const removeGroup = await Group.findOneAndDelete();
-    }
+  if (!group) {
+    res.send(httpStatus.BAD_REQUEST);
   } else {
-
+    if (!checkElement(group.name, defaultGroups)) {
+      const removedGroup = await Group.findByIdAndRemove({ _id: req.params.id });
+      if (removedGroup) {
+        return swap(req, res, next, { removedGroup: removedGroup });
+      } else {
+        res.send(httpStatus.NOT_FOUND);
+      }
+    }
   }
-
-
 };
-
-// /**
-//  * Deletes role, removes all same roles in Users list
-//  * @requires {objectId} id: req.params.id
-//  * @param {objectId} req.headers.role
-//  * another role Id, to change Users roles
-//  * @returns swapRoles(req,res,next,{removedRole: removedRole});
-//  * (Calls swap roles function to change deleted role to another one,
-//  * if role parameter passed in headers, if not - removes roles)
-//  * )
-//  */
-// const remove = async (req, res, next) => {
-//
-//   const role = await Role.findOne({ _id: req.params.id });
-//
-//   if (role) {
-//     if (!checkRole(role)) {
-//       const removedRole = await
-//         Role.findByIdAndRemove(
-//           { _id: req.params.id }
-//         );
-//       if (removedRole) {
-//         return (
-//           swap(
-//             req,
-//             res,
-//             next,
-//             { removedRole: removedRole }
-//           )
-//         )
-//       } else {
-//         return res.send(httpStatus.NOT_FOUND);
-//       }
-//     } else {
-//       res.send(httpStatus.BAD_REQUEST);
-//     }
-//   } else {
-//     res.send(httpStatus.NOT_FOUND);
-//   }
-// };
 
 
 export { get, list, add, update, page, remove };

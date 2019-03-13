@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
 /**
@@ -17,8 +17,8 @@ module.exports = {
   //POST /api/groups/
   addGroup: {
     headers: {
-      name: Joi.string().required(),
-      description: Joi.string().required(),
+      name: Joi.string().min(3).max(30).required(),
+      description: Joi.string().min(3).max(500).required(),
       status: Joi.bool().required(),
       permissions: Joi.bool().required()
     }
@@ -29,8 +29,8 @@ module.exports = {
       id: Joi.objectId().required()
     },
     headers: {
-      name: Joi.string().required(),
-      description: Joi.string().required(),
+      name: Joi.string().min(3).max(30).required(),
+      description: Joi.string().min(3).max(500).required(),
       status: Joi.bool().required(),
       permissions: Joi.bool().required()
     }

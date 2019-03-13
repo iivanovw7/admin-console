@@ -3,18 +3,9 @@ import PassportLocal from 'passport-local';
 import Role from '../../db/models/Role';
 import User from '../../db/models/User';
 import { authRoles } from '../config/param-auth';
+import { checkElement } from './helper-functions';
 
 const LocalStrategy = PassportLocal.Strategy;
-
-//function checks if user status belongs to current access list
-function checkStatus(user) {
-  for (const auth of authRoles) {
-    if (auth === user.role.code) {
-      return true;
-    }
-  }
-  return false;
-}
 
 passport.use(new LocalStrategy(
   {
@@ -27,8 +18,8 @@ passport.use(new LocalStrategy(
     User.findOne({ email: email })
         .populate({ path: 'role', model: Role })
         .then(user => {
-          if (!user || !checkStatus(user)) {
-            console.log('Authenticated error');
+          if (!user || !checkElement(user.role.code, authRoles)) {
+            console.log('Authentication error');
             return done(null, false, { message: 'Incorrect username.' });
           }
           user.comparePassword(password, function (err, isMatch) {
@@ -67,4 +58,4 @@ export function isLoggedIn(request, response, next) {
     return next();
   }
   response.redirect('/login');
-};
+}

@@ -70,9 +70,8 @@ const page = async (req, res) => {
  * @requires {objectId} id: req.params.id
  */
 const group = async (req, res) => {
-  const users = await
-    User.find({ group: req.params.id })
-        .sort({ surname: 'asc' });
+  const users = await User.find({ group: req.params.id })
+                          .sort({ surname: 'asc' });
 
   if (users) {
     const page = await formPage(req.headers.page, req.headers.limit, users);

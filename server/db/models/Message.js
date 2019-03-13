@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const messageSchema = mongoose.Schema({
   subject: { type: String, required: true },
@@ -9,4 +9,4 @@ const messageSchema = mongoose.Schema({
   senderId: { type: String, required: false }
 });
 
-module.exports = mongoose.model('Message', messageSchema, 'messages');
+export default mongoose.model('Message', messageSchema, 'messages');

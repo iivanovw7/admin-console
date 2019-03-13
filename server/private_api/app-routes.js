@@ -4,6 +4,7 @@ import { branchRoutes } from './routes/branch.route';
 import { groupRoutes } from './routes/group.route';
 import { roleRoutes } from './routes/role.route';
 import { userRoutes } from './routes/user.route';
+import { ticketRoutes } from  './routes/ticket.route';
 
 const router = express.Router();
 
@@ -30,6 +31,7 @@ router.get('/check', (req, res) =>
  * TODO //router.use('/messages', isLoggedIn, messagesRoutes);
  * TODO //router.use('/statistics', isLoggedIn, statisticsRoutes);
  *
+ *
  */
 
 /** Mount auth routes at /auth */
@@ -44,7 +46,10 @@ router.use('/roles', roleRoutes);
 /** Mount branches routes at /branches */
 router.use('/branches', branchRoutes);
 
-/** Mount branches routes at /groups */
+/** Mount groups routes at /groups */
 router.use('/groups', groupRoutes);
+
+/** Mount tickets routes at /tickets */
+router.use('/tickets', ticketRoutes);
 
 export { router as routes };

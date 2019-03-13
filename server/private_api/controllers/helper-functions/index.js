@@ -4,6 +4,22 @@ export const catchErrors = fn => {
   };
 };
 
+/**
+ * Function checks if element is in the list.
+ * Used for validating roles and groups which are being deleted
+ *
+ * @param element
+ * @param list
+ * @returns {boolean}
+ */
+export function checkElement(element, list) {
+  for (const current of list) {
+    if (current === element) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * Function forms one page of objects out of incoming list of objects
@@ -13,7 +29,7 @@ export const catchErrors = fn => {
  * @param currLimit: {number}, number of elements for one page
  * @param list: {[]}, array of objects
  *
- * @returns {Promise.<void>}
+ * @returns {Promise<{output: *[], pages: number, limit: *, page: *}>}
  */
 export const formPage = async (currPage = 1, currLimit = 10, list = []) => {
 
@@ -21,7 +37,7 @@ export const formPage = async (currPage = 1, currLimit = 10, list = []) => {
   //in order to prevent unpredicted outputs
   function limitInt(min, max, val) {
     return Math.round(Math.min(Math.max(val, min), max));
-  };
+  }
 
   //applying limits of elements for one page
   const limit = limitInt(1, 25, currLimit);

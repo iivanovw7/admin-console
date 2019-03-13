@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const passportLocalMongoose = require('passport-local-mongoose');
+import mongoose from 'mongoose';
+import  bcrypt from 'bcryptjs';
+import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -27,4 +27,4 @@ userSchema.plugin(passportLocalMongoose, {
   passwordField: 'password',
 });
 
-module.exports = mongoose.model('User', userSchema, 'users');
+export default mongoose.model('User', userSchema, 'users');

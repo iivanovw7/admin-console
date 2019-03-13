@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const roleSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
@@ -9,4 +9,4 @@ const roleSchema = mongoose.Schema({
   editable: { type: Boolean, default: false } //can be blocked by users
 });
 
-module.exports = mongoose.model('Role', roleSchema, 'roles');
+export default mongoose.model('Role', roleSchema, 'roles');

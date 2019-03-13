@@ -1,16 +1,15 @@
-const Joi = require('joi');
+import Joi from 'joi';
+
 Joi.objectId = require('joi-objectid')(Joi);
 
 /**
  * Validation for Login form
  *
  * */
-module.exports = {
-  //POST /api/auth/login
-  login: {
-    body: {
-      email: Joi.string().email({ minDomainAtoms: 2 }).required(),
-      password: Joi.string().required()
-    }
+//POST /api/auth/login
+export const login = {
+  body: {
+    email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+    password: Joi.string().required()
   }
 };
