@@ -33,9 +33,9 @@ export const updateUser = {
     id: Joi.objectId().required()
   },
   headers: {
-    group: Joi.string().required().min(3).max(30),
-    branch: Joi.string().required().min(3).max(30),
-    role: Joi.objectId().required().min(3).max(30),
+    group: Joi.string().required().min(3).max(50),
+    branch: Joi.string().required().min(3).max(50),
+    role: Joi.objectId().required().min(3).max(50),
     status: Joi.string().required()
   }
 };
@@ -75,7 +75,7 @@ export const getPageGroup = {
 // GET /api/users/search
 export const getPageSearch = {
   headers: {
-    search: Joi.string().min(3).max(30).required(),
+    search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
     limit: Joi.number().required(),
   }

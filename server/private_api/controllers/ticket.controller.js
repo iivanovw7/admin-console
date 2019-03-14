@@ -5,6 +5,25 @@ import Branch from '../../db/models/Branch';
 import { defaultStatuses } from '../config/param-tickets';
 import { checkElement, formPage } from './helper-functions';
 
+
+/**
+ * Imitation of email notification.
+ * @returns {user.email, message}
+ */
+
+const notification = async (ticket) => {
+
+  const user = await User.findOne({ _id: ticket.authorId});
+
+  if (user) {
+    console.log('Send notification to ' + user.email);
+    console.log(ticket)
+  } else {
+    console.log('User not found!');
+  }
+
+};
+
 /**
  * Get tickets list.
  * @returns {tickets[]}
@@ -19,7 +38,7 @@ const list = async (req, res) => {
   if (tickets) {
     res.json(tickets);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -39,7 +58,7 @@ const page = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, tickets);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -57,11 +76,10 @@ const get = async (req, res) => {
   if (ticket) {
     res.json(ticket);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
-
 
 /**Find tickets by query, by subject, name or surname
  *
@@ -99,14 +117,14 @@ const search = async (req, res) => {
     );
 
     if (!sortedResult) {
-      return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     } else {
       const page = await formPage(req.headers.page, req.headers.limit, sortedResult);
       res.json(page);
     }
 
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -140,7 +158,7 @@ const add = async (req, res) => {
 
   if (!checkElement(newTicket.status, defaultStatuses) || req.headers.status === 'Closed') {
 
-    return res.send(httpStatus.BAD_REQUEST);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
 
   } else {
 
@@ -150,20 +168,8 @@ const add = async (req, res) => {
       await notification(savedTicket);
       res.status(201).json(savedTicket);
     } else {
-      res.send(httpStatus.INTERNAL_SERVER_ERROR);
+      res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-};
-
-const notification = async (ticket) => {
-
-  const user = await User.findOne({ _id: ticket.authorId});
-
-  if (user) {
-    console.log('Send notification to ' + user.email);
-    console.log(ticket)
-
   }
 
 };
@@ -190,7 +196,7 @@ const update = async (req, res) => {
     };
 
     if (!checkElement(data.status, defaultStatuses)) {
-      return res.send(httpStatus.BAD_REQUEST);
+      return res.sendStatus(httpStatus.BAD_REQUEST);
     } else {
       const updatedTicket = await
         Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
@@ -198,7 +204,7 @@ const update = async (req, res) => {
       res.json(updatedTicket);
     }
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 

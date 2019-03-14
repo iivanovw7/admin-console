@@ -41,8 +41,8 @@ module.exports = {
   // POST /api/roles/
   addRole: {
     headers: {
-      name: Joi.string().min(3).max(30).required(),
-      code: Joi.string().min(3).max(30).required(),
+      name: Joi.string().min(3).max(50).required(),
+      code: Joi.string().min(3).max(50).required(),
       description: Joi.string().min(3).max(500).required(),
       active: Joi.bool().required(),
       public: Joi.bool(),

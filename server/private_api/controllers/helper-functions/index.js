@@ -1,7 +1,35 @@
+import Role from '../../../db/models/Role';
+import User from '../../../db/models/User';
+import { authRoles } from '../../config/param-auth';
+import httpStatus from 'http-status';
+import mongoose from 'mongoose';
+
 export const catchErrors = fn => {
   return function (req, res, next) {
     return fn(req, res, next).catch(next);
   };
+};
+
+/**
+ *Function checks user object in header of request and compares
+ * it to users list, and then checks access rights
+ *
+ */
+export const checkAccess = async (req, res, next) => {
+
+  const id = mongoose.Types.ObjectId(req.headers.user);
+
+  await User.findOne({ _id: id })
+            .populate({ path: 'role', model: Role })
+            .then(user => {
+              if (!user || !checkElement(user.role.code, authRoles)) {
+                console.log('Authentication error');
+                return res.sendStatus(httpStatus.UNAUTHORIZED);
+              } else {
+                console.log('Request authorised!');
+                return next();
+              }
+            });
 };
 
 /**

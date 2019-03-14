@@ -5,6 +5,7 @@ import { groupRoutes } from './routes/group.route';
 import { roleRoutes } from './routes/role.route';
 import { userRoutes } from './routes/user.route';
 import { ticketRoutes } from  './routes/ticket.route';
+import { messageRoutes } from  './routes/message.route';
 
 const router = express.Router();
 
@@ -51,5 +52,8 @@ router.use('/groups', groupRoutes);
 
 /** Mount tickets routes at /tickets */
 router.use('/tickets', ticketRoutes);
+
+/** Mount messages routes at /messages */
+router.use('/messages', messageRoutes);
 
 export { router as routes };

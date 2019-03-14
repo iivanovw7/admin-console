@@ -1,6 +1,6 @@
 import express from 'express';
 import validate from 'express-validation';
-import { catchErrors } from '../controllers/helper-functions';
+import { catchErrors, checkAccess } from '../controllers/helper-functions';
 import * as paramValidation from '../config/param-validation-tickets';
 import * as tickets from '../controllers/ticket.controller';
 
@@ -9,10 +9,10 @@ const router = express.Router();
 router.route('/')
 
       /** GET /api/tickets - Get full list of tickets */
-      .get(catchErrors(tickets.list))
+      .get(checkAccess, catchErrors(tickets.list))
 
       /** POST /api/tickets - Create new ticket */
-      .post(validate(paramValidation.addTicket), catchErrors(tickets.add));
+      .post(validate(paramValidation.addTicket), checkAccess, catchErrors(tickets.add));
 
 router.route('/page')
 
@@ -22,15 +22,15 @@ router.route('/page')
 router.route('/search')
 
       /** GET /api/tickets/search - Gets page with search results by title, name, surname */
-      .get(validate(paramValidation.getPageSearch), catchErrors(tickets.search));
+      .get(validate(paramValidation.getPageSearch), checkAccess, catchErrors(tickets.search));
 
 router.route('/:id')
 
       /** GET /api/tickets/:id - Get single ticket by id */
-      .get(validate(paramValidation.getTicket), catchErrors(tickets.get))
+      .get(validate(paramValidation.getTicket), checkAccess, catchErrors(tickets.get))
 
       /** PUT /api/tickets/:id - Update ticket by id*/
-      .put(validate(paramValidation.updateTicket), catchErrors(tickets.update));
+      .put(validate(paramValidation.updateTicket), checkAccess, catchErrors(tickets.update));
 
 
 export { router as ticketRoutes };

@@ -25,7 +25,7 @@ function swap(req, res, next, params) {
          .then(group => {
 
            if (!group) {
-             return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+             return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
            }
 
            User.updateMany(
@@ -57,7 +57,7 @@ const list = async (req, res) => {
   if (groups) {
     res.json(groups);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -85,7 +85,7 @@ const add = async (req, res) => {
   // If another object with same parameters exists,
   // returns error
   if (group) {
-    return res.send(httpStatus.BAD_REQUEST);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
     //If not - create new object
@@ -101,7 +101,7 @@ const add = async (req, res) => {
     if (savedGroup) {
       res.status(201).json(savedGroup);
     } else {
-      return res.send(
+      return res.sendStatus(
         httpStatus.INTERNAL_SERVER_ERROR
       );
     }
@@ -121,7 +121,7 @@ const get = async (req, res) => {
   if (group) {
     res.json(group);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -141,7 +141,7 @@ const update = async (req, res) => {
   const group = await Group.findOne({ _id: req.params.id });
 
   if (!group) {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   } else {
 
     const data = {
@@ -176,7 +176,7 @@ const page = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, groups);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -194,14 +194,14 @@ const remove = async (req, res, next) => {
   const group = await Group.findOne({ _id: req.params.id });
 
   if (!group) {
-    res.send(httpStatus.BAD_REQUEST);
+    res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
     if (!checkElement(group.name, defaultGroups)) {
       const removedGroup = await Group.findByIdAndRemove({ _id: req.params.id });
       if (removedGroup) {
         return swap(req, res, next, { removedGroup: removedGroup });
       } else {
-        res.send(httpStatus.NOT_FOUND);
+        res.sendStatus(httpStatus.NOT_FOUND);
       }
     }
   }

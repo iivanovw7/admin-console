@@ -16,7 +16,7 @@ const list = async (req, res) => {
   if (branches) {
     res.json(branches);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -35,7 +35,7 @@ const page = async (req, res) => {
       formPage(req.headers.page, req.headers.limit, branches);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -51,7 +51,7 @@ const get = async (req, res) => {
   if (branch) {
     res.json(branch);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -90,7 +90,7 @@ const update = async (req, res) => {
   if (updated) {
     res.json(updated);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -125,7 +125,7 @@ const add = async (req, res) => {
 
   //If not - create new object
   if (branch) {
-    return res.send(httpStatus.BAD_REQUEST);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
     const newBranch = {
@@ -144,7 +144,7 @@ const add = async (req, res) => {
     if (savedBranch) {
       res.status(201).json(savedBranch);
     } else {
-      return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 };

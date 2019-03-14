@@ -11,7 +11,7 @@ export const updateTicket = {
     id: Joi.objectId().required()
   },
   headers: {
-    status: Joi.string().min(3).max(30).required(),
+    status: Joi.string().min(3).max(50).required(),
     note: Joi.string().max(500),
   }
 };
@@ -19,14 +19,14 @@ export const updateTicket = {
 // POST /api/tickets
 export const addTicket = {
   headers: {
-    status: Joi.string().min(3).max(30),
-    subject: Joi.string().min(3).max(30).required(),
+    status: Joi.string().min(3).max(50),
+    subject: Joi.string().min(3).max(50).required(),
     message: Joi.string().min(3).max(500).required(),
     note: Joi.string().max(500)
   },
   body: {
-    authorId: Joi.objectId().required(),
-    branchId: Joi.objectId()
+    author: Joi.objectId().required(),
+    branch: Joi.objectId()
   }
 };
 
@@ -52,7 +52,7 @@ export const getPageSearch = {
   params: {
   },
   headers: {
-    search: Joi.string().min(3).max(30).required(),
+    search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
     limit: Joi.number().required()
   }

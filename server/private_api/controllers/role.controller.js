@@ -24,7 +24,7 @@ function swap(req, res, next, params) {
     Role.findOne({ code: 'USER' })
         .then(role => {
           if (!role) {
-            return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+            return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
           } else {
             User.updateMany({ role: { _id: req.params.id } }, { $set: { role: { _id: role._id } } })
                 .then(result => {
@@ -53,7 +53,7 @@ const list = async (req, res) => {
   if (roles) {
     res.json(roles);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -71,7 +71,7 @@ const page = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, roles);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -87,7 +87,7 @@ const get = async (req, res) => {
   if (role) {
     res.json(role);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -118,7 +118,7 @@ const update = async (req, res) => {
       Role.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
     res.json({ newRole: updatedRole });
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -144,7 +144,7 @@ const add = async (req, res) => {
   // If another object with same parameters exists,
   // return error
   if (role) {
-    return res.send(httpStatus.BAD_REQUEST);
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
     const newRole = await new Role({
@@ -162,7 +162,7 @@ const add = async (req, res) => {
     if (savedRole) {
       res.status(201).json(savedRole);
     } else {
-      return res.send(httpStatus.INTERNAL_SERVER_ERROR);
+      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -188,13 +188,13 @@ const remove = async (req, res, next) => {
       if (removedRole) {
         return swap(req, res, next, { removedRole: removedRole });
       } else {
-        return res.send(httpStatus.NOT_FOUND);
+        return res.sendStatus(httpStatus.NOT_FOUND);
       }
     } else {
-      res.send(httpStatus.BAD_REQUEST);
+      res.sendStatus(httpStatus.BAD_REQUEST);
     }
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 

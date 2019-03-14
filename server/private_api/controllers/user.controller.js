@@ -18,7 +18,7 @@ const list = async (req, res) => {
   if (users) {
     res.json(users);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -38,7 +38,7 @@ const get = async (req, res) => {
   if (user) {
     res.json(user);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };
@@ -59,7 +59,7 @@ const page = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -77,7 +77,7 @@ const group = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -98,7 +98,7 @@ const branch = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -122,7 +122,7 @@ const search = async (req, res) => {
     const page = await formPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -151,7 +151,7 @@ const update = async (req, res) => {
   if (user) {
     res.json(user);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
@@ -165,9 +165,9 @@ const remove = async (req, res) => {
     User.findByIdAndRemove({ _id: req.params.id });
 
   if (user) {
-    res.send(httpStatus.NO_CONTENT);
+    res.sendStatus(httpStatus.NO_CONTENT);
   } else {
-    res.send(httpStatus.NOT_FOUND);
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
