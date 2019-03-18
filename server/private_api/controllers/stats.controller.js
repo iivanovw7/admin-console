@@ -11,7 +11,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 /**
  * Function calculates total number of users according to params
- * It is called by It is called called by getStatistics function with query parameters
+ * It is called by getStatistics function with query parameters
  *
  * @param limit
  * @param param
@@ -25,14 +25,10 @@ const usersCounter = async (limit, param) => {
 
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
-      totalQuery['branch'] = param.branch;
-      activeQuery['branch'] = param.branch;
-      disabledQuery['branch'] = param.branch;
+      totalQuery['branch'] = activeQuery['branch'] = disabledQuery['branch'] = param.branch;
     } else {
       if (ObjectId.isValid(param.group)) {
-        totalQuery['group'] = param.group;
-        activeQuery['group'] = param.group;
-        disabledQuery['group'] = param.group;
+        totalQuery['group'] = activeQuery['group'] = disabledQuery['group'] = param.group;
       }
     }
   }
@@ -155,11 +151,11 @@ const ticketsCounter = async (limit, param) => {
  */
 async function getStatistics(req, res, next) {
 
-  //sets time limit in moths
+  //sets time limit in months
   const limit = setLimit(req.headers.months);
   //gets users id
   const id = mongoose.Types.ObjectId(req.headers.user);
-  //gets users role
+  //gets user role
   const role = await getUserRole(id);
 
   switch (role) {
