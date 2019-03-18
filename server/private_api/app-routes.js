@@ -4,8 +4,9 @@ import { branchRoutes } from './routes/branch.route';
 import { groupRoutes } from './routes/group.route';
 import { roleRoutes } from './routes/role.route';
 import { userRoutes } from './routes/user.route';
-import { ticketRoutes } from  './routes/ticket.route';
-import { messageRoutes } from  './routes/message.route';
+import { ticketRoutes } from './routes/ticket.route';
+import { messageRoutes } from './routes/message.route';
+import { statsRoutes } from './routes/stats.route';
 
 const router = express.Router();
 
@@ -30,8 +31,7 @@ router.get('/check', (req, res) =>
  * TODO //router.use('/groups', isLoggedIn, groupsRoutes);
  * TODO //router.use('/tickets', isLoggedIn, ticketsRoutes);
  * TODO //router.use('/messages', isLoggedIn, messagesRoutes);
- * TODO //router.use('/statistics', isLoggedIn, statisticsRoutes);
- *
+ * TODO //router.use('/stats', isLoggedIn, statsRoutes);
  *
  */
 
@@ -55,5 +55,8 @@ router.use('/tickets', ticketRoutes);
 
 /** Mount messages routes at /messages */
 router.use('/messages', messageRoutes);
+
+/** Mount stats routes at /stats */
+router.use('/stats', statsRoutes);
 
 export { router as routes };

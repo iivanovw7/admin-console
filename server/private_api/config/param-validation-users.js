@@ -20,10 +20,15 @@ export const getUser = {
   }
 };
 
-// DELETE /api/users/:id
-export const deleteUser = {
+// GET /api/users/history/:id
+export const getUserHistory = {
   params: {
     id: Joi.objectId().required()
+  },
+  headers: {
+    months: Joi.number().required().min(1).max(1000),
+    page: Joi.number().required(),
+    limit: Joi.number().required()
   }
 };
 
@@ -33,10 +38,10 @@ export const updateUser = {
     id: Joi.objectId().required()
   },
   headers: {
-    group: Joi.string().required().min(3).max(50),
-    branch: Joi.string().required().min(3).max(50),
+    group: Joi.objectId().required().min(3).max(50),
+    branch: Joi.objectId().required().min(3).max(50),
     role: Joi.objectId().required().min(3).max(50),
-    status: Joi.string().required()
+    status: Joi.boolean().required()
   }
 };
 

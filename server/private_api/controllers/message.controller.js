@@ -122,6 +122,8 @@ const page = async (req, res) => {
 
   if (checkElement(role, fullAccess)) {
 
+    return getMessages(req, res, {}, true);
+
   } else {
 
     if (checkElement(role, branchAccess)) {

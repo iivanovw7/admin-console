@@ -148,8 +148,8 @@ const add = async (req, res) => {
   const newTicket = await new Ticket({
     name: req.headers.name,
     description: req.headers.description,
-    authorId: req.body.authorId,
-    branchId: req.body.branchId,
+    authorId: req.body.author,
+    branchId: req.body.branch,
     status: req.headers.status || 'Opened',
     subject: req.headers.subject,
     message: req.headers.message,

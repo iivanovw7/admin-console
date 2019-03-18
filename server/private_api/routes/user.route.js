@@ -28,10 +28,12 @@ router.route('/:id')
       .get(validate(paramValidation.getUser),checkAccess, catchErrors(users.get))
 
       /** PUT /api/users/:id - Update user */
-      .put(validate(paramValidation.updateUser),checkAccess, catchErrors(users.update))
+      .put(validate(paramValidation.updateUser),checkAccess, catchErrors(users.update));
 
-      /** DELETE /api/users/:id - Delete user */
-      .delete(validate(paramValidation.deleteUser),checkAccess, catchErrors(users.remove));
+router.route('/history/:id')
+
+      /** GET /api/users/history/:id - Get single users history */
+      .get(validate(paramValidation.getUserHistory), checkAccess, catchErrors(users.history));
 
 router.route('/branch/:id')
 

@@ -2,7 +2,8 @@ import httpStatus from 'http-status';
 import Group from '../../db/models/Group';
 import Role from '../../db/models/Role';
 import User from '../../db/models/User';
-import { formPage } from './helper-functions';
+import History from '../../db/models/History';
+import { formPage, addHistory, setLimit } from './helper-functions';
 
 /**
  * Get user list.
@@ -126,6 +127,7 @@ const search = async (req, res) => {
   }
 };
 
+
 /**
  * Update existing use
  *
@@ -149,6 +151,10 @@ const update = async (req, res) => {
     User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
 
   if (user) {
+
+    //add information about changes in history
+    addHistory(req, res, { actionType: 'Update', targetModel: 'User' }, data);
+
     res.json(user);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -156,21 +162,32 @@ const update = async (req, res) => {
 };
 
 /**
- * Delete user.
- * @returns {User}
+ * Function finds changes made by user in history db
+ * returns list of changes with pagination for time period 3 months min
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
  */
-const remove = async (req, res) => {
+const history = async (req, res) => {
 
-  const user = await
-    User.findByIdAndRemove({ _id: req.params.id });
+  const limit = setLimit(req.headers.months);
 
-  if (user) {
-    res.sendStatus(httpStatus.NO_CONTENT);
+  const records = await
+    History.find({ created: { $gt: limit }, targetId: req.params.id })
+           .populate({ path: 'author', model: User })
+           .sort({ created: '-1' });
+
+  if (records) {
+    const page = await formPage(req.headers.page, req.headers.limit, records);
+    res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+
 };
 
 
-export { list, get, page, group, branch, search, update, remove };
+export { list, get, page, group, branch, search, update, history };
 
