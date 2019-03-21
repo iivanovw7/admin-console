@@ -1,12 +1,12 @@
 import httpStatus from 'http-status';
-import Group from '../../db/models/Group';
-import User from '../../db/models/User';
-import { defaultGroups } from '../config/param-groups';
-import { catchErrors, formPage, checkElement } from './helper-functions';
+import Group from '../../models/Group';
+import User from '../../models/User';
+import { defaultGroups } from '../config/param-controllers';
+import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
 
 /**
- * Function changes removed Group
- * and add Other group to users
+ * Function is called after removing a group,
+ * passes through users of removed group and changes their group to Other
  *
  * @param req
  * @param res
@@ -14,11 +14,12 @@ import { catchErrors, formPage, checkElement } from './helper-functions';
  * @param params
  *
  * @returns
- * { Removed: oldGroup },
- * { NewGroup: group },
- * { Changes: result }
+ * { requestGroupId: req.params.id },
+ * { removedGroup: params.removedGroup },
+ * { newGroup: role },
+ * { changes: result }
  */
-function swap(req, res, next, params) {
+function swapGroups(req, res, next, params) {
 
   catchErrors(
     Group.findOne({ name: 'Other' })
@@ -45,23 +46,6 @@ function swap(req, res, next, params) {
   );
 }
 
-
-/**
- * Get full Groups list.
- * @returns {groups[]}
- *
- */
-const list = async (req, res) => {
-  const groups = await Group.find({});
-
-  if (groups) {
-    res.json(groups);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
-};
-
 /**
  * Function creates new Group if it doesn`t exists in db
  *
@@ -75,11 +59,11 @@ const list = async (req, res) => {
  * @returns
  * {Group}
  */
-const add = async (req, res) => {
+const addGroup = async (req, res) => {
 
   const group = await Group.findOne({
-    name: req.headers.name,
-    description: req.headers.description
+    name: req.body.name,
+    description: req.body.description
   });
 
   // If another object with same parameters exists,
@@ -90,9 +74,9 @@ const add = async (req, res) => {
 
     //If not - create new object
     const newGroup = await new Group({
-      name: req.headers.name,
-      description: req.headers.description,
-      status: req.headers.status
+      name: req.body.name,
+      description: req.body.description,
+      status: req.body.status
     });
 
     //Saving new object in to collection
@@ -114,7 +98,7 @@ const add = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {group, [users]}
  */
-const get = async (req, res) => {
+const getGroup = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
@@ -129,14 +113,14 @@ const get = async (req, res) => {
 /**
  * Update existing group
  *
- * @requires name: req.headers.name
- * @requires description: req.headers.description
- * @requires permissions: req.headers.permissions
- * @requires status: req.headers.status
+ * @requires name: req.body.name
+ * @requires description: req.body.description
+ * @requires permissions: req.body.permissions
+ * @requires status: req.body.status
  *
  * @returns {Group} Returns updated group
  */
-const update = async (req, res) => {
+const updateGroup = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
@@ -145,11 +129,12 @@ const update = async (req, res) => {
   } else {
 
     const data = {
-      name: req.headers.name,
-      status: req.headers.status,
-      permissions: req.headers.permission,
-      description: req.headers.description
+      name: req.body.name,
+      status: req.body.status,
+      permissions: req.body.permission,
+      description: req.body.description
     };
+
 
     const updatedGroup = await
       Group.findOneAndUpdate(
@@ -162,44 +147,47 @@ const update = async (req, res) => {
   }
 };
 
-/**Get one page of groups
- *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
+/**
+ * Get one page of groups
+ * @headers {number} page: req.headers.page
+ * @headers {number} limit: req.headers.limit
  *
  */
-const page = async (req, res) => {
+const listGroups = async (req, res) => {
 
   const groups = await Group.find({});
 
   if (groups) {
-    const page = await formPage(req.headers.page, req.headers.limit, groups);
+
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, groups)
+      : groups;
+
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
-
 /**
  * Deletes group, removes all same groups in Users list
- * @requires {objectId} id: req.params.id
- * @param {objectId} req.headers.group
- * @returns swap(req,res,next,{removedGroup: removedGroup});
- * (Calls swap groups function to change deleted group to 'Other'
- * )
+ *
+ * @requires  {objectId} id: req.params.id
+ * @param     {objectId} req.headers.group
+ * @returns   swap(req,res,next,{removedGroup: removedGroup});
+ * (Calls swap groups function to change deleted group to 'Other')
  */
-const remove = async (req, res, next) => {
+const removeGroup = async (req, res, next) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
   if (!group) {
     res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
-    if (!checkElement(group.name, defaultGroups)) {
+    if (!ifArrayContains(group.name, defaultGroups)) {
       const removedGroup = await Group.findByIdAndRemove({ _id: req.params.id });
       if (removedGroup) {
-        return swap(req, res, next, { removedGroup: removedGroup });
+        return swapGroups(req, res, next, { removedGroup: removedGroup });
       } else {
         res.sendStatus(httpStatus.NOT_FOUND);
       }
@@ -207,6 +195,5 @@ const remove = async (req, res, next) => {
   }
 };
 
-
-export { get, list, add, update, page, remove };
+export { getGroup, listGroups, addGroup, updateGroup, removeGroup };
 

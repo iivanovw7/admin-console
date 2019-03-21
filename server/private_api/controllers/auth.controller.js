@@ -1,40 +1,47 @@
 import passport from 'passport';
-import { catchErrors } from './helper-functions';
+import httpStatus from 'http-status';
 
 
 /** Authentication handling,
- * according to parameters in auth.passport.js
+ * according to parameters in params-passport.js
  *
  * @param req
  * @param res
  * @param next
  */
-function login(req, res, next) {
-
-  catchErrors(
-    passport.authenticate('local', { session: true }, function (err, user) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        res.redirect('/login');
-      }
+const login = async (req, res, next) => {
+  passport.authenticate('local', { session: true }, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.sendStatus(httpStatus.FORBIDDEN);
+    }
+    if (user) {
       req.logIn(user, function (err) {
         if (err) {
           return next(err);
         }
-        return res.redirect('/users');
+        return res.sendStatus(httpStatus.OK);
       });
-    })(req, res, next)
-  );
+    }
+  })(req, res, next);
+};
 
-}
-
-function logout(req, res) {
+const logout = async (req, res) => {
   req.logout();
-  res.redirect('/login');
+  return res.sendStatus(httpStatus.OK);
+};
+
+// Used for handling protected routes
+function isLoggedIn(request, response, next) {
+  // passport adds this to the request object
+  if (request.isAuthenticated()) {
+    return next();
+  }
+  response.redirect('/login');
 }
 
-export { login, logout };
+export { login, logout, isLoggedIn };
 
 

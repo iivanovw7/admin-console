@@ -1,9 +1,9 @@
-import History from '../../../db/models/History';
-import Role from '../../../db/models/Role';
-import User from '../../../db/models/User';
-import Branch from '../../../db/models/Branch';
-import Group from '../../../db/models/Group';
-import { authRoles } from '../../config/param-auth';
+import History from '../../models/History';
+import Role from '../../models/Role';
+import User from '../../models/User';
+import Branch from '../../models/Branch';
+import Group from '../../models/Group';
+import { authRoles } from '../config/param-controllers';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 
@@ -13,7 +13,6 @@ export const catchErrors = fn => {
   };
 };
 
-
 /**
  * Forms value in months for date filter
  * Originally, time periods starting from 3 up to 12 months should be used
@@ -21,30 +20,25 @@ export const catchErrors = fn => {
  * @param months
  * @returns {Date}
  */
-export function setLimit(months = 12) {
-
-  const value = months;
+export function setQueryLimit(months = 11) {
 
   let limit = new Date();
 
-  limit.setMonth(limit.getMonth() - value);
+  limit.setMonth(limit.getMonth() - months);
 
   return limit;
 
 }
 
-/**
- *Function adds new object in history db
- *
- */
-export function addHistory(req, res, params, target) {
+// Function adds new object in history db
+export function addHistory(req, res, params, changes) {
 
   const newHistory = new History({
-    author: req.headers.user,
-    targetModel: params.targetModel,
-    targetId: req.params.id,
+    actionAuthor: req.headers.user,
+    actionTargetModel: params.targetModel,
+    actionTarget: req.params.id,
     actionType: params.actionType,
-    target: target
+    actionChanges: changes
   });
 
   newHistory.save()
@@ -58,17 +52,19 @@ export function addHistory(req, res, params, target) {
  * if no user or no code found - returns null
  *
  */
-export const getUserRole = async (id) => {
+export const getUserRole = async id => {
 
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'role', model: Role });
 
   if (user) {
     return user.role.code;
-  } else {
-    console.log('User does not have role parameter!');
-    return null;
   }
+
+  console.log('User does not have role parameter!');
+
+  return null;
+
 
 };
 
@@ -77,7 +73,7 @@ export const getUserRole = async (id) => {
  * if no user or no branch found - returns null
  *
  */
-export const getUserBranch = async (id) => {
+export const getUserBranch = async id => {
 
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'branch', model: Branch });
@@ -85,10 +81,11 @@ export const getUserBranch = async (id) => {
   console.log(user);
   if (user.branch) {
     return [user.branch._id, user.branch.name];
-  } else {
-    console.log('User does not have branch parameter!');
-    return null;
   }
+
+  console.log('User does not have branch parameter!');
+
+  return null;
 
 };
 
@@ -97,17 +94,18 @@ export const getUserBranch = async (id) => {
  * if no user or no branch found - returns null
  *
  */
-export const getUserGroup = async (id) => {
+export const getUserGroup = async id => {
 
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'group', model: Group });
 
   if (user.group) {
     return [user.group._id, user.group.name];
-  } else {
-    console.log('User does not have group parameter!');
-    return null;
   }
+
+  console.log('User does not have group parameter!');
+
+  return null;
 
 };
 
@@ -122,13 +120,14 @@ export const checkAccess = async (req, res, next) => {
 
   const role = await getUserRole(id);
 
-  if (!role && !checkElement(role, authRoles)) {
+  if (!role && !ifArrayContains(role, authRoles)) {
     console.log('Authentication error');
     return res.sendStatus(httpStatus.UNAUTHORIZED);
-  } else {
-    console.log('Request authorised!');
-    return next();
   }
+
+  console.log('Request authorised!');
+
+  return next();
 
 };
 
@@ -140,12 +139,14 @@ export const checkAccess = async (req, res, next) => {
  * @param list
  * @returns {boolean}
  */
-export function checkElement(element, list) {
+export function ifArrayContains(element, list) {
+
   for (const current of list) {
     if (current === element) {
       return true;
     }
   }
+
   return false;
 }
 
@@ -159,20 +160,20 @@ export function checkElement(element, list) {
  *
  * @returns {Promise<{output: *[], pages: number, limit: *, page: *}>}
  */
-export const formPage = async (currPage = 1, currLimit = 10, list = []) => {
+export const getAsPage = async (currPage = 1, currLimit = 10, list = []) => {
 
   //needed to keep input numbers inside certain limits
   //in order to prevent unpredicted outputs
-  function limitInt(min, max, val) {
+  function limitNumber(min, max, val) {
     return Math.round(Math.min(Math.max(val, min), max));
   }
 
   //applying limits of elements for one page
-  const limit = limitInt(1, 25, currLimit);
+  const limit = limitNumber(1, 25, currLimit);
   //applying limits for maximum page number value
   const pages = Math.ceil(list.length / limit);
   //applying limits for input pageNumber value
-  const page = limitInt(1, pages, currPage);
+  const page = limitNumber(1, pages, currPage);
 
   const skipped = (page * limit) - limit;
   const output = list.slice(skipped, skipped + limit);

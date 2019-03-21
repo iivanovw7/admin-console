@@ -1,39 +1,29 @@
 import httpStatus from 'http-status';
-import Branch from '../../db/models/Branch';
-import { formPage } from './helper-functions';
+import Branch from '../../models/Branch';
+import { getAsPage } from '../helper-functions';
 
 /**
- * Get branches list.
- * @returns {[
- * { Total: branches.length },
- * { Results: branches }
- * ]}
+ * Gets one page of branches if called with page and limit,
+ * if not - returns full list of branches
+ *
+ * @headers {number} page: req.body.page
+ * @headers {number} limit: req.body.limit
+ *
+ * @returns {page}
+ *
  */
-const list = async (req, res) => {
+const listBranches = async (req, res) => {
 
   const branches = await Branch.find({});
 
   if (branches) {
-    res.json(branches);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
-  }
-};
 
-/**Get one page of branches
- *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
- *
- */
-const page = async (req, res) => {
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, branches)
+      : branches;
 
-  const branches = await Branch.find({});
-
-  if (branches) {
-    const page = await
-      formPage(req.headers.page, req.headers.limit, branches);
     res.json(page);
+
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
@@ -44,7 +34,7 @@ const page = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {Branch}
  */
-const get = async (req, res) => {
+const getBranch = async (req, res) => {
 
   const branch = await Branch.findOne({ _id: req.params.id });
 
@@ -59,25 +49,25 @@ const get = async (req, res) => {
  * Update existing branch
  *
  * @requires {objectId} id: req.params.id
- * @parameter {string} name: req.headers.name
- * @parameter {string} email: req.headers.email,
- * @parameter {string} phone: req.headers.phone
- * @parameter {string} fax: req.headers.fax
- * @parameter {string} address: req.headers.address
- * @parameter {string} information: req.headers.information
+ * @parameter {string} name: req.body.name
+ * @parameter {string} email: req.body.email,
+ * @parameter {string} phone: req.body.phone
+ * @parameter {string} fax: req.body.fax
+ * @parameter {string} address: req.body.address
+ * @parameter {string} information: req.body.information
  *
  * @returns {Branch}
  */
-const update = async (req, res) => {
+const updateBranch = async (req, res) => {
 
   const data = {
-    name: req.headers.name,
-    email: req.headers.email,
-    phone: req.headers.phone,
-    fax: req.headers.fax,
-    address: req.headers.address,
-    information: req.headers.information,
-    status: req.headers.status
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    fax: req.body.fax,
+    address: req.body.address,
+    information: req.body.information,
+    status: req.body.status
   };
 
   const updated = await
@@ -97,13 +87,13 @@ const update = async (req, res) => {
 /**
  * Function creates new Branch if it doesn`t exists in db
  *
- * @requires name: req.headers.name,
- * @requires email: req.headers.email,
- * @requires phone: req.headers.phone,
- * @requires fax: req.headers.fax
- * @requires address: req.headers.address,
- * @requires information: req.headers.information,
- * @requires status: req.headers.status
+ * @requires name: req.body.name,
+ * @requires email: req.body.email,
+ * @requires phone: req.body.phone,
+ * @requires fax: req.body.fax
+ * @requires address: req.body.address,
+ * @requires information: req.body.information,
+ * @requires status: req.body.status
  *
  * @param req
  * @param res
@@ -111,16 +101,16 @@ const update = async (req, res) => {
  * @returns
  * {Branch}
  */
-const add = async (req, res) => {
+const addBranch = async (req, res) => {
 
   // If another object with same parameters exists,
   // return error
   const branch = await
     Branch.findOne({
-      name: req.headers.name,
-      email: req.headers.email,
-      phone: req.headers.phone,
-      fax: req.headers.fax
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      fax: req.body.fax
     });
 
   //If not - create new object
@@ -129,13 +119,13 @@ const add = async (req, res) => {
   } else {
 
     const newBranch = {
-      name: req.headers.name,
-      email: req.headers.email,
-      phone: req.headers.phone,
-      fax: req.headers.fax,
-      address: req.headers.address,
-      information: req.headers.information,
-      status: req.headers.status
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      fax: req.body.fax,
+      address: req.body.address,
+      information: req.body.information,
+      status: req.body.status
     };
 
     //Saving new object in to collection
@@ -149,6 +139,5 @@ const add = async (req, res) => {
   }
 };
 
-
-export { list, get, update, page, add };
+export { listBranches, getBranch, updateBranch, addBranch };
 

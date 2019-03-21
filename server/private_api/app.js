@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
-import { isLoggedIn } from './controllers/auth.passport.js';
+import './config/param-passport.js';
 
 const app = express();
 
@@ -25,38 +25,10 @@ app.use(session({
   }
 }));
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-const path = require('path');
-
-/**
- * Temporary redirect to static login page
- *
- * TODO Remove after testing
- */
-app.use(['/login'], (req, res) => {
-
-  res.sendFile(path.join(__dirname, './login.html')), function (err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  };
-});
-
-/**
- * Temporary redirect to static page
- * with Protected content
- *
- * TODO Remove after testing
- */
-app.use(['/users'], isLoggedIn, (req, res) => {
-  res.sendFile(path.join(__dirname, './users.html')), function (err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  };
-});
 
 /**
  * mount all routes on "/api" path

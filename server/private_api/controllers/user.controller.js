@@ -1,40 +1,20 @@
 import httpStatus from 'http-status';
-import Group from '../../db/models/Group';
-import Role from '../../db/models/Role';
-import User from '../../db/models/User';
-import History from '../../db/models/History';
-import { formPage, addHistory, setLimit } from './helper-functions';
-
-/**
- * Get user list.
- * @returns {User[]}
- */
-const list = async (req, res) => {
-
-  const users = await
-    User.find({})
-        .populate({ path: 'role', model: Role })
-        .populate({ path: 'group', model: Group });
-
-  if (users) {
-    res.json(users);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
-};
+import Group from '../../models/Group';
+import Role from '../../models/Role';
+import User from '../../models/User';
+import History from '../../models/History';
+import { getAsPage, addHistory, setQueryLimit } from '../helper-functions';
 
 /**
  * Get user
  * @requires {objectId} id: req.params.id
  * @returns {User}
  */
-const get = async (req, res) => {
+const getUser = async (req, res) => {
 
-  const user = await
-    User.findOne({ _id: req.params.id })
-        .populate({ path: 'role', model: Role })
-        .populate({ path: 'group', model: Group });
+  const user = await User.findOne({ _id: req.params.id })
+                         .populate({ path: 'role', model: Role })
+                         .populate({ path: 'group', model: Group });
 
   if (user) {
     res.json(user);
@@ -44,38 +24,49 @@ const get = async (req, res) => {
 
 };
 
-/**Get one page of users
+/**
+ * Get one page of users
  *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
+ * @headers {number} page: req.headers.page
+ * @headers {number} limit: req.headers.limit
+ *
+ * @returns {page} Returns single page or full list
  *
  */
-const page = async (req, res) => {
+const listUsers = async (req, res) => {
 
-  const users = await
-    User.find({})
-        .sort({ surname: 'asc' });
+  const users = await User.find({})
+                          .populate({ path: 'role', model: Role })
+                          .populate({ path: 'group', model: Group })
+                          .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await formPage(req.headers.page, req.headers.limit, users);
+
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, users)
+      : users;
+
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
 
+
 /**Find users by group id
  *
+ * @requires {objectId} id: req.params.id
  * @requires {number} page: req.headers.page
  * @requires {number} limit: req.headers.limit
- * @requires {objectId} id: req.params.id
+ *
  */
-const group = async (req, res) => {
+const getUsersByGroup = async (req, res) => {
+
   const users = await User.find({ group: req.params.id })
                           .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await formPage(req.headers.page, req.headers.limit, users);
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -89,14 +80,13 @@ const group = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  *
  */
-const branch = async (req, res) => {
+const getUsersByBranch = async (req, res) => {
 
-  const users = await
-    User.find({ group: req.params.id })
-        .sort({ surname: 'asc' });
+  const users = await User.find({ branch: req.params.id })
+                          .sort({ surname: 'asc' });
 
   if (users) {
-    const page = await formPage(req.headers.page, req.headers.limit, users);
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -109,7 +99,7 @@ const branch = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
-const search = async (req, res) => {
+const searchUsers = async (req, res) => {
 
   const users = await User.find({
     $or: [
@@ -120,7 +110,7 @@ const search = async (req, res) => {
   }).sort({ surname: 'asc' });
 
   if (users) {
-    const page = await formPage(req.headers.page, req.headers.limit, users);
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -138,13 +128,13 @@ const search = async (req, res) => {
  * @parameter {string} status: req.headers.status
  * @returns {User}
  */
-const update = async (req, res) => {
+const updateUser = async (req, res) => {
 
   const data = {
-    group: req.headers.group,
-    branch: req.headers.branch,
-    role: req.headers.role,
-    status: req.headers.status
+    group: req.body.group,
+    branch: req.body.branch,
+    role: req.body.role,
+    status: req.body.status
   };
 
   const user = await
@@ -169,9 +159,9 @@ const update = async (req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const history = async (req, res) => {
+const getUserHistory = async (req, res) => {
 
-  const limit = setLimit(req.headers.months);
+  const limit = setQueryLimit(req.headers.months);
 
   const records = await
     History.find({ created: { $gt: limit }, targetId: req.params.id })
@@ -179,7 +169,7 @@ const history = async (req, res) => {
            .sort({ created: '-1' });
 
   if (records) {
-    const page = await formPage(req.headers.page, req.headers.limit, records);
+    const page = await getAsPage(req.headers.page, req.headers.limit, records);
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -189,5 +179,13 @@ const history = async (req, res) => {
 };
 
 
-export { list, get, page, group, branch, search, update, history };
+export {
+  getUser,
+  listUsers,
+  getUsersByGroup,
+  getUsersByBranch,
+  searchUsers,
+  updateUser,
+  getUserHistory
+};
 

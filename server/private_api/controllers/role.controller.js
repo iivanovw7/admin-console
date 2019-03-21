@@ -1,12 +1,13 @@
 import httpStatus from 'http-status';
-import Role from '../../db/models/Role';
-import User from '../../db/models/User';
-import { defaultRoles, mainRoles } from '../config/param-roles';
-import { catchErrors, formPage, checkElement } from './helper-functions';
+import Role from '../../models/Role';
+import User from '../../models/User';
+import { defaultRoles, mainRoles } from '../config/param-controllers';
+import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
 
 
 /**
- * Function changes current to a USER
+ * Function is called after removing a role,
+ * passes through users of removed role and changes their role to USER
  *
  * @param req
  * @param res
@@ -14,11 +15,12 @@ import { catchErrors, formPage, checkElement } from './helper-functions';
  * @param params
  *
  * @returns
- * { Removed: oldRole },
- * { NewRole: role },
- * { Changes: result }
+ * { requestRoleId: req.params.id },
+ * { removedRole: params.removedRole },
+ * { newRole: role },
+ * { changes: result }
  */
-function swap(req, res, next, params) {
+function swapRoles(req, res, next, params) {
 
   catchErrors(
     Role.findOne({ code: 'USER' })
@@ -68,7 +70,7 @@ const page = async (req, res) => {
   const roles = await Role.find({});
 
   if (roles) {
-    const page = await formPage(req.headers.page, req.headers.limit, roles);
+    const page = await getAsPage(req.headers.page, req.headers.limit, roles);
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -108,10 +110,10 @@ const update = async (req, res) => {
   if (role) {
 
     const data = {
-      description: req.headers.description,
-      active: req.headers.active ? true : checkElement(role.code, mainRoles),
-      public: req.headers.public,
-      editable: req.headers.editable
+      description: req.body.description,
+      active: req.body.active ? true : ifArrayContains(role.code, mainRoles),
+      public: req.body.public,
+      editable: req.body.editable
     };
 
     const updatedRole = await
@@ -148,12 +150,12 @@ const add = async (req, res) => {
   } else {
 
     const newRole = await new Role({
-      name: req.headers.name,
-      code: req.headers.code,
-      description: req.headers.description,
-      active: req.headers.active,
-      public: req.headers.public,
-      editable: req.headers.editable
+      name: req.body.name,
+      code: req.body.code,
+      description: req.body.description,
+      active: req.body.active,
+      public: req.body.public,
+      editable: req.body.editable
     });
 
     //Saving new object in to collection
@@ -183,10 +185,10 @@ const remove = async (req, res, next) => {
   const role = await Role.findOne({ _id: req.params.id });
 
   if (role) {
-    if (!checkElement(role.code, defaultRoles)) {
+    if (!ifArrayContains(role.code, defaultRoles)) {
       const removedRole = await Role.findByIdAndRemove({ _id: req.params.id });
       if (removedRole) {
-        return swap(req, res, next, { removedRole: removedRole });
+        return swapRoles(req, res, next, { removedRole: removedRole });
       } else {
         return res.sendStatus(httpStatus.NOT_FOUND);
       }

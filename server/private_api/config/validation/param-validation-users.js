@@ -1,18 +1,7 @@
 import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
-/**
- * Validation for Users
- *
- * */
-// POST /api/users
-export const createUser = {
-  body: {
-    username: Joi.string().email({ minDomainAtoms: 2 }).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required()
-  }
-};
-
+// Validation for Users
 // GET /api/users/:id
 export const getUser = {
   params: {
@@ -37,7 +26,7 @@ export const updateUser = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  body: {
     group: Joi.objectId().required().min(3).max(50),
     branch: Joi.objectId().required().min(3).max(50),
     role: Joi.objectId().required().min(3).max(50),
@@ -48,8 +37,8 @@ export const updateUser = {
 // GET /api/users/page
 export const getPage = {
   headers: {
-    page: Joi.number().required(),
-    limit: Joi.number().required()
+    page: Joi.number().min(1).max(2000),
+    limit: Joi.number().min(1).max(2000)
   }
 };
 

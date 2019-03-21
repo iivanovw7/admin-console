@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
-import Ticket from '../../db/models/Ticket';
-import User from '../../db/models/User';
-import Branch from '../../db/models/Branch';
-import { defaultStatuses } from '../config/param-tickets';
-import { checkElement, formPage } from './helper-functions';
+import Ticket from '../../models/Ticket';
+import User from '../../models/User';
+import Branch from '../../models/Branch';
+import { defaultStatuses } from '../config/param-controllers';
+import { ifArrayContains, getAsPage } from '../helper-functions';
 
 
 /**
@@ -11,7 +11,7 @@ import { checkElement, formPage } from './helper-functions';
  * @returns {user.email, message}
  */
 
-const notification = async (ticket) => {
+const sendNotifications = async ticket => {
 
   const user = await User.findOne({ _id: ticket.authorId});
 
@@ -24,38 +24,26 @@ const notification = async (ticket) => {
 
 };
 
+
 /**
- * Get tickets list.
- * @returns {tickets[]}
- */
-const list = async (req, res) => {
-
-  const tickets = await Ticket.find({})
-                              .populate({ path: 'authorId', model: User })
-                              .populate({ path: 'branchId', model: Branch })
-                              .sort({ created: '-1' });
-
-  if (tickets) {
-    res.json(tickets);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
-  }
-};
-
-/**Get one page of tickets
- *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
+ * Gets one page of tickets if called with page and limit,
+ * if not - returns full list of tickets
+ * @headers {number} page: req.headers.page
+ * @headers {number} limit: req.headers.limit
  *
  */
-const page = async (req, res) => {
+const listTickets = async (req, res) => {
 
   const tickets = await
     Ticket.find({})
           .sort({ created: '-1' });
 
   if (tickets) {
-    const page = await formPage(req.headers.page, req.headers.limit, tickets);
+
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, tickets)
+      : tickets;
+
     res.json(page);
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
@@ -67,7 +55,7 @@ const page = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {Ticket}
  */
-const get = async (req, res) => {
+const getTicket = async (req, res) => {
 
   const ticket = await Ticket.findOne({ _id: req.params.id })
                              .populate({ path: 'authorId', model: User })
@@ -81,13 +69,14 @@ const get = async (req, res) => {
 
 };
 
-/**Find tickets by query, by subject, name or surname
+/**
+ * Find tickets by query, by subject, name or surname
  *
  * @requires {number} page: req.headers.page
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
-const search = async (req, res) => {
+const searchTicket = async (req, res) => {
 
   //query db for tickets by subject
   const bySubj = await Ticket.find({
@@ -98,6 +87,7 @@ const search = async (req, res) => {
   const users = await User.find({
     $or: [{ name: req.headers.search }, { surname: req.headers.search }]
   });
+
 
   if (bySubj || users) {
 
@@ -119,7 +109,7 @@ const search = async (req, res) => {
     if (!sortedResult) {
       return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     } else {
-      const page = await formPage(req.headers.page, req.headers.limit, sortedResult);
+      const page = await getAsPage(req.headers.page, req.headers.limit, sortedResult);
       res.json(page);
     }
 
@@ -143,7 +133,7 @@ const search = async (req, res) => {
  *
  * @returns {Ticket}
  */
-const add = async (req, res) => {
+const addTicket = async (req, res) => {
 
   const newTicket = await new Ticket({
     name: req.headers.name,
@@ -156,7 +146,7 @@ const add = async (req, res) => {
     note: req.headers.note,
   });
 
-  if (!checkElement(newTicket.status, defaultStatuses) || req.headers.status === 'Closed') {
+  if (!ifArrayContains(newTicket.status, defaultStatuses) || req.headers.status === 'Closed') {
 
     return res.sendStatus(httpStatus.BAD_REQUEST);
 
@@ -165,7 +155,7 @@ const add = async (req, res) => {
     const savedTicket = await newTicket.save();
 
     if (savedTicket) {
-      await notification(savedTicket);
+      await sendNotifications(savedTicket);
       res.status(201).json(savedTicket);
     } else {
       res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
@@ -183,7 +173,7 @@ const add = async (req, res) => {
  *
  * @returns {Ticket} Returns updated ticket
  */
-const update = async (req, res) => {
+const updateTicket = async (req, res) => {
 
   const ticket = await Ticket.findOne({ _id: req.params.id });
 
@@ -195,12 +185,12 @@ const update = async (req, res) => {
       closed: req.headers.status === 'Closed' ? Date.now() : null
     };
 
-    if (!checkElement(data.status, defaultStatuses)) {
+    if (!ifArrayContains(data.status, defaultStatuses)) {
       return res.sendStatus(httpStatus.BAD_REQUEST);
     } else {
       const updatedTicket = await
         Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
-      await notification(ticket);
+      await sendNotifications(ticket);
       res.json(updatedTicket);
     }
   } else {
@@ -210,5 +200,5 @@ const update = async (req, res) => {
 
 
 
-export { list, page, get, search, add, update };
+export { listTickets, getTicket, searchTicket, addTicket, updateTicket };
 

@@ -1,24 +1,25 @@
 import httpStatus from 'http-status';
-import Role from '../../db/models/Role';
-import User from '../../db/models/User';
-import Branch from '../../db/models/Branch';
-import Group from '../../db/models/Group';
-import Message from '../../db/models/Message';
-import { fullAccess, branchAccess, groupAccess } from '../config/param-messages';
-import { checkElement, formPage } from './helper-functions';
+import Role from '../../models/Role';
+import User from '../../models/User';
+import Branch from '../../models/Branch';
+import Group from '../../models/Group';
+import Message from '../../models/Message';
+import { fullAccess, branchAccess, groupAccess } from '../config/param-controllers';
+import { ifArrayContains, getAsPage } from '../helper-functions';
 
 /**
  * Imitation of email notification.
+ * Finds sender by id and throws contact details of its branch and group in console log
+ * Also shows message passed in parameters
  *
  */
 
-const notification = async (message) => {
+const sendNotifications = async message => {
 
   const user = await User.findOne({ _id: message.senderId });
 
   const byBranch = message.branchId ? await User.find({ branch: message.branchId }) : null;
   const byGroup = message.groupId ? await User.find({ group: message.groupId }) : null;
-
 
   if (user) {
     console.log(`Sending notification, message author: ${user.email}`);
@@ -35,10 +36,7 @@ const notification = async (message) => {
 
 };
 
-
-/**
- *  Function gets user from db
- */
+// Function gets user from db
 export const getUser = async (params) => {
 
   return await User.findOne(params)
@@ -46,16 +44,8 @@ export const getUser = async (params) => {
 
 };
 
-/**
- * Function gets list of messages from db
- * @param req
- * @param res
- * @param params
- * @param pagination
- *
- * @returns {Messages}
- */
-async function getMessages(req, res, params, pagination) {
+// Function gets list of messages from db
+async function collectMessages(req, res, params, pagination) {
 
   const messages = await Message.find(params)
                                 .populate({ path: 'senderId', model: User })
@@ -67,7 +57,7 @@ async function getMessages(req, res, params, pagination) {
 
     if (pagination) {
 
-      const page = await formPage(req.headers.page, req.headers.limit, messages);
+      const page = await getAsPage(req.headers.page, req.headers.limit, messages);
       return res.json(page);
 
     } else {
@@ -81,58 +71,40 @@ async function getMessages(req, res, params, pagination) {
 }
 
 /**
- * Return full messages list.
- * @returns {tickets[]}
- */
-const list = async (req, res) => {
-
-  const user = await getUser({ _id: req.headers.user });
-  const role = user.role.code;
-
-  if (checkElement(role, fullAccess)) {
-
-    return getMessages(req, res, {}, false);
-
-  } else {
-
-    if (checkElement(role, branchAccess)) {
-
-      return getMessages(req, res, { branchId: user.branch }, false);
-
-    } else {
-
-      return getMessages(req, res, { groupId: user.group }, false);
-
-    }
-
-  }
-
-};
-
-/**Return one page from full messages list
+ * Return one page from full messages list
  *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
+ * @headers {number} page: req.headers.page
+ * @headers {number} limit: req.headers.limit
  * @returns  {page}
  */
-const page = async (req, res) => {
+const listMessages = async (req, res) => {
 
   const user = await getUser({ _id: req.headers.user });
   const role = user.role.code;
 
-  if (checkElement(role, fullAccess)) {
+  if (ifArrayContains(role, fullAccess)) {
 
-    return getMessages(req, res, {}, true);
+    return collectMessages(req, res, {}, req.headers.page && req.headers.limit);
 
   } else {
 
-    if (checkElement(role, branchAccess)) {
+    if (ifArrayContains(role, branchAccess)) {
 
-      return getMessages(req, res, { branchId: user.branch }, true);
+      return collectMessages(
+        req,
+        res,
+        { branchId: user.branch },
+        req.headers.page && req.headers.limit
+      );
 
     } else {
 
-      return getMessages(req, res, { groupId: user.group }, false);
+      return collectMessages(
+        req,
+        res,
+        { groupId: user.group },
+        req.headers.page && req.headers.limit
+      );
 
     }
   }
@@ -143,7 +115,7 @@ const page = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {message}
  */
-const get = async (req, res) => {
+const getMessage = async (req, res) => {
 
   const message = await Message.findOne({ _id: req.params.id })
                                .populate({ path: 'senderId', model: User })
@@ -163,9 +135,9 @@ const get = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {messages}
  */
-const pageByGroup = async (req, res) => {
+const getPageByGroup = async (req, res) => {
 
-  return getMessages(req, res, { groupId: req.params.id }, true);
+  return collectMessages(req, res, { groupId: req.params.id }, true);
 
 };
 
@@ -174,9 +146,9 @@ const pageByGroup = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {messages}
  */
-const pageByBranch = async (req, res) => {
+const getPageByBranch = async (req, res) => {
 
-  return getMessages(req, res, { branchId: req.params.id }, true);
+  return collectMessages(req, res, { branchId: req.params.id }, true);
 
 };
 
@@ -185,23 +157,27 @@ const pageByBranch = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {messages}
  */
-const pageByUser = async (req, res) => {
+const getPageByUser = async (req, res) => {
 
-  return getMessages(req, res, { senderId: req.params.id }, true);
+  return collectMessages(req, res, { senderId: req.params.id }, true);
 
 };
 
 /**
  * Function sends new message to group or branch members
  *
- * @param req
- * @param res
+ * @param req.body.subject,
+ * @param req.body.message,
+ * @param req.headers.user,
+ * @param req.headers.branch,
+ * @param req.headers.group,
+ *
  * @returns {message}
  */
-const send = async (req, res) => {
+const sendMessage = async (req, res) => {
 
   function checkSender(list) {
-    return (checkElement(role, fullAccess) || checkElement(role, list))
+    return (ifArrayContains(role, fullAccess) || ifArrayContains(role, list));
   }
 
   const user = await getUser({ _id: req.headers.user });
@@ -221,7 +197,7 @@ const send = async (req, res) => {
   const savedMessage = await newMessage.save();
 
   if (savedMessage) {
-    await notification(savedMessage);
+    await sendNotifications(savedMessage);
     res.status(201).json(savedMessage);
   } else {
     res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
@@ -240,31 +216,40 @@ const send = async (req, res) => {
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
-const search = async (req, res) => {
+const searchMessages = async (req, res) => {
 
   const user = await getUser({ _id: req.headers.user });
   const role = user.role.code;
 
-  const byBranch = checkElement(role, branchAccess) ? { branchId: user.branch } : {};
-  const byGroup = checkElement(role, groupAccess) ? { groupId: user.group } : {};
+  //creating base search query for search by subject
+  const queryBySubject = {
+    $and: [{ subject: { $regex: req.headers.search, $options: 'i' } }]
+  };
+
+  //creating base search query for search by author
+  const queryByAuthor = {
+    $or: [{ name: req.headers.search }, { surname: req.headers.search }]
+  };
+
+  //if user has access limit applying additional parameters to a search query
+  if (ifArrayContains(role, branchAccess)) {
+    queryBySubject.$and.push({ branchId: user.branch });
+    queryByAuthor.$and = [{ branchId: user.branch }];
+  }
+
+  //if user has access limit applying additional parameters to a search query
+  if (ifArrayContains(role, groupAccess)) {
+    queryBySubject.$and.push({ groupId: user.group });
+    queryByAuthor.$and = [{ groupId: user.group }];
+  }
 
   //query db for messages by subject
-  const bySubj = await Message.find({
-    $and: [
-      byBranch,
-      byGroup,
-      { subject: { $regex: req.headers.search, $options: 'i' } }
-    ]
-  });
+  const bySubj = await Message.find(queryBySubject);
 
   //query db for possible authors of message
-  const users = await User.find({
-    $and: [
-      byBranch,
-      byGroup,
-      { name: req.headers.search }, { surname: req.headers.search }
-    ]
-  });
+  const users = await User.find(queryByAuthor);
+
+  console.log(users);
 
   if (bySubj || users) {
 
@@ -274,7 +259,7 @@ const search = async (req, res) => {
     });
 
     //querying db for tickets by user names
-    const byUser = await Message.find({ authorId: { $in: ids } });
+    const byUser = await Message.find({ senderId: { $in: ids } });
 
     //joining and sorting results
     const sortedResult = [...bySubj, ...byUser].sort((a, b) => {
@@ -286,7 +271,7 @@ const search = async (req, res) => {
     if (!sortedResult) {
       return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     } else {
-      const page = await formPage(req.headers.page, req.headers.limit, sortedResult);
+      const page = await getAsPage(req.headers.page, req.headers.limit, sortedResult);
       res.json(page);
     }
 
@@ -297,5 +282,13 @@ const search = async (req, res) => {
 };
 
 
-export { list, page, get, pageByGroup, pageByBranch, pageByUser, send, search };
+export {
+  listMessages,
+  getMessage,
+  getPageByGroup,
+  getPageByBranch,
+  getPageByUser,
+  sendMessage,
+  searchMessages
+};
 

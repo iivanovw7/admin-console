@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import Ticket from '../../db/models/Ticket';
-import User from '../../db/models/User';
-import Group from '../../db/models/Group';
-import Message from '../../db/models/Message';
-import { defaultStatusModels } from '../config/param-tickets';
-import { setLimit, getUserRole, getUserBranch, getUserGroup } from './helper-functions';
+import Ticket from '../../models/Ticket';
+import User from '../../models/User';
+import Group from '../../models/Group';
+import Message from '../../models/Message';
+import { defaultStatusModels } from '../config/param-controllers';
+import { setQueryLimit, getUserRole, getUserBranch, getUserGroup } from '../helper-functions';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -23,6 +23,7 @@ const usersCounter = async (limit, param) => {
   const activeQuery = { created: { $gt: limit }, status: true };
   const disabledQuery = { created: { $gt: limit }, status: false };
 
+  //if group or branch id passed - add it into query
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
       totalQuery['branch'] = activeQuery['branch'] = disabledQuery['branch'] = param.branch;
@@ -53,6 +54,7 @@ const messagesCounter = async (limit, param) => {
 
   const totalQuery = { created: { $gt: limit } };
 
+  //if group or branch id passed - add it into query
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
       totalQuery['branchId'] = param.branch;
@@ -62,6 +64,7 @@ const messagesCounter = async (limit, param) => {
       }
     }
   }
+
   return {
     total: await Message.countDocuments(totalQuery)
   };
@@ -78,7 +81,6 @@ const messagesCounter = async (limit, param) => {
  * @returns {Promise<*>}
  */
 const ticketsCounter = async (limit, param) => {
-
 
   async function count(params) {
 
@@ -111,22 +113,45 @@ const ticketsCounter = async (limit, param) => {
       queries[entry[0]] = query;
     });
 
+
+    const totalPromise = Ticket.countDocuments(queries.total);
+    const openedPromise = Ticket.countDocuments(queries.open);
+    const progressPromise = Ticket.countDocuments(queries.progress);
+    const closedPromise = Ticket.countDocuments(queries.closed);
+    const reopenedPromise = Ticket.countDocuments(queries.reopened);
+    const cannot_be_donePromise = Ticket.countDocuments(queries.cannot_be_done);
+
+    const [total, opened, progress, closed, reopened, cannot_be_done] =
+      await Promise.all([
+        totalPromise,
+        openedPromise,
+        progressPromise,
+        closedPromise,
+        reopenedPromise,
+        cannot_be_donePromise
+      ]);
+
     //return calculation with parameters
     return {
-      total: await Ticket.countDocuments(queries.total),
-      opened: await Ticket.countDocuments(queries.open),
-      progress: await Ticket.countDocuments(queries.progress),
-      closed: await Ticket.countDocuments(queries.closed),
-      reopened: await Ticket.countDocuments(queries.reopened),
-      cannot_be_done: await Ticket.countDocuments(queries.cannot_be_done)
+      total,
+      opened,
+      progress,
+      closed,
+      reopened,
+      cannot_be_done
     };
   }
 
+  //if additional parameters passed - call counter with params
   if (param !== undefined) {
 
+    //if branch id has been passed - call counter only inside the branch
     if (ObjectId.isValid(param.branch)) {
       return await count({ branchId: param.branch });
     } else {
+
+      //if branch has not been passed - call counter within group by authors id
+      //count only authors data inside certain group
       const users = await User.find({ group: param.group });
 
       const ids = users.map((user) => {
@@ -138,6 +163,7 @@ const ticketsCounter = async (limit, param) => {
 
   } else {
 
+    //if no params passed - call counter with default params
     return await count();
 
   }
@@ -152,7 +178,7 @@ const ticketsCounter = async (limit, param) => {
 async function getStatistics(req, res, next) {
 
   //sets time limit in months
-  const limit = setLimit(req.headers.months);
+  const limit = setQueryLimit(req.headers.months);
   //gets users id
   const id = mongoose.Types.ObjectId(req.headers.user);
   //gets user role
@@ -160,6 +186,7 @@ async function getStatistics(req, res, next) {
 
   switch (role) {
 
+    //gets full with no additional parameters
     case 'ADMIN' || 'SUPPORT': {
       res.json([
         { view_mode: role },
@@ -226,7 +253,7 @@ async function getStatistics(req, res, next) {
  * returns callback()
  *
  */
-const users = async (req, res) => {
+const usersStats = async (req, res) => {
 
   return getStatistics(req, res, usersCounter);
 
@@ -240,13 +267,13 @@ const users = async (req, res) => {
  * returns callback()
  *
  */
-const messages = async (req, res) => {
+const messagesStats = async (req, res) => {
 
   return getStatistics(req, res, messagesCounter);
 
 };
 
-const groups = async (req, res) => {
+const groupsStats = async (req, res) => {
 
   const total = await await Group.countDocuments({});
   const active = await Group.countDocuments({ status: true });
@@ -262,7 +289,7 @@ const groups = async (req, res) => {
  *
  * @returns {{total, active, disabled}}
  */
-const permissions = async (req, res) => {
+const permissionsStats = async (req, res) => {
 
   const countPerm = await Group.countDocuments({});
   const activePerm = await Group.countDocuments({ permissions: true });
@@ -280,11 +307,11 @@ const permissions = async (req, res) => {
  * @returns {{total, opened, in_progress, closed, reopened, cannot_be_done}}
  */
 
-const tickets = async (req, res) => {
+const ticketsStats = async (req, res) => {
 
   return getStatistics(req, res, ticketsCounter);
 
 };
 
-export { users, permissions, tickets, groups, messages };
+export { usersStats, permissionsStats, ticketsStats, groupsStats, messagesStats };
 

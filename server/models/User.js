@@ -1,18 +1,20 @@
 import mongoose from 'mongoose';
-import  bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = mongoose.Schema({
+
   email: { type: String, required: true, unique: true },
-  phone: { type: String, required: false },
-  password: { type: String, required: false },
+  phone: String,
+  password: String,
   name: { type: String, required: true },
   surname: { type: String, required: true },
-  branch: { type: mongoose.Schema.ObjectId, ref: 'Branch', required: false },
-  group: { type: mongoose.Schema.ObjectId, ref: 'Group', required: false },
-  created: { type: Date, required: false, default: Date.now },
-  status: { type: Boolean, required: false, default: false },
+  branch: { type: mongoose.Schema.ObjectId, ref: 'Branch' },
+  group: { type: mongoose.Schema.ObjectId, ref: 'Group' },
+  created: { type: Date, default: Date.now },
+  status: { type: Boolean, default: false },
   role: { type: mongoose.Schema.ObjectId, ref: 'Role', required: true }
+
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {

@@ -5,8 +5,12 @@ const roleSchema = mongoose.Schema({
   code: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   active: { type: Boolean, required: true },
-  public: { type: Boolean, default: false }, //accessible from public API
-  editable: { type: Boolean, default: false } //can be blocked by users
+
+  //accessible from public API
+  public: { type: Boolean, default: false },
+
+  //can be blocked by users
+  editable: { type: Boolean, default: false }
 });
 
 export default mongoose.model('Role', roleSchema, 'roles');

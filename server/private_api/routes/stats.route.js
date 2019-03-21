@@ -1,56 +1,33 @@
 import express from 'express';
 import validate from 'express-validation';
-import { catchErrors, checkAccess } from '../controllers/helper-functions';
-import * as paramValidation from '../config/param-validation-stats';
+import { catchErrors, checkAccess } from '../helper-functions';
+import * as paramValidation from '../config/validation/param-validation-stats';
 import * as stats from '../controllers/stats.controller';
 
 const router = express.Router();
 
 router.route('/');
 
-// /** GET /api/tickets - Get full list of tickets */
-// .get(checkAccess, catchErrors(tickets.list))
-//
-// /** POST /api/tickets - Create new ticket */
-// .post(validate(paramValidation.addTicket), checkAccess, catchErrors(tickets.add));
 
 router.route('/users')
-
-      /** GET /api/stats/users - Get users stats */
-      .get(validate(paramValidation.getUsers), checkAccess, catchErrors(stats.users));
+      // GET /api/stats/users - Get users stats
+      .get(checkAccess, validate(paramValidation.getUsers), catchErrors(stats.usersStats));
 
 router.route('/permissions')
-
-      /** GET /api/stats/permissions - Get permissions stats */
-      .get(checkAccess, catchErrors(stats.permissions));
+      // GET /api/stats/permissions - Get permissions stats
+      .get(checkAccess, catchErrors(stats.permissionsStats));
 
 router.route('/tickets')
-
-      /** GET /api/stats/tickets - Get tickets stats */
-      .get(validate(paramValidation.getTickets), checkAccess, catchErrors(stats.tickets));
+      // GET /api/stats/tickets - Get tickets stats
+      .get(checkAccess, validate(paramValidation.getTickets), catchErrors(stats.ticketsStats));
 
 router.route('/groups')
-
-      /** GET /api/stats/groups - Get groups stats */
-      .get(checkAccess, catchErrors(stats.groups));
+      // GET /api/stats/groups - Get groups stats
+      .get(checkAccess, catchErrors(stats.groupsStats));
 
 router.route('/messages')
-
-      /** GET /api/stats/messages - Get messages stats */
-      .get(validate(paramValidation.getUsers), checkAccess, catchErrors(stats.messages));
-
-router.route('/search');
-
-// /** GET /api/tickets/search - Gets page with search results by title, name, surname */
-// .get(validate(paramValidation.getPageSearch), checkAccess, catchErrors(tickets.search));
-
-router.route('/:id');
-
-// /** GET /api/tickets/:id - Get single ticket by id */
-// .get(validate(paramValidation.getTicket), checkAccess, catchErrors(tickets.get))
-//
-// /** PUT /api/tickets/:id - Update ticket by id*/
-// .put(validate(paramValidation.updateTicket), checkAccess, catchErrors(tickets.update));
+      // GET /api/stats/messages - Get messages stats
+      .get(checkAccess, validate(paramValidation.getUsers), catchErrors(stats.messagesStats));
 
 
 export { router as statsRoutes };

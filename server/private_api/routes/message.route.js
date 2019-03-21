@@ -1,51 +1,39 @@
 import express from 'express';
 import validate from 'express-validation';
-import { catchErrors, checkAccess } from '../controllers/helper-functions';
-import * as paramValidation from '../config/param-validation-messages';
+import { catchErrors, checkAccess } from '../helper-functions';
+import * as paramValidation from '../config/validation/param-validation-messages';
 import * as messages from '../controllers/message.controller';
 
 
 const router = express.Router();
 
 router.route('/')
-
-      /** GET /api/messages - Get full list of messages */
-      .get(checkAccess, catchErrors(messages.list));
+      // GET /api/messages - Get full list of messages
+      .get(checkAccess, validate(paramValidation.getPage), catchErrors(messages.listMessages));
 
 router.route('/search')
-
-      /** GET /api/messages/search - Gets page with search results by subject, name, surname */
-      .get(validate(paramValidation.pageSearch), checkAccess, catchErrors(messages.search));
-
-router.route('/page')
-
-      /** GET /api/messages/page - Get page from income messages list */
-      .get(validate(paramValidation.getPage), checkAccess, catchErrors(messages.page));
+      // GET /api/messages/search - Gets page with search results by subject, name, surname
+      .get(checkAccess, validate(paramValidation.pageSearch), catchErrors(messages.searchMessages));
 
 router.route('/new')
-
-      /** POST /api/messages/new - Create new message */
-      .post(validate(paramValidation.sendMessage), checkAccess, catchErrors(messages.send));
+      // POST /api/messages/new - Create new message
+      .post(checkAccess, validate(paramValidation.sendMessage), catchErrors(messages.sendMessage));
 
 router.route('/:id')
-
-      /** GET /api/messages/:id - Get single message by id */
-      .get(validate(paramValidation.getMessage), checkAccess, catchErrors(messages.get));
+      // GET /api/messages/:id - Get single message by id
+      .get(checkAccess, validate(paramValidation.getMessage), catchErrors(messages.getMessage));
 
 router.route('/group/:id')
-
-      /** GET /api/messages/group/:id - Get messages by groupId  */
-      .get(validate(paramValidation.getPageById), checkAccess, catchErrors(messages.pageByGroup));
+      // GET /api/messages/group/:id - Get messages by groupId
+      .get(checkAccess, validate(paramValidation.getPageById), catchErrors(messages.getPageByGroup));
 
 router.route('/branch/:id')
-
-      /** GET /api/messages/branch/:id - Get messages by branchId */
-      .get(validate(paramValidation.getPageById), checkAccess, catchErrors(messages.pageByBranch));
+      // GET /api/messages/branch/:id - Get messages by branchId
+      .get(checkAccess, validate(paramValidation.getPageById), catchErrors(messages.getPageByBranch));
 
 router.route('/user/:id')
-
-      /** GET /api/messages/user/:id - Get messages by user id */
-      .get(validate(paramValidation.getPageById), checkAccess, catchErrors(messages.pageByUser));
+      // GET /api/messages/user/:id - Get messages by user id
+      .get(checkAccess, validate(paramValidation.getPageById), catchErrors(messages.getPageByUser));
 
 
 export { router as messageRoutes };

@@ -1,10 +1,7 @@
 import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
-/**
- * Validation for Tickets
- *
- * */
+// Validation for Tickets
 // PUT /api/tickets/:id
 export const updateTicket = {
   params: {
@@ -32,11 +29,9 @@ export const addTicket = {
 
 // GET /api/tickets/page
 export const getPage = {
-  params: {
-  },
   headers: {
-    page: Joi.number().required(),
-    limit: Joi.number().required()
+    page: Joi.number().min(1).max(2000),
+    limit: Joi.number().min(1).max(2000)
   }
 };
 
@@ -49,8 +44,6 @@ export const getTicket = {
 
 // GET /api/tickets/search
 export const getPageSearch = {
-  params: {
-  },
   headers: {
     search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),

@@ -1,17 +1,12 @@
 import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
-/**
- * Validation for Messages
- *
- * */
+// Validation for Messages
 // GET /api/messages/page
 export const getPage = {
-  params: {
-  },
   headers: {
-    page: Joi.number().required(),
-    limit: Joi.number().required()
+    page: Joi.number().min(1).max(2000),
+    limit: Joi.number().min(1).max(2000)
   }
 };
 

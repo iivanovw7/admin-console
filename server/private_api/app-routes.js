@@ -1,4 +1,5 @@
 import express from 'express';
+import { isLoggedIn } from './controllers/auth.controller';
 import { authRoutes } from './routes/auth.route';
 import { branchRoutes } from './routes/branch.route';
 import { groupRoutes } from './routes/group.route';
@@ -8,55 +9,41 @@ import { ticketRoutes } from './routes/ticket.route';
 import { messageRoutes } from './routes/message.route';
 import { statsRoutes } from './routes/stats.route';
 
-const router = express.Router();
+const routes = express();
 
-/**
- * Contains Routes structure for "Private API" logic
- **/
 
-/** Check if server application is alive */
-router.get('/check', (req, res) =>
+
+/** Contains Routes structure for "Private API" logic */
+
+// Check if server application is alive
+routes.get('/check', (req, res) =>
   res.send('OK')
 );
 
-/**
- * Mount user routes at "/users"
- * Blocks unauthorised access to users, roles,
- * branches, groups, tickets, messages and statistics
- * removed for development
- *
- * TODO //router.use('/users', isLoggedIn, userRoutes);
- * TODO //router.use('/roles', isLoggedIn, roleRoutes);
- * TODO //router.use('/branches', isLoggedIn, branchRoutes);
- * TODO //router.use('/groups', isLoggedIn, groupsRoutes);
- * TODO //router.use('/tickets', isLoggedIn, ticketsRoutes);
- * TODO //router.use('/messages', isLoggedIn, messagesRoutes);
- * TODO //router.use('/stats', isLoggedIn, statsRoutes);
- *
- */
-
 /** Mount auth routes at /auth */
-router.use('/auth', authRoutes);
+routes.use('/auth', authRoutes);
 
 /** Mount users routes at /users */
-router.use('/users', userRoutes);
+routes.use('/users', isLoggedIn, userRoutes);
 
 /** Mount role routes at /roles */
-router.use('/roles', roleRoutes);
+routes.use('/roles', isLoggedIn, roleRoutes);
 
 /** Mount branches routes at /branches */
-router.use('/branches', branchRoutes);
+routes.use('/branches', isLoggedIn, branchRoutes);
 
 /** Mount groups routes at /groups */
-router.use('/groups', groupRoutes);
+routes.use('/groups', isLoggedIn, groupRoutes);
 
 /** Mount tickets routes at /tickets */
-router.use('/tickets', ticketRoutes);
+routes.use('/tickets', isLoggedIn, ticketRoutes);
 
 /** Mount messages routes at /messages */
-router.use('/messages', messageRoutes);
+routes.use('/messages', isLoggedIn, messageRoutes);
 
 /** Mount stats routes at /stats */
-router.use('/stats', statsRoutes);
+routes.use('/stats', isLoggedIn, statsRoutes);
 
-export { router as routes };
+export { routes };
+
+

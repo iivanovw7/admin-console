@@ -2,10 +2,7 @@ import Joi from 'joi';
 
 Joi.objectId = require('joi-objectid')(Joi);
 
-/**
- * Validation for Login form
- *
- * */
+//Validation for Login form
 //POST /api/auth/login
 export const login = {
   body: {
