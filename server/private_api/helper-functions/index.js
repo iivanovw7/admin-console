@@ -151,14 +151,14 @@ export function ifArrayContains(element, list) {
 }
 
 /**
- * Function forms one page of objects out of incoming list of objects
+ * Function forms one listRoles of objects out of incoming list of objects
  * no mater what list it got in parameters
  *
- * @param currPage: {number}, current page number
- * @param currLimit: {number}, number of elements for one page
+ * @param currPage: {number}, current listRoles number
+ * @param currLimit: {number}, number of elements for one listRoles
  * @param list: {[]}, array of objects
  *
- * @returns {Promise<{output: *[], pages: number, limit: *, page: *}>}
+ * @returns {Promise<{output: *[], pages: number, limit: *, listRoles: *}>}
  */
 export const getAsPage = async (currPage = 1, currLimit = 10, list = []) => {
 
@@ -168,9 +168,9 @@ export const getAsPage = async (currPage = 1, currLimit = 10, list = []) => {
     return Math.round(Math.min(Math.max(val, min), max));
   }
 
-  //applying limits of elements for one page
+  //applying limits of elements for one listRoles
   const limit = limitNumber(1, 25, currLimit);
-  //applying limits for maximum page number value
+  //applying limits for maximum listRoles number value
   const pages = Math.ceil(list.length / limit);
   //applying limits for input pageNumber value
   const page = limitNumber(1, pages, currPage);

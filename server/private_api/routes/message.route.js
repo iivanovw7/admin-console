@@ -12,7 +12,7 @@ router.route('/')
       .get(checkAccess, validate(paramValidation.getPage), catchErrors(messages.listMessages));
 
 router.route('/search')
-      // GET /api/messages/search - Gets page with search results by subject, name, surname
+      // GET /api/messages/search - Gets listRoles with search results by subject, name, surname
       .get(checkAccess, validate(paramValidation.pageSearch), catchErrors(messages.searchMessages));
 
 router.route('/new')

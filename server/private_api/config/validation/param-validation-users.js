@@ -34,7 +34,7 @@ export const updateUser = {
   }
 };
 
-// GET /api/users/page
+// GET /api/users/listRoles
 export const getPage = {
   headers: {
     page: Joi.number().min(1).max(2000),

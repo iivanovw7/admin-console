@@ -45,33 +45,25 @@ function swapRoles(req, res, next, params) {
 }
 
 /**
- * Get roles list.
- * @returns {Role[]}
+ * Gets one list of Roles if called with page number and limit,
+ * if not - returns full list of Roles
+ *
+ * @headers {number} listRoles: req.headers.listRoles
+ * @headers {number} limit: req.headers.limit
+ *
  */
-const list = async (req, res) => {
+const listRoles = async (req, res) => {
 
   const roles = await Role.find({});
 
   if (roles) {
-    res.json(roles);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
-  }
-};
 
-/**Get one page of roles
- *
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
- *
- */
-const page = async (req, res) => {
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, roles)
+      : roles;
 
-  const roles = await Role.find({});
-
-  if (roles) {
-    const page = await getAsPage(req.headers.page, req.headers.limit, roles);
     res.json(page);
+
   } else {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
@@ -82,7 +74,7 @@ const page = async (req, res) => {
  * @requires {objectId} id: req.params.id
  * @returns {role, [users]}
  */
-const get = async (req, res) => {
+const getRole = async (req, res) => {
 
   const role = await Role.findOne({ _id: req.params.id });
 
@@ -103,7 +95,7 @@ const get = async (req, res) => {
  *
  * @returns {Role} Returns updated role
  */
-const update = async (req, res) => {
+const updateRole = async (req, res) => {
 
   const role = await Role.findOne({ _id: req.params.id });
 
@@ -139,7 +131,7 @@ const update = async (req, res) => {
  * @returns
  * {Role}
  */
-const add = async (req, res) => {
+const addRole = async (req, res) => {
 
   const role = await Role.findOne({ code: req.headers.code, name: req.headers.name });
 
@@ -180,7 +172,7 @@ const add = async (req, res) => {
  * if role parameter passed in headers, if not - removes roles)
  * )
  */
-const remove = async (req, res, next) => {
+const removeRole = async (req, res, next) => {
 
   const role = await Role.findOne({ _id: req.params.id });
 
@@ -200,5 +192,5 @@ const remove = async (req, res, next) => {
   }
 };
 
-export { list, get, update, remove, add, page };
+export { getRole, updateRole, removeRole, addRole, listRoles };
 

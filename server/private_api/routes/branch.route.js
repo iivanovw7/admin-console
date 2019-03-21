@@ -7,7 +7,7 @@ import { catchErrors, checkAccess } from '../helper-functions';
 const router = express.Router();
 
 router.route('/')
-      // GET /api/branches/page - Get page from branches list
+      // GET /api/branches/listRoles - Get listRoles from branches list
       .get(checkAccess, validate(paramValidation.getPageBranches), catchErrors(branches.listBranches))
       // POST /api/branches - Create new branch
       .post(checkAccess, validate(paramValidation.addBranch), catchErrors(branches.addBranch));

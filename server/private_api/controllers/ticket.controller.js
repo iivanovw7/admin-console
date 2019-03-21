@@ -26,9 +26,9 @@ const sendNotifications = async ticket => {
 
 
 /**
- * Gets one page of tickets if called with page and limit,
+ * Gets one listRoles of tickets if called with listRoles and limit,
  * if not - returns full list of tickets
- * @headers {number} page: req.headers.page
+ * @headers {number} listRoles: req.headers.listRoles
  * @headers {number} limit: req.headers.limit
  *
  */
@@ -72,7 +72,7 @@ const getTicket = async (req, res) => {
 /**
  * Find tickets by query, by subject, name or surname
  *
- * @requires {number} page: req.headers.page
+ * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */

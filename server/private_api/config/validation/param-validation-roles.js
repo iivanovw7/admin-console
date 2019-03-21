@@ -9,11 +9,11 @@ export const getRole = {
     id: Joi.objectId().required()
   }
 };
-//GET /api/roles/page
+//GET /api/roles/listRoles
 export const getPageRoles = {
   headers: {
-    page: Joi.number().required(),
-    limit: Joi.number().required()
+    page: Joi.number(),
+    limit: Joi.number()
   }
 };
 // DELETE /api/roles/:id

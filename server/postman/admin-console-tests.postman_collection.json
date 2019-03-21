@@ -312,7 +312,7 @@
 				"header": [
 					{
 						"key": "user",
-						"value": "{{AdminRoleID}}"
+						"value": "{{adminID}}"
 					}
 				],
 				"body": {
@@ -380,9 +380,22 @@
 							"// Checking whether the Content-type header is present.",
 							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
 							"",
+							"pm.test('User schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})",
+							"",
 							"if (pages && pages.length > 0) {",
 							"    console.log('Call next request')",
-							"    postman.setNextRequest('USERS Tests');",
+							"    postman.setNextRequest('USERS Get pages tests');",
 							"} else {",
 							"    console.log('Stop requests')",
 							"    postman.setNextRequest(null);",
@@ -434,6 +447,36 @@
 		},
 		{
 			"name": "USERS Get user by and modify",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var body = JSON.parse(responseBody);",
+							"    tests[\"Objects count: \"  + body.length] = true;",
+							"});",
+							"",
+							"pm.test('User schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -442,7 +485,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:7425/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users"
+					]
 				}
 			},
 			"response": []

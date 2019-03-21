@@ -2,7 +2,7 @@ import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Groups
-//GET /api/groups/page
+//GET /api/groups/listRoles
 export const getPageGroups = {
   headers: {
     page: Joi.number().min(1).max(2000),

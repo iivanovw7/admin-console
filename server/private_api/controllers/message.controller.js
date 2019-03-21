@@ -71,11 +71,11 @@ async function collectMessages(req, res, params, pagination) {
 }
 
 /**
- * Return one page from full messages list
+ * Return one listRoles from full messages list
  *
- * @headers {number} page: req.headers.page
+ * @headers {number} listRoles: req.headers.listRoles
  * @headers {number} limit: req.headers.limit
- * @returns  {page}
+ * @returns  {listRoles}
  */
 const listMessages = async (req, res) => {
 
@@ -212,7 +212,7 @@ const sendMessage = async (req, res) => {
 
 /**Finds messages by subject, name or surname
  *
- * @requires {number} page: req.headers.page
+ * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */

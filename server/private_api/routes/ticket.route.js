@@ -13,7 +13,7 @@ router.route('/')
       .post(checkAccess, validate(paramValidation.addTicket), catchErrors(tickets.addTicket));
 
 router.route('/search')
-      // GET /api/tickets/search - Gets page with search results by title, name, surname
+      // GET /api/tickets/search - Gets listRoles with search results by title, name, surname
       .get(checkAccess, validate(paramValidation.getPageSearch), catchErrors(tickets.searchTicket));
 
 router.route('/:id')

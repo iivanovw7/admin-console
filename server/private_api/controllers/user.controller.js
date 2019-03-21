@@ -25,12 +25,12 @@ const getUser = async (req, res) => {
 };
 
 /**
- * Get one page of users
+ * Get one listRoles of users
  *
- * @headers {number} page: req.headers.page
+ * @headers {number} listRoles: req.headers.listRoles
  * @headers {number} limit: req.headers.limit
  *
- * @returns {page} Returns single page or full list
+ * @returns {listRoles} Returns single listRoles or full list
  *
  */
 const listUsers = async (req, res) => {
@@ -56,7 +56,7 @@ const listUsers = async (req, res) => {
 /**Find users by group id
  *
  * @requires {objectId} id: req.params.id
- * @requires {number} page: req.headers.page
+ * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  *
  */
@@ -76,7 +76,7 @@ const getUsersByGroup = async (req, res) => {
 /**Find users by branch id
  *
  * @requires {objectId} id: req.params.id
- * @requires {number} page: req.headers.page
+ * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  *
  */
@@ -95,7 +95,7 @@ const getUsersByBranch = async (req, res) => {
 
 /**Find users by query, by name or email
  *
- * @requires {number} page: req.headers.page
+ * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
@@ -137,12 +137,11 @@ const updateUser = async (req, res) => {
     status: req.body.status
   };
 
-  const user = await
-    User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
+  const user = await User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
 
   if (user) {
 
-    //add information about changes in history
+    //addRole information about changes in history database
     addHistory(req, res, { actionType: 'Update', targetModel: 'User' }, data);
 
     res.json(user);

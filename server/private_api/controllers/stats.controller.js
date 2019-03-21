@@ -23,7 +23,7 @@ const usersCounter = async (limit, param) => {
   const activeQuery = { created: { $gt: limit }, status: true };
   const disabledQuery = { created: { $gt: limit }, status: false };
 
-  //if group or branch id passed - add it into query
+  //if group or branch id passed - addRole it into query
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
       totalQuery['branch'] = activeQuery['branch'] = disabledQuery['branch'] = param.branch;
@@ -54,7 +54,7 @@ const messagesCounter = async (limit, param) => {
 
   const totalQuery = { created: { $gt: limit } };
 
-  //if group or branch id passed - add it into query
+  //if group or branch id passed - addRole it into query
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
       totalQuery['branchId'] = param.branch;
@@ -94,7 +94,7 @@ const ticketsCounter = async (limit, param) => {
         created: { $gt: limit }
       };
 
-      //if params exists - add fields to query
+      //if params exists - addRole fields to query
       if (params) {
         if (params.branchId) {
           query.branchId = params.branchId;
@@ -104,12 +104,12 @@ const ticketsCounter = async (limit, param) => {
         }
       }
 
-      //if calculation is not total add status filter fields from array
+      //if calculation is not total addRole status filter fields from array
       if (entry[0] !== 'total') {
         query.status = entry[1];
       }
 
-      //add current field in query
+      //addRole current field in query
       queries[entry[0]] = query;
     });
 

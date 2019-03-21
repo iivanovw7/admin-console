@@ -11,7 +11,7 @@ router.route('/')
       .get(checkAccess, validate(paramValidation.getPage), catchErrors(users.listUsers));
 
 router.route('/search')
-      // GET /api/users/search - Gets page with search results by email, name, surname
+      // GET /api/users/search - Gets listRoles with search results by email, name, surname
       .get(checkAccess, validate(paramValidation.getPageSearch), catchErrors(users.searchUsers));
 
 router.route('/:id')
@@ -25,11 +25,11 @@ router.route('/history/:id')
       .get(checkAccess, validate(paramValidation.getUserHistory), catchErrors(users.getUserHistory));
 
 router.route('/branch/:id')
-      // GET /api/users/page/branch - Get page from users list by branch
+      // GET /api/users/listRoles/branch - Get listRoles from users list by branch
       .get(checkAccess, validate(paramValidation.getPageBranch), catchErrors(users.getUsersByBranch));
 
 router.route('/group/:id')
-      // GET /api/users/page/group - Get page from users list by group
+      // GET /api/users/listRoles/group - Get listRoles from users list by group
       .get(checkAccess, validate(paramValidation.getPageGroup), catchErrors(users.getUsersByGroup));
 
 export { router as userRoutes };

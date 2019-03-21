@@ -3,7 +3,7 @@ import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Branches
-//GET /api/branches/page
+//GET /api/branches/listRoles
 export const getPageBranches = {
   headers: {
     page: Joi.number().min(1).max(2000),

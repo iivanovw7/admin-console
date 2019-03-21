@@ -2,7 +2,7 @@ import Joi from 'joi';
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Messages
-// GET /api/messages/page
+// GET /api/messages/listRoles
 export const getPage = {
   headers: {
     page: Joi.number().min(1).max(2000),

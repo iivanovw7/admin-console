@@ -148,8 +148,8 @@ const updateGroup = async (req, res) => {
 };
 
 /**
- * Get one page of groups
- * @headers {number} page: req.headers.page
+ * Get one listRoles of groups
+ * @headers {number} listRoles: req.headers.listRoles
  * @headers {number} limit: req.headers.limit
  *
  */

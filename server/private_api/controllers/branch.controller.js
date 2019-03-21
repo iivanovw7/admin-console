@@ -3,13 +3,13 @@ import Branch from '../../models/Branch';
 import { getAsPage } from '../helper-functions';
 
 /**
- * Gets one page of branches if called with page and limit,
+ * Gets one listRoles of branches if called with listRoles and limit,
  * if not - returns full list of branches
  *
- * @headers {number} page: req.body.page
+ * @headers {number} listRoles: req.body.listRoles
  * @headers {number} limit: req.body.limit
  *
- * @returns {page}
+ * @returns {listRoles}
  *
  */
 const listBranches = async (req, res) => {

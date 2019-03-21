@@ -27,7 +27,7 @@ export const addTicket = {
   }
 };
 
-// GET /api/tickets/page
+// GET /api/tickets/listRoles
 export const getPage = {
   headers: {
     page: Joi.number().min(1).max(2000),
