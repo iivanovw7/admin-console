@@ -113,7 +113,6 @@ const updateRole = async (req, res) => {
 
 /**
  * Function creates new Role if it doesn`t exists in db
- *
  * @requires name: req.headers.name,
  * @requires code: req.headers.code,
  * @requires description: req.headers.description,
@@ -122,7 +121,6 @@ const updateRole = async (req, res) => {
  * editable: req.headers.editable
  * @param req
  * @param res
- *
  * @returns
  * {Role}
  */

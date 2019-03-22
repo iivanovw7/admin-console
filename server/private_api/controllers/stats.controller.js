@@ -12,7 +12,6 @@ const ObjectId = mongoose.Types.ObjectId;
 /**
  * Function calculates total number of users according to params
  * It is called by getStatistics function with query parameters
- *
  * @param limit
  * @param param
  * @returns {Promise<{total}>}
@@ -45,7 +44,6 @@ const usersCounter = async (limit, param) => {
 /**
  * Function calculates total number of messages according to params
  * It is called by It is called called by getStatistics function with query parameters
- *
  * @param limit
  * @param param
  * @returns {Promise<{total}>}
@@ -74,7 +72,6 @@ const messagesCounter = async (limit, param) => {
 /**
  * Function calculates tickets and returns stats.
  * It is called called by getStatistics function with query parameters
- *
  * @param limit
  * @param param
  * @returns {Promise<*>}
@@ -164,7 +161,6 @@ const ticketsCounter = async (limit, param) => {
 
 /**
  * Function calls counter functions according to data types and privileges
- *
  * @returns {Promise<{total}>}
  */
 async function getStatistics(req, res, next) {
@@ -241,9 +237,7 @@ async function getStatistics(req, res, next) {
  * Gets number of users
  * @param req.headers.user - user id
  * @param req.headers.month - time limit to collect data
- *
  * returns callback()
- *
  */
 const usersStats = async (req, res) => {
 
@@ -255,7 +249,6 @@ const usersStats = async (req, res) => {
  * Gets number of messages
  * @param req.headers.user - user id
  * @param req.headers.month - time limit to collect data
- *
  * returns callback()
  *
  */
@@ -278,7 +271,6 @@ const groupsStats = async (req, res) => {
 /**
  * Gets number of permissions
  * @param req.headers.user - user id
- *
  * @returns {{total, active, disabled}}
  */
 const permissionsStats = async (req, res) => {
@@ -295,7 +287,6 @@ const permissionsStats = async (req, res) => {
  * Gets numbers of tickets by categories.
  * Gets total.
  * @param req.headers.user - user id
- *
  * @returns {{total, opened, in_progress, closed, reopened, cannot_be_done}}
  */
 const ticketsStats = async (req, res) => {

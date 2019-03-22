@@ -3,7 +3,7 @@ import Ticket from '../../models/Ticket';
 import User from '../../models/User';
 import Branch from '../../models/Branch';
 import { defaultStatuses } from '../config/param-controllers';
-import { ifArrayContains, getAsPage, ifStringContains } from '../helper-functions';
+import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-functions';
 
 /**
  * Imitation of email notification.
@@ -72,7 +72,6 @@ const getTicket = async (req, res) => {
 
 /**
  * Find tickets by query, by subject, name or surname
- *
  * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
@@ -88,20 +87,17 @@ const searchTicket = async (req, res) => {
 
   if (tickets) {
 
-    let filtered = [];
+    let filtered = []; //initial search output
+    let cachedLength = tickets.length;
 
-    for (let index = 0; index < tickets.length; index++) {
-      if (ifStringContains(tickets[index].subject, search)) {
-        filtered.push(tickets[index]);
-      } else {
-        if (ifStringContains(tickets[index].authorId.name, search)) {
-          filtered.push(tickets[index]);
-        } else {
-          if (ifStringContains(tickets[index].authorId.surname, search)) {
-            filtered.push(tickets[index]);
-          }
-        }
+    for (let i = 0; i < cachedLength; i++) {
+
+      let fields = [tickets[i].subject, tickets[i].authorId.name, tickets[i].authorId.surname];
+
+      if (ifStringsContain(fields, search)) {
+        filtered.push(tickets[i]); //adding new element in results
       }
+
     }
 
     const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
@@ -116,16 +112,13 @@ const searchTicket = async (req, res) => {
 
 /**
  * Function creates new Ticket
- *
  * @requires author: req.body.author,
  * @requires branch: req.body.branch,
  * @requires message: req.body.message,
  * @requires note: req.body.note,
  * @requires subject: req.body.subject,
- *
  * @param req
  * @param res
- *
  * @returns {Ticket}
  */
 const addTicket = async (req, res) => {
@@ -161,11 +154,9 @@ const addTicket = async (req, res) => {
 
 /**
  * Update existing ticket
- *
  * @requires {objectId} id: req.params.id
  * @parameter {string} note: req.body.note
  * @parameter {string} status: req.body.status
- *
  * @returns {Ticket} Returns updated ticket
  */
 const updateTicket = async (req, res) => {

@@ -5,13 +5,12 @@ import Branch from '../../models/Branch';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
 import { fullAccess, branchAccess, groupAccess } from '../config/param-controllers';
-import { ifArrayContains, getAsPage, ifStringContains } from '../helper-functions';
+import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-functions';
 
 /**
  * Imitation of email notification.
  * Finds sender by id and throws contact details of its branch and group in console log
  * Also shows message passed in parameters
- *
  */
 const sendNotifications = async message => {
 
@@ -67,7 +66,6 @@ async function collectMessages(req, res, params, pagination) {
 
 /**
  * Return one listRoles from full messages list
- *
  * @headers {number} listRoles: req.headers.listRoles
  * @headers {number} limit: req.headers.limit
  * @returns  {listRoles}
@@ -84,23 +82,9 @@ const listMessages = async (req, res) => {
   } else {
 
     if (ifArrayContains(role, branchAccess)) {
-
-      return collectMessages(
-        req,
-        res,
-        { branchId: user.branch },
-        req.headers.page && req.headers.limit
-      );
-
+      return collectMessages(req, res, { branchId: user.branch }, req.headers.page && req.headers.limit);
     } else {
-
-      return collectMessages(
-        req,
-        res,
-        { groupId: user.group },
-        req.headers.page && req.headers.limit
-      );
-
+      return collectMessages(req, res, { groupId: user.group }, req.headers.page && req.headers.limit);
     }
   }
 };
@@ -160,13 +144,11 @@ const getPageByUser = async (req, res) => {
 
 /**
  * Function sends new message to group or branch members
- *
  * @param req.body.subject,
  * @param req.body.message,
  * @param req.headers.user,
  * @param req.headers.branch,
  * @param req.headers.group,
- *
  * @returns {message}
  */
 const sendMessage = async (req, res) => {
@@ -201,8 +183,8 @@ const sendMessage = async (req, res) => {
 };
 
 
-/**Finds messages by subject, name or surname
- *
+/**
+ * Finds messages by subject, name or surname
  * @requires {number} listRoles: req.headers.listRoles
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
@@ -210,9 +192,10 @@ const sendMessage = async (req, res) => {
 const searchMessages = async (req, res) => {
 
   const user = await getUser({ _id: req.headers.user });
-  const role = user.role.code;
-  const baseQuery = {};
-  const search = req.headers.search;
+  const role = user.role.code; //users role code from database
+  const baseQuery = {}; //base search query
+  const search = req.headers.search; //string we are searching
+
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, branchAccess)) {
@@ -224,27 +207,23 @@ const searchMessages = async (req, res) => {
     baseQuery.groupId = user.group;
   }
 
-  const messages = await Message.find(baseQuery)
-                                .populate({ path: 'senderId', model: User })
-                                .populate({ path: 'branchId', model: Branch })
-                                .populate({ path: 'groupId', model: Group })
-                                .sort({ created: '-1' });
+  const msg = await Message.find(baseQuery)
+                           .populate({ path: 'senderId', model: User })
+                           .populate({ path: 'branchId', model: Branch })
+                           .populate({ path: 'groupId', model: Group })
+                           .sort({ created: '-1' });
 
-  if (messages) {
+  if (msg) {
 
-    let filtered = [];
+    let filtered = []; //initial search output
+    let cachedLength = msg.length;
 
-    for (let index = 0; index < messages.length; index++) {
-      if (ifStringContains(messages[index].subject, search)) {
-        filtered.push(messages[index]);
-      } else {
-        if (ifStringContains(messages[index].senderId.name, search)) {
-          filtered.push(messages[index]);
-        } else {
-          if (ifStringContains(messages[index].senderId.surname, search)) {
-            filtered.push(messages[index]);
-          }
-        }
+    for (let i = 0; i < cachedLength; i++) {
+
+      let fields = [msg[i].subject, msg[i].senderId.name, msg[i].senderId.surname];
+
+      if (ifStringsContain(fields, search)) {
+        filtered.push(msg[i]); //adding new element in results
       }
     }
 

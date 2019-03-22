@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import passportLocalMongoose from 'passport-local-mongoose';
 
 const userSchema = mongoose.Schema({
-
   email: { type: String, required: true, unique: true },
   phone: String,
   password: String,

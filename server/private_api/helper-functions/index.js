@@ -7,15 +7,30 @@ import { authRoles } from '../config/param-controllers';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 
+const ObjectId = mongoose.Types.ObjectId;
+
 export const catchErrors = fn => {
   return function (req, res, next) {
     return fn(req, res, next).catch(next);
   };
 };
 
-//checks if string contains another string, returns true if there is a match
-//case insensitive
-export function ifStringContains(string, value) {
+//function iterates over strings array and checks every string in order to find a match
+//with a input string
+export function ifStringsContain(array = [], value = '') {
+
+  for (const element of array) {
+    if (ifStringMatches(element, value)) {
+      return true;
+    }
+  }
+  return false;
+
+}
+
+//checks if string contains another string, and returns true if there is a match
+//uppercase insensitive
+export function ifStringMatches(string, value) {
 
   if (!string || !value || typeof string !== 'string' || typeof value !== 'string') {
     return false;
@@ -66,14 +81,18 @@ export function addHistory(req, res, params, changes) {
  */
 export const getUserRoleCode = async id => {
 
+  console.log('started role search');
+
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'role', model: Role });
 
   if (user) {
+    console.log('User has role parameter');
     return user.role.code;
+  } else {
+    console.log('User does not have role parameter!');
+    return null;
   }
-  console.log('User does not have role parameter!');
-  return null;
 
 
 };
@@ -124,19 +143,27 @@ export const getUserGroup = async id => {
  */
 export const checkAccess = async (req, res, next) => {
 
-  const id = mongoose.Types.ObjectId(req.headers.user);
+  console.log(req.headers.user);
 
-  const role = await getUserRoleCode(id);
+  if (!ObjectId.isValid(req.headers.user)) {
+    console.log('Wrong user id!');
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  } else {
 
-  if (!role && !ifArrayContains(role, authRoles)) {
-    console.log('Authentication error');
-    return res.sendStatus(httpStatus.UNAUTHORIZED);
+    const id = ObjectId(req.headers.user);
+
+    const role = await getUserRoleCode(id);
+
+    if (!role || !ifArrayContains(role, authRoles)) {
+      console.log('Authentication error');
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    }
+
+    console.log('Request authorised!');
+
+    return next();
+
   }
-
-  console.log('Request authorised!');
-
-  return next();
-
 };
 
 /**
@@ -154,7 +181,6 @@ export function ifArrayContains(element, list) {
       return true;
     }
   }
-
   return false;
 }
 

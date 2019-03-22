@@ -25,14 +25,10 @@ app.use(session({
   }
 }));
 
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-/**
- * mount all routes on "/api" path
- */
+/** mount all routes on "/api" path */
 app.use('/api', routes);
 
 export { app };

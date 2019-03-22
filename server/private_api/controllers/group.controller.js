@@ -81,9 +81,7 @@ const addGroup = async (req, res) => {
     if (savedGroup) {
       res.status(201).json(savedGroup);
     } else {
-      return res.sendStatus(
-        httpStatus.INTERNAL_SERVER_ERROR
-      );
+      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
