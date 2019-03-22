@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Messages
@@ -32,7 +33,7 @@ export const getPageById = {
 export const sendMessage = {
   headers: {
     branch: Joi.objectId(),
-    group: Joi.objectId(),
+    group: Joi.objectId()
   },
   body: {
     subject: Joi.string().min(3).max(50).required(),

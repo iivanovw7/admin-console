@@ -134,7 +134,7 @@ const addBranch = async (req, res) => {
     if (savedBranch) {
       res.status(201).json(savedBranch);
     } else {
-      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+      res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 };

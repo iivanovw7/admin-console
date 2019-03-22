@@ -8,7 +8,6 @@ import { ifArrayContains } from '../helper-functions';
 const LocalStrategy = PassportLocal.Strategy;
 
 passport.use(new LocalStrategy(
-
   {
     usernameField: 'email',
     passwordField: 'password',

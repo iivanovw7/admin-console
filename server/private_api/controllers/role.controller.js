@@ -4,14 +4,12 @@ import User from '../../models/User';
 import { defaultRoles, mainRoles } from '../config/param-controllers';
 import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
 
-
 /**
  * Function is called after removing a role,
  * passes through users of removed role and changes their role to USER
  *
  * @param req
  * @param res
- * @param next
  * @param params
  *
  * @returns
@@ -20,28 +18,25 @@ import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
  * { newRole: role },
  * { changes: result }
  */
-function swapRoles(req, res, next, params) {
-
-  catchErrors(
-    Role.findOne({ code: 'USER' })
-        .then(role => {
-          if (!role) {
-            return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-          } else {
-            User.updateMany({ role: { _id: req.params.id } }, { $set: { role: { _id: role._id } } })
-                .then(result => {
-                  res.json(
-                    [
-                      { requestRoleId: req.params.id },
-                      { removedRole: params.removedRole },
-                      { newRole: role },
-                      { changes: result }
-                    ]
-                  );
-                }).catch(e => next(e));
-          }
-        }).catch(e => next(e))
-  );
+function swapRoles(req, res, params) {
+  Role.findOne({ code: 'USER' })
+      .then(role => {
+        if (!role) {
+          return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+          User.updateMany({ role: { _id: req.params.id } }, { $set: { role: { _id: role._id } } })
+              .then(result => {
+                res.json(
+                  [
+                    { requestRoleId: req.params.id },
+                    { removedRole: params.removedRole },
+                    { newRole: role },
+                    { changes: result }
+                  ]
+                );
+              }).catch(e => res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR));
+        }
+      }).catch(e => res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR));
 }
 
 /**
@@ -172,7 +167,7 @@ const addRole = async (req, res) => {
  * if role parameter passed in headers, if not - removes roles)
  * )
  */
-const removeRole = async (req, res, next) => {
+const removeRole = async (req, res) => {
 
   const role = await Role.findOne({ _id: req.params.id });
 
@@ -180,7 +175,7 @@ const removeRole = async (req, res, next) => {
     if (!ifArrayContains(role.code, defaultRoles)) {
       const removedRole = await Role.findByIdAndRemove({ _id: req.params.id });
       if (removedRole) {
-        return swapRoles(req, res, next, { removedRole: removedRole });
+        return swapRoles(req, res, { removedRole: removedRole });
       } else {
         return res.sendStatus(httpStatus.NOT_FOUND);
       }

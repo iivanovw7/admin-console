@@ -5,7 +5,7 @@ import User from '../../models/User';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
 import { defaultStatusModels } from '../config/param-controllers';
-import { setQueryLimit, getUserRole, getUserBranch, getUserGroup } from '../helper-functions';
+import { setQueryLimit, getUserRoleCode, getUserBranch, getUserGroup } from '../helper-functions';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -71,7 +71,6 @@ const messagesCounter = async (limit, param) => {
 
 };
 
-
 /**
  * Function calculates tickets and returns stats.
  * It is called called by getStatistics function with query parameters
@@ -104,17 +103,11 @@ const ticketsCounter = async (limit, param) => {
         }
       }
 
-      //if calculation is not total addRole status filter fields from array
-      if (entry[0] !== 'total') {
-        query.status = entry[1];
-      }
-
       //addRole current field in query
       queries[entry[0]] = query;
     });
 
-
-    const totalPromise = Ticket.countDocuments(queries.total);
+    const totalPromise = Ticket.countDocuments({});
     const openedPromise = Ticket.countDocuments(queries.open);
     const progressPromise = Ticket.countDocuments(queries.progress);
     const closedPromise = Ticket.countDocuments(queries.closed);
@@ -169,7 +162,6 @@ const ticketsCounter = async (limit, param) => {
   }
 };
 
-
 /**
  * Function calls counter functions according to data types and privileges
  *
@@ -182,7 +174,7 @@ async function getStatistics(req, res, next) {
   //gets users id
   const id = mongoose.Types.ObjectId(req.headers.user);
   //gets user role
-  const role = await getUserRole(id);
+  const role = await getUserRoleCode(id);
 
   switch (role) {
 
@@ -205,8 +197,8 @@ async function getStatistics(req, res, next) {
 
         res.json([
           { view_mode: role },
-          { branch_name: branch[1] },
-          await next(limit, { branch: branch[0] })
+          { branch_name: branch.name },
+          await next(limit, { branch: branch._id })
         ]);
 
       } else {
@@ -226,8 +218,8 @@ async function getStatistics(req, res, next) {
 
         res.json([
           { view_mode: role },
-          { group_name: group[1] },
-          await next(limit, { group: group[0] })
+          { group_name: group.name },
+          await next(limit, { group: group._id })
         ]);
 
       } else {
@@ -306,7 +298,6 @@ const permissionsStats = async (req, res) => {
  *
  * @returns {{total, opened, in_progress, closed, reopened, cannot_be_done}}
  */
-
 const ticketsStats = async (req, res) => {
 
   return getStatistics(req, res, ticketsCounter);

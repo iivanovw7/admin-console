@@ -1,5 +1,5 @@
 {
-  "exec": "babel-node ./private_api/index.js",
+  "exec": "babel-node -- ./private_api/index.js --debug",
   "env": {
     "PORT_PRIVATE": 7425,
     "SECRET": "SECRET",

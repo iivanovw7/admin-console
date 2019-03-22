@@ -52,7 +52,6 @@ const listUsers = async (req, res) => {
   }
 };
 
-
 /**Find users by group id
  *
  * @requires {objectId} id: req.params.id
@@ -119,13 +118,13 @@ const searchUsers = async (req, res) => {
 
 
 /**
- * Update existing use
+ * Update existing user
  *
  * @requires {objectId} id: req.params.id
- * @parameter {string} group: req.headers.group
- * @parameter {string} branch: req.headers.branch
- * @parameter {string} role: req.headers.role
- * @parameter {string} status: req.headers.status
+ * @parameter {string} group: req.body.group
+ * @parameter {string} branch: req.body.branch
+ * @parameter {string} role: req.body.role
+ * @parameter {string} status: req.body.status
  * @returns {User}
  */
 const updateUser = async (req, res) => {

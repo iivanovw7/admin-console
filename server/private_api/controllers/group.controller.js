@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import Group from '../../models/Group';
 import User from '../../models/User';
 import { defaultGroups } from '../config/param-controllers';
-import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
+import { getAsPage, ifArrayContains } from '../helper-functions';
 
 /**
  * Function is called after removing a group,
@@ -10,7 +10,6 @@ import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
  *
  * @param req
  * @param res
- * @param next
  * @param params
  *
  * @returns
@@ -19,31 +18,28 @@ import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
  * { newGroup: role },
  * { changes: result }
  */
-function swapGroups(req, res, next, params) {
+function swapGroups(req, res, params) {
+  Group.findOne({ name: 'Other' })
+       .then(group => {
 
-  catchErrors(
-    Group.findOne({ name: 'Other' })
-         .then(group => {
+         if (!group) {
+           return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+         }
 
-           if (!group) {
-             return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-           }
-
-           User.updateMany(
-             { group: { _id: req.params.id } },
-             { $set: { group: { _id: group._id } } })
-               .then(result => {
-                 res.json(
-                   [
-                     { requestGroupId: req.params.id },
-                     { removedGroup: params.removedGroup },
-                     { newGroup: group },
-                     { changes: result }
-                   ]
-                 );
-               }).catch(e => next(e));
-         }).catch(e => next(e))
-  );
+         User.updateMany(
+           { group: { _id: req.params.id } },
+           { $set: { group: { _id: group._id } } })
+             .then(result => {
+               res.json(
+                 [
+                   { requestGroupId: req.params.id },
+                   { removedGroup: params.removedGroup },
+                   { newGroup: group },
+                   { changes: result }
+                 ]
+               );
+             }).catch(e => res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR));
+       }).catch(e => res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR));
 }
 
 /**
@@ -135,7 +131,6 @@ const updateGroup = async (req, res) => {
       description: req.body.description
     };
 
-
     const updatedGroup = await
       Group.findOneAndUpdate(
         { _id: req.params.id },
@@ -177,7 +172,7 @@ const listGroups = async (req, res) => {
  * @returns   swap(req,res,next,{removedGroup: removedGroup});
  * (Calls swap groups function to change deleted group to 'Other')
  */
-const removeGroup = async (req, res, next) => {
+const removeGroup = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
@@ -187,7 +182,7 @@ const removeGroup = async (req, res, next) => {
     if (!ifArrayContains(group.name, defaultGroups)) {
       const removedGroup = await Group.findByIdAndRemove({ _id: req.params.id });
       if (removedGroup) {
-        return swapGroups(req, res, next, { removedGroup: removedGroup });
+        return swapGroups(req, res, { removedGroup: removedGroup });
       } else {
         res.sendStatus(httpStatus.NOT_FOUND);
       }

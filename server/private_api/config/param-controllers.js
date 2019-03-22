@@ -37,14 +37,17 @@ export const defaultRoles = [
   'BRANCH_ADMIN',
   'BRANCH_SUPPORT'
 ];
-
+//Lists of roles, which cannot be deleted and/or deactivated
 export const mainRoles = [
   'ADMIN',
   'USER'
 ];
 
-//Lists of tickets statuses, used in controller to confirm status field,
-//if status passed in params differs from defaultStatus - default status will be applied
+/**
+ * Lists of tickets statuses, used in controller to confirm status field,
+ * if status passed in params differs from defaultStatus - default status will be applied
+ * Lowercase letters are used here because the same letters are used in database model
+ */
 export const defaultStatuses = [
   'Opened',
   'In progress',
@@ -53,10 +56,14 @@ export const defaultStatuses = [
   'Cannot be done'
 ];
 
-//List of statuses for statistics controller, used to apply search queries dynamically
-//in order to perform search according to current ticket status field
+
+/**
+ * List of statuses for statistics controller, used to apply search queries dynamically
+ * in order to perform search according to current ticket status field.
+ * Lowercase letters are used here because the same letters are used in database model
+ *
+ */
 export const defaultStatusModels = {
-  total: '',
   open: 'Opened',
   progress: 'In progress',
   closed: 'Closed',

@@ -5,7 +5,7 @@ import Branch from '../../models/Branch';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
 import { fullAccess, branchAccess, groupAccess } from '../config/param-controllers';
-import { ifArrayContains, getAsPage } from '../helper-functions';
+import { ifArrayContains, getAsPage, ifStringContains } from '../helper-functions';
 
 /**
  * Imitation of email notification.
@@ -13,7 +13,6 @@ import { ifArrayContains, getAsPage } from '../helper-functions';
  * Also shows message passed in parameters
  *
  */
-
 const sendNotifications = async message => {
 
   const user = await User.findOne({ _id: message.senderId });
@@ -59,15 +58,11 @@ async function collectMessages(req, res, params, pagination) {
 
       const page = await getAsPage(req.headers.page, req.headers.limit, messages);
       return res.json(page);
-
-    } else {
-      return res.json(messages);
     }
+    return res.json(messages);
 
-  } else {
-    return res.sendStatus(httpStatus.NOT_FOUND);
   }
-
+  return res.sendStatus(httpStatus.NOT_FOUND);
 }
 
 /**
@@ -206,10 +201,6 @@ const sendMessage = async (req, res) => {
 };
 
 
-/**
- * TODO TESTING search and message creation algo with different access rights and types of users
- */
-
 /**Finds messages by subject, name or surname
  *
  * @requires {number} listRoles: req.headers.listRoles
@@ -220,63 +211,48 @@ const searchMessages = async (req, res) => {
 
   const user = await getUser({ _id: req.headers.user });
   const role = user.role.code;
-
-  //creating base search query for search by subject
-  const queryBySubject = {
-    $and: [{ subject: { $regex: req.headers.search, $options: 'i' } }]
-  };
-
-  //creating base search query for search by author
-  const queryByAuthor = {
-    $or: [{ name: req.headers.search }, { surname: req.headers.search }]
-  };
+  const baseQuery = {};
+  const search = req.headers.search;
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, branchAccess)) {
-    queryBySubject.$and.push({ branchId: user.branch });
-    queryByAuthor.$and = [{ branchId: user.branch }];
+    baseQuery.branchId = user.branch;
   }
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, groupAccess)) {
-    queryBySubject.$and.push({ groupId: user.group });
-    queryByAuthor.$and = [{ groupId: user.group }];
+    baseQuery.groupId = user.group;
   }
 
-  //query db for messages by subject
-  const bySubj = await Message.find(queryBySubject);
+  const messages = await Message.find(baseQuery)
+                                .populate({ path: 'senderId', model: User })
+                                .populate({ path: 'branchId', model: Branch })
+                                .populate({ path: 'groupId', model: Group })
+                                .sort({ created: '-1' });
 
-  //query db for possible authors of message
-  const users = await User.find(queryByAuthor);
+  if (messages) {
 
-  console.log(users);
+    let filtered = [];
 
-  if (bySubj || users) {
-
-    //getting ids of users
-    const ids = users.map((user) => {
-      return user._id;
-    });
-
-    //querying db for tickets by user names
-    const byUser = await Message.find({ senderId: { $in: ids } });
-
-    //joining and sorting results
-    const sortedResult = [...bySubj, ...byUser].sort((a, b) => {
-        const dateA = new Date(a.created), dateB = new Date(b.created);
-        return dateB - dateA;
+    for (let index = 0; index < messages.length; index++) {
+      if (ifStringContains(messages[index].subject, search)) {
+        filtered.push(messages[index]);
+      } else {
+        if (ifStringContains(messages[index].senderId.name, search)) {
+          filtered.push(messages[index]);
+        } else {
+          if (ifStringContains(messages[index].senderId.surname, search)) {
+            filtered.push(messages[index]);
+          }
+        }
       }
-    );
-
-    if (!sortedResult) {
-      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-    } else {
-      const page = await getAsPage(req.headers.page, req.headers.limit, sortedResult);
-      res.json(page);
     }
 
+    const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
+    return res.json(page);
+
   } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 
 };

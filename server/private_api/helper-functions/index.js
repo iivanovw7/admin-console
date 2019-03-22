@@ -13,6 +13,18 @@ export const catchErrors = fn => {
   };
 };
 
+//checks if string contains another string, returns true if there is a match
+//case insensitive
+export function ifStringContains(string, value) {
+
+  if (!string || !value || typeof string !== 'string' || typeof value !== 'string') {
+    return false;
+  } else {
+    return (string.search(new RegExp(value, 'i')) !== -1);
+  }
+
+}
+
 /**
  * Forms value in months for date filter
  * Originally, time periods starting from 3 up to 12 months should be used
@@ -52,7 +64,7 @@ export function addHistory(req, res, params, changes) {
  * if no user or no code found - returns null
  *
  */
-export const getUserRole = async id => {
+export const getUserRoleCode = async id => {
 
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'role', model: Role });
@@ -60,9 +72,7 @@ export const getUserRole = async id => {
   if (user) {
     return user.role.code;
   }
-
   console.log('User does not have role parameter!');
-
   return null;
 
 
@@ -80,11 +90,9 @@ export const getUserBranch = async id => {
 
   console.log(user);
   if (user.branch) {
-    return [user.branch._id, user.branch.name];
+    return user.branch;
   }
-
   console.log('User does not have branch parameter!');
-
   return null;
 
 };
@@ -100,7 +108,7 @@ export const getUserGroup = async id => {
                          .populate({ path: 'group', model: Group });
 
   if (user.group) {
-    return [user.group._id, user.group.name];
+    return user.group;
   }
 
   console.log('User does not have group parameter!');
@@ -118,7 +126,7 @@ export const checkAccess = async (req, res, next) => {
 
   const id = mongoose.Types.ObjectId(req.headers.user);
 
-  const role = await getUserRole(id);
+  const role = await getUserRoleCode(id);
 
   if (!role && !ifArrayContains(role, authRoles)) {
     console.log('Authentication error');
@@ -168,15 +176,19 @@ export const getAsPage = async (currPage = 1, currLimit = 10, list = []) => {
     return Math.round(Math.min(Math.max(val, min), max));
   }
 
+  const results = list.length;
+
   //applying limits of elements for one listRoles
   const limit = limitNumber(1, 25, currLimit);
+
   //applying limits for maximum listRoles number value
   const pages = Math.ceil(list.length / limit);
+
   //applying limits for input pageNumber value
   const page = limitNumber(1, pages, currPage);
 
   const skipped = (page * limit) - limit;
   const output = list.slice(skipped, skipped + limit);
 
-  return { page, limit, pages, output };
+  return { page, limit, pages, results, output };
 };

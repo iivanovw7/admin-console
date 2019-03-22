@@ -3,8 +3,7 @@ import Ticket from '../../models/Ticket';
 import User from '../../models/User';
 import Branch from '../../models/Branch';
 import { defaultStatuses } from '../config/param-controllers';
-import { ifArrayContains, getAsPage } from '../helper-functions';
-
+import { ifArrayContains, getAsPage, ifStringContains } from '../helper-functions';
 
 /**
  * Imitation of email notification.
@@ -13,11 +12,11 @@ import { ifArrayContains, getAsPage } from '../helper-functions';
 
 const sendNotifications = async ticket => {
 
-  const user = await User.findOne({ _id: ticket.authorId});
+  const user = await User.findOne({ _id: ticket.authorId });
 
   if (user) {
     console.log('Send notification to ' + user.email);
-    console.log(ticket)
+    console.log(ticket);
   } else {
     console.log('User not found!');
   }
@@ -36,6 +35,8 @@ const listTickets = async (req, res) => {
 
   const tickets = await
     Ticket.find({})
+          .populate({ path: 'authorId', model: User })
+          .populate({ path: 'branchId', model: Branch })
           .sort({ created: '-1' });
 
   if (tickets) {
@@ -78,55 +79,49 @@ const getTicket = async (req, res) => {
  */
 const searchTicket = async (req, res) => {
 
-  //query db for tickets by subject
-  const bySubj = await Ticket.find({
-    $or: [{ subject: { $regex: req.headers.search, $options: 'i' } }]
-  });
+  const search = req.headers.search;
 
-  //query db for possible authors of tickets
-  const users = await User.find({
-    $or: [{ name: req.headers.search }, { surname: req.headers.search }]
-  });
+  const tickets = await Ticket.find({})
+                              .populate({ path: 'authorId', model: User })
+                              .populate({ path: 'branchId', model: Branch })
+                              .sort({ created: '-1' });
 
+  if (tickets) {
 
-  if (bySubj || users) {
+    let filtered = [];
 
-    //getting ids of users
-    const ids = users.map((user) => {
-      return user._id;
-    });
-
-    //querying db for tickets by user names
-    const byUser = await Ticket.find({ authorId: { $in: ids } });
-
-    //joining and sorting results
-    const sortedResult = [...bySubj, ...byUser].sort((a, b) => {
-        const dateA = new Date(a.created), dateB = new Date(b.created);
-        return dateB - dateA;
+    for (let index = 0; index < tickets.length; index++) {
+      if (ifStringContains(tickets[index].subject, search)) {
+        filtered.push(tickets[index]);
+      } else {
+        if (ifStringContains(tickets[index].authorId.name, search)) {
+          filtered.push(tickets[index]);
+        } else {
+          if (ifStringContains(tickets[index].authorId.surname, search)) {
+            filtered.push(tickets[index]);
+          }
+        }
       }
-    );
-
-    if (!sortedResult) {
-      return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
-    } else {
-      const page = await getAsPage(req.headers.page, req.headers.limit, sortedResult);
-      res.json(page);
     }
 
+    const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
+    return res.json(page);
+
   } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
 
 };
 
 /**
  * Function creates new Ticket
  *
- * @requires author: req.headers.author,
- * @requires branch: req.headers.branch,
- * @requires message: req.headers.message,
- * @requires note: req.headers.note,
- * @requires subject: req.headers.subject,
+ * @requires author: req.body.author,
+ * @requires branch: req.body.branch,
+ * @requires message: req.body.message,
+ * @requires note: req.body.note,
+ * @requires subject: req.body.subject,
  *
  * @param req
  * @param res
@@ -136,17 +131,17 @@ const searchTicket = async (req, res) => {
 const addTicket = async (req, res) => {
 
   const newTicket = await new Ticket({
-    name: req.headers.name,
-    description: req.headers.description,
+    name: req.body.name,
+    description: req.body.description,
     authorId: req.body.author,
     branchId: req.body.branch,
-    status: req.headers.status || 'Opened',
-    subject: req.headers.subject,
-    message: req.headers.message,
-    note: req.headers.note,
+    status: req.body.status || 'Opened',
+    subject: req.body.subject,
+    message: req.body.message,
+    note: req.body.note
   });
 
-  if (!ifArrayContains(newTicket.status, defaultStatuses) || req.headers.status === 'Closed') {
+  if (!ifArrayContains(newTicket.status, defaultStatuses) || req.body.status === 'Closed') {
 
     return res.sendStatus(httpStatus.BAD_REQUEST);
 
@@ -168,8 +163,8 @@ const addTicket = async (req, res) => {
  * Update existing ticket
  *
  * @requires {objectId} id: req.params.id
- * @parameter {string} note: req.headers.note
- * @parameter {string} status: req.headers.status
+ * @parameter {string} note: req.body.note
+ * @parameter {string} status: req.body.status
  *
  * @returns {Ticket} Returns updated ticket
  */
@@ -180,9 +175,9 @@ const updateTicket = async (req, res) => {
   if (ticket) {
 
     const data = {
-      note: req.headers.note,
-      status: req.headers.status,
-      closed: req.headers.status === 'Closed' ? Date.now() : null
+      note: req.body.note,
+      status: req.body.status,
+      closed: req.body.status === 'Closed' ? Date.now() : null
     };
 
     if (!ifArrayContains(data.status, defaultStatuses)) {
@@ -197,7 +192,6 @@ const updateTicket = async (req, res) => {
     res.sendStatus(httpStatus.NOT_FOUND);
   }
 };
-
 
 
 export { listTickets, getTicket, searchTicket, addTicket, updateTicket };

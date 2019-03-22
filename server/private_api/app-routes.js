@@ -12,7 +12,6 @@ import { statsRoutes } from './routes/stats.route';
 const routes = express();
 
 
-
 /** Contains Routes structure for "Private API" logic */
 
 // Check if server application is alive

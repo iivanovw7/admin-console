@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.route('/');
 
-
 router.route('/users')
       // GET /api/stats/users - Get users stats
       .get(checkAccess, validate(paramValidation.getUsers), catchErrors(stats.usersStats));

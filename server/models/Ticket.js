@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const ticketSchema = mongoose.Schema({
-
   authorId: { type: mongoose.Schema.ObjectId, ref: 'User' },
   branchId: { type: mongoose.Schema.ObjectId, ref: 'Branch' },
   message: { type: String, required: true },

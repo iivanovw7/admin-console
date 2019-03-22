@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Tickets
@@ -7,23 +8,21 @@ export const updateTicket = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  body: {
     status: Joi.string().min(3).max(50).required(),
-    note: Joi.string().max(500),
+    note: Joi.string().max(500)
   }
 };
 
 // POST /api/tickets
 export const addTicket = {
-  headers: {
+  body: {
+    author: Joi.objectId().required(),
+    branch: Joi.objectId(),
     status: Joi.string().min(3).max(50),
     subject: Joi.string().min(3).max(50).required(),
     message: Joi.string().min(3).max(500).required(),
     note: Joi.string().max(500)
-  },
-  body: {
-    author: Joi.objectId().required(),
-    branch: Joi.objectId()
   }
 };
 
