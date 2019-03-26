@@ -1,9 +1,8 @@
 {
-  "exec": "babel-node -- ./private_api/index.js --debug",
+  "exec": "babel-node -- ./private_api/index.js",
   "env": {
     "PORT_PRIVATE": 7425,
     "SECRET": "SECRET",
     "DATABASE": "mongodb://root:o95Q3PaB93ip@ds159185.mlab.com:59185/admin-console"
   }
 }
-

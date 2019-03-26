@@ -162,7 +162,7 @@ const getUserHistory = async (req, res) => {
   const limit = setQueryLimit(req.headers.months);
 
   const records = await
-    History.find({ created: { $gt: limit }, targetId: req.params.id })
+    History.find({ created: { $gt: limit }, actionTarget: req.params.id })
            .populate({ path: 'author', model: User })
            .sort({ created: '-1' });
 

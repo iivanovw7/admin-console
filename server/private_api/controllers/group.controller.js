@@ -174,11 +174,13 @@ const removeGroup = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
 
+
   if (!group) {
     res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
     if (!ifArrayContains(group.name, defaultGroups)) {
       const removedGroup = await Group.findByIdAndRemove({ _id: req.params.id });
+
       if (removedGroup) {
         return swapGroups(req, res, { removedGroup: removedGroup });
       } else {

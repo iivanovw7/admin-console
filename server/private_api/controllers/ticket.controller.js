@@ -7,6 +7,7 @@ import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-function
 
 /**
  * Imitation of email notification.
+ * TODO Add notifications logic
  * @returns {user.email, message}
  */
 
@@ -15,10 +16,10 @@ const sendNotifications = async ticket => {
   const user = await User.findOne({ _id: ticket.authorId });
 
   if (user) {
-    console.log('Send notification to ' + user.email);
-    console.log(ticket);
+    //console.log('Send notification to ' + user.email);
+    //console.log(ticket);
   } else {
-    console.log('User not found!');
+    //console.log('User not found!');
   }
 
 };

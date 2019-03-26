@@ -11,6 +11,7 @@ import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-function
  * Imitation of email notification.
  * Finds sender by id and throws contact details of its branch and group in console log
  * Also shows message passed in parameters
+ * TODO Add notifications logic
  */
 const sendNotifications = async message => {
 
@@ -20,16 +21,16 @@ const sendNotifications = async message => {
   const byGroup = message.groupId ? await User.find({ group: message.groupId }) : null;
 
   if (user) {
-    console.log(`Sending notification, message author: ${user.email}`);
+    //console.log(`Sending notification, message author: ${user.email}`);
     if (byBranch) {
-      console.log(`To recipients by branch: ${byBranch}`);
+      //console.log(`To recipients by branch: ${byBranch}`);
     }
     if (byGroup) {
-      console.log(`To recipients by group: ${byGroup}`);
+      //console.log(`To recipients by group: ${byGroup}`);
     }
-    console.log(message);
+    //console.log(message);
   } else {
-    console.log('User not found!');
+    //console.log('User not found!');
   }
 
 };

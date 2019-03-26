@@ -1,5 +1,7 @@
 import httpStatus from 'http-status';
 import Branch from '../../models/Branch';
+import Group from '../../models/Group';
+import Role from '../../models/Role';
 import { getAsPage } from '../helper-functions';
 
 /**
@@ -118,7 +120,7 @@ const addBranch = async (req, res) => {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
-    const newBranch = {
+    await new Branch({
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
@@ -126,11 +128,10 @@ const addBranch = async (req, res) => {
       address: req.body.address,
       information: req.body.information,
       status: req.body.status
-    };
+    }).save();
 
     //Saving new object in to collection
-    const savedBranch = await newBranch.save();
-
+    const savedBranch = await Branch.findOne({ name: req.body.name });
     if (savedBranch) {
       res.status(201).json(savedBranch);
     } else {

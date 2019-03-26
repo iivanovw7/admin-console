@@ -5,6 +5,13 @@ import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
 import './config/param-passport.js';
+import dotenv from 'dotenv';
+const result = dotenv.config();
+
+/** Getting ENV variables */
+if (result.error) {
+  throw result.error;
+}
 
 const app = express();
 
@@ -30,6 +37,7 @@ app.use(passport.session());
 
 /** mount all routes on "/api" path */
 app.use('/api', routes);
+
 
 export { app };
 

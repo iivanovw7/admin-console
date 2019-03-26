@@ -69,7 +69,7 @@ export function addHistory(req, res, params, changes) {
   });
 
   newHistory.save()
-            .then(history => console.log(history))
+            .then()
             .catch(err => console.log(err));
 
 }
@@ -81,16 +81,16 @@ export function addHistory(req, res, params, changes) {
  */
 export const getUserRoleCode = async id => {
 
-  console.log('started role search');
+  //console.log('started role search');
 
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'role', model: Role });
 
   if (user) {
-    console.log('User has role parameter');
+    //console.log('User has role parameter');
     return user.role.code;
   } else {
-    console.log('User does not have role parameter!');
+    //console.log('User does not have role parameter!');
     return null;
   }
 
@@ -107,11 +107,10 @@ export const getUserBranch = async id => {
   const user = await User.findOne({ _id: id })
                          .populate({ path: 'branch', model: Branch });
 
-  console.log(user);
   if (user.branch) {
     return user.branch;
   }
-  console.log('User does not have branch parameter!');
+  //console.log('User does not have branch parameter!');
   return null;
 
 };
@@ -130,7 +129,7 @@ export const getUserGroup = async id => {
     return user.group;
   }
 
-  console.log('User does not have group parameter!');
+  //console.log('User does not have group parameter!');
 
   return null;
 
@@ -143,10 +142,8 @@ export const getUserGroup = async id => {
  */
 export const checkAccess = async (req, res, next) => {
 
-  console.log(req.headers.user);
-
   if (!ObjectId.isValid(req.headers.user)) {
-    console.log('Wrong user id!');
+    //console.log('Wrong user id!');
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
@@ -155,11 +152,11 @@ export const checkAccess = async (req, res, next) => {
     const role = await getUserRoleCode(id);
 
     if (!role || !ifArrayContains(role, authRoles)) {
-      console.log('Authentication error');
+      //console.log('Authentication error');
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
 
-    console.log('Request authorised!');
+    //console.log('Request authorised!');
 
     return next();
 
