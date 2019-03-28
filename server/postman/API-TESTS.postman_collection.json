@@ -1,0 +1,1225 @@
+{
+	"info": {
+		"_postman_id": "25e2cb58-f202-467c-9eb0-5448687565de",
+		"name": "API-TESTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTH Blank email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"//Checing response status 400",
+							"pm.test(\"LOGIN VALIDATION FAILED (status code is 400)\", function (err, res) {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN VALIDATION FAILED (Message: Email is not allowed to be empty)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Error\");",
+							"    pm.expect(pm.response.text()).to.include(\"email\");",
+							"    pm.expect(pm.response.text()).to.include(\"is not allowed to be empty\");",
+							"});",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password_admin_default}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTH Illformed email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"//Checing response status 400",
+							"pm.test(\"LOGIN VALIDATION FAILED (status code is 400)\", function (err, res) {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN VALIDATION FAILED (Message: Email is not allowed to be empty)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Error\");",
+							"    pm.expect(pm.response.text()).to.include(\"email\");",
+							"    pm.expect(pm.response.text()).to.include(\"must be a valid email\");",
+							"});",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{email_wrong_formatted}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password_admin_default}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTH Wrong email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"//Checing response status 403",
+							"pm.test(\"LOGIN FAILED (status code is 403)\", function (err, res) {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN FAILED (Message: Forbidden)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Forbidden\");",
+							" });",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "someEmail@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password_admin_default}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTH Wrong password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"//Checing response status 403",
+							"pm.test(\"LOGIN FAILED (status code is 403)\", function (err, res) {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN FAILED (Message: Forbidden)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Forbidden\");",
+							" });",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{email_admin}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTH Blank password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"//Checing response status 400",
+							"pm.test(\"LOGIN VALIDATION FAILED (status code is 400\", function (err, res) {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN VALIDATION  FAILED (Message: Password is not allowed to be empty)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Error\");",
+							"    pm.expect(pm.response.text()).to.include(\"password\");",
+							"    pm.expect(pm.response.text()).to.include(\"is not allowed to be empty\");",
+							" });",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{email_admin}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AUTH Admin Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae56a232-2007-4f90-9b34-0573b35f5317",
+						"exec": [
+							"// Checking login with correct fields",
+							"pm.test(\"LOGIN SUCCESS (status code is 200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"LOGIN SUCCESS RESPONSE (Message: OK)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"OK\");",
+							"});",
+							"",
+							"",
+							"// cheking response timeout milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_AUTH')} ms`] = responseTime < pm.environment.get('responceTime_AUTH'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"Content-type HEADER is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{email_admin}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password_admin_default}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER Get single user, Get and save random USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"// Checking login with correct fields",
+							"pm.test(\"Got valid responce (status code is 200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"});",
+							"",
+							"pm.test('User schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"function getRandomInt(max) {",
+							"    return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"",
+							"",
+							"//gets sigle random user",
+							"var getSingleUser = function(id, comment) {",
+							"    return (",
+							"        pm.sendRequest({",
+							"            url: `http://localhost:7425/api/users/${id}`,",
+							"            method: 'GET',",
+							"            header: [`user:${pm.environment.get('user_admin')}`] ",
+							"        }, function(err, res) {",
+							"            if (err) {",
+							"                console.log(err)",
+							"            } else {",
+							"                ",
+							"                console.log(comment)",
+							"                console.log(res.json())",
+							"                ",
+							"                var user = res.json()",
+							"                ",
+							"                pm.environment.set(\"randomUserStatus\", user.status);",
+							"                pm.environment.set(\"randomUserEmail\", user.email)",
+							"                pm.environment.set(\"randomUserRole\", user.role._id);",
+							"                pm.environment.set(\"randomUserBranch\", user.branch);",
+							"                pm.environment.set(\"randomUserName\", user.name);",
+							"                pm.environment.set(\"randomUserSurname\", user.surname);",
+							"                ",
+							"            }",
+							"        ",
+							"        })",
+							"    )",
+							"}",
+							"",
+							"var body = JSON.parse(responseBody);",
+							"var takeUser = getRandomInt(1000);",
+							"var randomUser = body[takeUser]._id;",
+							"",
+							"pm.environment.set(\"randomUserID\", randomUser);",
+							"",
+							"pm.test(`Get single random user, with RANDOM ID (${randomUser})`, function() {",
+							"    getSingleUser(randomUser, `Get single user by ID ${randomUser}`)",
+							"    ",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"    ",
+							"    ",
+							"})",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"value": "{{user_admin}}",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:7425/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER Get single user  with no access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"",
+							"pm.test(\"Got valid responce (status code is 401)\", function () {",
+							"    pm.response.to.have.status(401);",
+							"    ",
+							"});",
+							"",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"//Checing response fields",
+							"pm.test(\"REQUEST FAILED (Message: Unauthorized)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\");",
+							" });",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"type": "text",
+						"value": "{{user_user}}"
+					},
+					{
+						"key": "page",
+						"type": "text",
+						"value": "1",
+						"disabled": true
+					},
+					{
+						"key": "limit",
+						"type": "text",
+						"value": "10",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:7425/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER Get pages tests",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c66d583a-bc76-488a-acde-9002bef2290b",
+						"exec": [
+							"var pages = pm.environment.get('pages');",
+							"var limits = pm.environment.get('limits');",
+							"",
+							"if (!pages || pages.length === 0) {",
+							"    console.log('setting new pages and limits')",
+							"    pages = [1, 2, 4, 13, 17, 45, 2, 44, 41, 32, 23, 12, 18, 100, 124];",
+							"    limits = [12, 15, 24, 24, 45, 78, 12, 32, 12, 19, 4, 33, 12, 44, 82];",
+							"}",
+							"",
+							"var currentPage = pages.shift();",
+							"var currentLimit = limits.shift();",
+							"",
+							"pm.environment.set('currentPage', currentPage);",
+							"pm.environment.set('currentLimit', currentLimit);",
+							"",
+							"pm.environment.set('pages', pages);",
+							"pm.environment.set('limits', limits);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "625afa2f-d814-4084-9132-f895ece3767e",
+						"exec": [
+							"var pages = pm.environment.get('pages');",
+							"",
+							"console.log(pages)",
+							"",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"pm.test('User schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})",
+							"",
+							"if (pages && pages.length > 0) {",
+							"    console.log('Call next request')",
+							"    postman.setNextRequest('USER Get pages tests');",
+							"} else {",
+							"    console.log('Stop requests')",
+							"    postman.setNextRequest(null);",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"type": "text",
+						"value": "{{user_admin}}"
+					},
+					{
+						"key": "page",
+						"type": "text",
+						"value": "{{currentPage}}"
+					},
+					{
+						"key": "limit",
+						"type": "text",
+						"value": "{{currentLimit}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER Get page with wrong headers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"// Checking login with correct fields",
+							"pm.test(\"Got valid responce (status code is 400)\", function () {",
+							"    pm.response.to.have.status(400);",
+							"    ",
+							"});",
+							"",
+							"//Checing response fields",
+							"pm.test(\"REQUEST VALIDATION FAILED (Message: page must be a number, limit must be larger than or equal to 1)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Error\");",
+							"    pm.expect(pm.response.text()).to.include(\"page\");",
+							"    pm.expect(pm.response.text()).to.include(\"must be a number\");",
+							"    pm.expect(pm.response.text()).to.include(\"limit\");",
+							"    pm.expect(pm.response.text()).to.include(\"must be larger than or equal to 1\");",
+							"});",
+							"",
+							"",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"type": "text",
+						"value": "{{user_admin}}"
+					},
+					{
+						"key": "page",
+						"type": "text",
+						"value": "string"
+					},
+					{
+						"key": "limit",
+						"type": "text",
+						"value": "-12"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:7425/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BRANCH Get branches, Get and save random BRANCH",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a685073d-81f9-4fd3-8071-c84098c6587b",
+						"exec": [
+							"pm.test(\"REQUEST SUCCESS (status code is 200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"pm.test('Branch schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"fax\":      {\"type\": \"string\" },",
+							"        \"address\":  {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})",
+							"",
+							"function getRandomInt(max) {",
+							"    return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"",
+							"",
+							"//gets single ",
+							"var getSingleBranch = function(id, comment) {",
+							"    return (",
+							"        pm.sendRequest({",
+							"            url: `http://localhost:7425/api/branches/${id}`,",
+							"            method: 'GET',",
+							"            header: [`user:${pm.environment.get('user_admin')}`] ",
+							"        }, function(err, res) {",
+							"            if (err) {",
+							"                console.log(err)",
+							"            } else {",
+							"                ",
+							"                console.log(comment)",
+							"                console.log(res.json())",
+							"                ",
+							"                var branch = res.json()",
+							"                ",
+							"                pm.environment.set(\"randomBranchName\", branch.name)",
+							"                pm.environment.set(\"randomBranchStatus\", branch.status);",
+							"                pm.environment.set(\"randomBranchEmail\", branch.email)",
+							"                pm.environment.set(\"randomBranchAddress\", branch.address);",
+							"            ",
+							"            }",
+							"        ",
+							"        })",
+							"    )",
+							"}",
+							"",
+							"",
+							"var body = JSON.parse(responseBody);",
+							"var takeBranch = getRandomInt(body.length);",
+							"var randomBranch = body[takeBranch]._id;",
+							"",
+							"pm.environment.set(\"randomBranchID\", randomBranch);",
+							"",
+							"pm.test(`Get single random Branch, with RANDOM ID (${randomBranch})`, function() {",
+							"    getSingleBranch(randomBranch, `Get single user by ID ${randomBranch}`)",
+							"    ",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"   schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"fax\":      {\"type\": \"string\" },",
+							"        \"address\":  {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"    ",
+							"    ",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"value": "{{user_admin}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/branches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"branches"
+					]
+				},
+				"description": "Get all branches"
+			},
+			"response": []
+		},
+		{
+			"name": "BRANCH Get first page of branches",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a685073d-81f9-4fd3-8071-c84098c6587b",
+						"exec": [
+							"pm.test(\"REQUEST SUCCESS (status code is 200)\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"pm.test('Branch schema is valid', function() {",
+							"    schema = {",
+							"        \"status\":   {\"type\": \"boolean\"},",
+							"        \"_id\":      {\"type\": \"string\" },",
+							"        \"name\":     {\"type\": \"string\" },",
+							"        \"surname\":  {\"type\": \"string\" },",
+							"        \"email\":    {\"type\": \"string\" },",
+							"        \"fax\":      {\"type\": \"string\" },",
+							"        \"address\":  {\"type\": \"string\" },",
+							"        \"created\":  {\"type\": \"date\"   }    ",
+							"    };",
+							"    ",
+							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "user",
+						"value": "{{user_admin}}"
+					},
+					{
+						"key": "page",
+						"type": "text",
+						"value": "1"
+					},
+					{
+						"key": "limit",
+						"type": "text",
+						"value": "25"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/branches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"branches"
+					]
+				},
+				"description": "Get all branches"
+			},
+			"response": []
+		},
+		{
+			"name": "USER Modify single user with wrong body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"",
+							"pm.test(\"Got valid responce (status code is 400)\", function () {",
+							"    pm.response.to.have.status(400);",
+							"    ",
+							"});",
+							"",
+							"",
+							"//Checing response fields",
+							"pm.test(\"REQUEST VALIDATION FAILED (Message: Error)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Error\");",
+							"   ",
+							"});",
+							"",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "user",
+						"type": "text",
+						"value": "{{user_admin}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "status",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/users/{{randomUserID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users",
+						"{{randomUserID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER Modify single user with no access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7dd05d6-1d7e-463a-b8d3-d621dbe42b2d",
+						"exec": [
+							"",
+							"pm.test(\"Got valid responce (status code is 401)\", function () {",
+							"    pm.response.to.have.status(401);",
+							"    ",
+							"});",
+							"",
+							"",
+							"//Checing response fields",
+							"pm.test(\"REQUEST VALIDATION FAILED (Message: Unauthorized)\", function (err, res) {",
+							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\");",
+							"   ",
+							"});",
+							"",
+							"",
+							"// milliseconds",
+							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
+							"",
+							"// Checking whether the Content-type header is present.",
+							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "user",
+						"type": "text",
+						"value": "{{user_user}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "status",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7425/api/users/{{randomUserID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7425",
+					"path": [
+						"api",
+						"users",
+						"{{randomUserID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
