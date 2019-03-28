@@ -4,7 +4,7 @@ import Ticket from '../../models/Ticket';
 import User from '../../models/User';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
-import { defaultStatusModels } from '../config/param-controllers';
+import { defaultStatusModels } from '../config/constants.config';
 import { setQueryLimit, getUserRoleCode, getUserBranch, getUserGroup } from '../helper-functions';
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -33,10 +33,20 @@ const usersCounter = async (limit, param) => {
     }
   }
 
+  const totalPromise = User.countDocuments(totalQuery);
+  const openedPromise =  User.countDocuments(activeQuery);
+  const progressPromise = User.countDocuments(disabledQuery);
+
+  const [total, active, disabled] = await Promise.all([
+    totalPromise,
+    openedPromise,
+    progressPromise
+  ]);
+
   return {
-    total: await User.countDocuments(totalQuery),
-    active: await User.countDocuments(activeQuery),
-    disabled: await User.countDocuments(disabledQuery)
+    total,
+    active,
+    disabled
   };
 
 };
@@ -168,7 +178,7 @@ async function getStatistics(req, res, next) {
   //sets time limit in months
   const limit = setQueryLimit(req.headers.months);
   //gets users id
-  const id = mongoose.Types.ObjectId(req.headers.user);
+  const id = mongoose.Types.ObjectId(req.user._id);
   //gets user role
   const role = await getUserRoleCode(id);
 

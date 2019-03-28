@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import Group from '../../models/Group';
 import User from '../../models/User';
-import { defaultGroups } from '../config/param-controllers';
-import { getAsPage, ifArrayContains } from '../helper-functions';
+import { defaultGroups } from '../config/constants.config';
+import { ifArrayContains } from '../helper-functions';
 
 /**
  * Function is called after removing a group,
@@ -148,18 +148,31 @@ const updateGroup = async (req, res) => {
  */
 const listGroups = async (req, res) => {
 
-  const groups = await Group.find({});
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (groups) {
+  const findPromise = Group.find({})
+                           .skip(skipped)
+                           .limit(limit);
 
-    const page = req.headers.page && req.headers.limit
-      ? await getAsPage(req.headers.page, req.headers.limit, groups)
-      : groups;
+  const countPromise = Group.countDocuments();
 
-    res.json(page);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
+
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
 };
 
 /**

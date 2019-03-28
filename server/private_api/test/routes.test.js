@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { checkAccess } from '../helper-functions';
 import * as models from './__mocks__/models.js';
 import request from 'supertest';
 import Branch from '../../models/Branch';
@@ -7,7 +8,6 @@ import Role from '../../models/Role';
 import User from '../../models/User';
 import { app } from '../app';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.set('useFindAndModify', false);
@@ -37,12 +37,6 @@ const removeData = async () => {
 };
 
 beforeAll(async (done) => {
-
-  const result = dotenv.config();
-
-  if (result.error) {
-    throw result.error;
-  }
 
   await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true })
                 .then(() => {
@@ -76,16 +70,16 @@ beforeAll(async (done) => {
   //add test user and assign it to new group and branch
   await new User({
     _id: '507f191e810c19729de860ea',
-    email: process.env.ADMIN_EMAIL,
+    email: 'admin@company.org',
     name: 'HELPER_TEST_USER_NAME',
     surname: 'HELPER_TEST_USER_SURNAME',
     group: testGroup._id,
     branch: testBranch._id,
     role: testRole._id,
-    password: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10)
+    password: bcrypt.hashSync('admin', 10)
   }).save();
 
-  testUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
+  testUser = await User.findOne({ email: 'admin@company.org' });
 
   done();
 
@@ -127,8 +121,8 @@ describe('Verifying AUTH routes.', () => {
       .post('/api/auth/login')
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/x-www-form-urlencoded')
-      .send({ email: process.env.ADMIN_EMAIL })
-      .send({ password: process.env.ADMIN_PASSWORD })
+      .send({ email: 'admin@company.org' })
+      .send({ password: 'admin' })
       .then((response) => {
         cookie = response.headers['set-cookie'];
         expect(response).not.toBeNull();
@@ -439,7 +433,7 @@ describe('Verifying TICKET routes.', () => {
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.statusCode).toBe(200);
-        expect(response.body[0]._id).toMatch(newTicketId.toString());
+        expect(response.body.output[0]._id).toMatch(newTicketId.toString());
         done();
       });
   });
@@ -503,9 +497,10 @@ describe('Verifying GROUP routes.', () => {
       .set('cookie', cookie)
       .set('user', testUser._id)
       .then((response) => {
+
         expect(response).not.toBeNull();
         expect(response.statusCode).toBe(200);
-        expect(response.body[0]._id).toMatch(testGroup._id.toString());
+        expect(response.body.output[0]._id).toMatch(testGroup._id.toString());
         done();
       });
   });

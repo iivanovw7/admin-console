@@ -2,7 +2,7 @@ import passport from 'passport';
 import PassportLocal from 'passport-local';
 import Role from '../../models/Role';
 import User from '../../models/User';
-import { authRoles } from './param-controllers';
+import { authRoles } from './constants.config';
 import { ifArrayContains } from '../helper-functions';
 
 const LocalStrategy = PassportLocal.Strategy;

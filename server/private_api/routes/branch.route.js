@@ -1,6 +1,6 @@
 import express from 'express';
 import validate from 'express-validation';
-import * as paramValidation from '../config/validation/param-validation-branches';
+import * as paramValidation from '../config/validation/branches.config';
 import * as branches from '../controllers/branch.controller';
 import { catchErrors, checkAccess } from '../helper-functions';
 
