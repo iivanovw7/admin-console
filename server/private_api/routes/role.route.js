@@ -1,13 +1,13 @@
 import express from 'express';
 import validate from 'express-validation';
-import * as paramValidation from '../config/validation/param-validation-roles';
+import * as paramValidation from '../config/validation/roles.config';
 import { catchErrors, checkAccess } from '../helper-functions';
 import * as roles from '../controllers/role.controller';
 
 const router = express.Router();
 
 router.route('/')
-      // GET /api/roles/listRoles - Get listRoles from roles list
+      // GET /api/roles - Get listRoles from roles list
       .get(checkAccess, validate(paramValidation.getPageRoles), catchErrors(roles.listRoles))
       // POST /api/roles - Create role
       .post(checkAccess, validate(paramValidation.addRole), catchErrors(roles.addRole));

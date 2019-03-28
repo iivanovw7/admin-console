@@ -56,7 +56,6 @@ export const defaultStatuses = [
   'Cannot be done'
 ];
 
-
 /**
  * List of statuses for statistics controller, used to apply search queries dynamically
  * in order to perform search according to current ticket status field.
