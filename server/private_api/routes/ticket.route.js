@@ -1,7 +1,7 @@
 import express from 'express';
 import validate from 'express-validation';
 import { catchErrors, checkAccess } from '../helper-functions';
-import * as paramValidation from '../config/validation/tickets.config';
+import * as paramValidation from '../config/validation/param-validation-tickets';
 import * as tickets from '../controllers/ticket.controller';
 
 const router = express.Router();

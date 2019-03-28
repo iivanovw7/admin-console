@@ -2,11 +2,8 @@
 
 # dependencies
 server/node_modules
-
-# service derectories (postman tests, samples data and etc.)
 server/samples
 server/api.yaml
-#server/postman
 
 /client/node_modules
 /.pnp

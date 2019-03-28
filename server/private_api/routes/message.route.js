@@ -1,7 +1,7 @@
 import express from 'express';
 import validate from 'express-validation';
 import { catchErrors, checkAccess } from '../helper-functions';
-import * as paramValidation from '../config/validation/messages.config';
+import * as paramValidation from '../config/validation/param-validation-messages';
 import * as messages from '../controllers/message.controller';
 
 
