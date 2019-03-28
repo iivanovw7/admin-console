@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 
 
 /** Authentication handling,
- * according to parameters in params-passport.config.js
+ * according to parameters in params-passport.js
  *
  * @param req
  * @param res
@@ -34,15 +34,13 @@ const logout = async (req, res) => {
 };
 
 // Used for handling protected routes
-const isLoggedIn = async (request, response, next) => {
-
+function isLoggedIn(request, response, next) {
   // passport adds this to the request object
   if (request.isAuthenticated()) {
     return next();
   }
-
-  return response.sendStatus(httpStatus.UNAUTHORIZED);
-};
+  response.redirect('/login');
+}
 
 export { login, logout, isLoggedIn };
 

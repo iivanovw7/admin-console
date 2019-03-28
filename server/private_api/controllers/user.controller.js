@@ -3,7 +3,7 @@ import Group from '../../models/Group';
 import Role from '../../models/Role';
 import User from '../../models/User';
 import History from '../../models/History';
-import { addHistory, setQueryLimit } from '../helper-functions';
+import { getAsPage, addHistory, setQueryLimit } from '../helper-functions';
 
 /**
  * Get user
@@ -35,36 +35,21 @@ const getUser = async (req, res) => {
  */
 const listUsers = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
-
-  const findPromise = User.find({})
+  const users = await User.find({})
                           .populate({ path: 'role', model: Role })
                           .populate({ path: 'group', model: Group })
-                          .sort({ surname: 'asc' })
-                          .skip(skipped)
-                          .limit(limit);
+                          .sort({ surname: 'asc' });
 
-  const countPromise = User.countDocuments();
+  if (users) {
 
-  const [output, results] = await Promise.all([findPromise, countPromise]);
+    const page = req.headers.page && req.headers.limit
+      ? await getAsPage(req.headers.page, req.headers.limit, users)
+      : users;
 
-  const pages = Math.ceil(results / limit);
-
-  if (!output && results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+    res.json(page);
+  } else {
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
-
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
-
-
 };
 
 /**Find users by group id
@@ -76,35 +61,15 @@ const listUsers = async (req, res) => {
  */
 const getUsersByGroup = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
+  const users = await User.find({ group: req.params.id })
+                          .sort({ surname: 'asc' });
 
-  const findPromise = User.find({ group: req.params.id })
-                          .populate({ path: 'role', model: Role })
-                          .populate({ path: 'group', model: Group })
-                          .sort({ surname: 'asc' })
-                          .skip(skipped)
-                          .limit(limit);
-
-  const countPromise = User.countDocuments();
-
-  const [output, results] = await Promise.all([findPromise, countPromise]);
-
-  const pages = Math.ceil(results / limit);
-
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+  if (users) {
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
+  } else {
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
-
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
-
 };
 
 /**Find users by branch id
@@ -116,36 +81,15 @@ const getUsersByGroup = async (req, res) => {
  */
 const getUsersByBranch = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
+  const users = await User.find({ branch: req.params.id })
+                          .sort({ surname: 'asc' });
 
-  const findPromise = User.find({ branch: req.params.id })
-                          .populate({ path: 'role', model: Role })
-                          .populate({ path: 'group', model: Group })
-                          .sort({ surname: 'asc' })
-                          .skip(skipped)
-                          .limit(limit);
-
-  const countPromise = User.countDocuments();
-
-  const [output, results] = await Promise.all([findPromise, countPromise]);
-
-  const pages = Math.ceil(results / limit);
-
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+  if (users) {
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
+  } else {
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
-
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
-
-
 };
 
 /**Find users by query, by name or email
@@ -156,44 +100,20 @@ const getUsersByBranch = async (req, res) => {
  */
 const searchUsers = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
-
-  const query = {
+  const users = await User.find({
     $or: [
       { name: req.headers.search },
       { surname: req.headers.search },
       { email: req.headers.search }
     ]
-  };
+  }).sort({ surname: 'asc' });
 
-  const findPromise = User.find(query)
-                          .populate({ path: 'role', model: Role })
-                          .populate({ path: 'group', model: Group })
-                          .sort({ surname: 'asc' })
-                          .skip(skipped)
-                          .limit(limit);
-
-  const countPromise = User.countDocuments();
-
-  const [output, results] = await Promise.all([findPromise, countPromise]);
-
-  const pages = Math.ceil(results / limit);
-
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+  if (users) {
+    const page = await getAsPage(req.headers.page, req.headers.limit, users);
+    res.json(page);
+  } else {
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
-
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
-
-
 };
 
 
@@ -239,36 +159,20 @@ const updateUser = async (req, res) => {
  */
 const getUserHistory = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
+  const limit = setQueryLimit(req.headers.months);
 
-  const queryLimit = setQueryLimit(req.headers.months);
-  const query = { created: { $gt: queryLimit }, actionTarget: req.params.id };
+  const records = await
+    History.find({ created: { $gt: limit }, targetId: req.params.id })
+           .populate({ path: 'author', model: User })
+           .sort({ created: '-1' });
 
-  const findPromise = await History.find(query)
-                                   .populate({ path: 'author', model: User })
-                                   .sort({ created: '-1' })
-                                   .skip(skipped)
-                                   .limit(limit);
-
-  const countPromise = User.countDocuments();
-
-  const [output, results] = await Promise.all([findPromise, countPromise]);
-
-  const pages = Math.ceil(results / limit);
-
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
+  if (records) {
+    const page = await getAsPage(req.headers.page, req.headers.limit, records);
+    res.json(page);
+  } else {
+    res.sendStatus(httpStatus.NOT_FOUND);
   }
 
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
 
 };
 

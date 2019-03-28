@@ -1,13 +1,13 @@
 import express from 'express';
 import validate from 'express-validation';
-import * as paramValidation from '../config/validation/branches.config';
+import * as paramValidation from '../config/validation/param-validation-branches';
 import * as branches from '../controllers/branch.controller';
 import { catchErrors, checkAccess } from '../helper-functions';
 
 const router = express.Router();
 
 router.route('/')
-      // GET /api/branches - Get list of branches from branches list
+      // GET /api/branches/listRoles - Get listRoles from branches list
       .get(checkAccess, validate(paramValidation.getPageBranches), catchErrors(branches.listBranches))
       // POST /api/branches - Create new branch
       .post(checkAccess, validate(paramValidation.addBranch), catchErrors(branches.addBranch));

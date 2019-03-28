@@ -327,7 +327,7 @@
 							"    pm.expect(pm.response.text()).to.include(\"Error\");",
 							"    pm.expect(pm.response.text()).to.include(\"password\");",
 							"    pm.expect(pm.response.text()).to.include(\"is not allowed to be empty\");",
-							"});",
+							" });",
 							"",
 							"",
 							"// cheking response timeout milliseconds",
@@ -474,13 +474,8 @@
 							"// Checking login with correct fields",
 							"pm.test(\"Got valid responce (status code is 200)\", function () {",
 							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.json; // проверка формата",
+							"    ",
 							"});",
-							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
-							"",
 							"",
 							"pm.test('User schema is valid', function() {",
 							"    schema = {",
@@ -613,7 +608,7 @@
 							"",
 							"pm.test(\"Got valid responce (status code is 401)\", function () {",
 							"    pm.response.to.have.status(401);",
-							" ",
+							"    ",
 							"});",
 							"",
 							"",
@@ -626,7 +621,7 @@
 							"//Checing response fields",
 							"pm.test(\"REQUEST FAILED (Message: Unauthorized)\", function (err, res) {",
 							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\");",
-							"});",
+							" });",
 							"",
 							"",
 							"",
@@ -723,10 +718,6 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
-							"",
 							"// Checking whether the Content-type header is present.",
 							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
 							"",
@@ -806,8 +797,8 @@
 							"// Checking login with correct fields",
 							"pm.test(\"Got valid responce (status code is 400)\", function () {",
 							"    pm.response.to.have.status(400);",
+							"    ",
 							"});",
-							"",
 							"",
 							"//Checing response fields",
 							"pm.test(\"REQUEST VALIDATION FAILED (Message: page must be a number, limit must be larger than or equal to 1)\", function (err, res) {",
@@ -893,10 +884,6 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
-							"",
 							"// milliseconds",
 							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
 							"",
@@ -974,7 +961,7 @@
 							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
 							"    ",
 							"    ",
-							"});"
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -1020,10 +1007,6 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
-							"",
 							"// milliseconds",
 							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
 							"",
@@ -1040,7 +1023,7 @@
 							"    };",
 							"    ",
 							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
-							"});"
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -1095,10 +1078,7 @@
 							"",
 							"pm.test(\"Got valid responce (status code is 400)\", function () {",
 							"    pm.response.to.have.status(400);",
-							"});",
-							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
+							"    ",
 							"});",
 							"",
 							"",
@@ -1175,11 +1155,9 @@
 							"",
 							"pm.test(\"Got valid responce (status code is 401)\", function () {",
 							"    pm.response.to.have.status(401);",
+							"    ",
 							"});",
 							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
 							"",
 							"//Checing response fields",
 							"pm.test(\"REQUEST VALIDATION FAILED (Message: Unauthorized)\", function (err, res) {",
@@ -1240,139 +1218,6 @@
 						"{{randomUserID}}"
 					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "GROUP get and save random group",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "e7bfcee0-6c60-448f-ab0b-c8073822306d",
-						"exec": [
-							"pm.test(\"REQUEST SUCCESS (status code is 200)\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Got valid responce in json\", function () {",
-							"    pm.response.to.be.json; // проверка формата",
-							"});",
-							"",
-							"pm.test('Group schema is valid', function() {",
-							"    schema = {",
-							"        \"status\":       {\"type\": \"boolean\"},",
-							"        \"permissions\":  {\"type\": \"boolean\" },",
-							"        \"_id\":          {\"type\": \"string\" },",
-							"        \"name\":         {\"type\": \"string\" },",
-							"        \"description\":  {\"type\": \"string\" },",
-							"    };",
-							"    ",
-							"    pm.expect(tv4.validate(schema, pm.response.json())).to.be.true;",
-							"});",
-							"",
-							"// milliseconds",
-							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
-							"",
-							"// Checking whether the Content-type header is present.",
-							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
-							"",
-							"//save admin_group id",
-							"try {",
-							"    pm.environment.set(\"randomGroupStatus\", pm.response.json()[0].status);",
-							"    pm.environment.set(\"randomGroupID\", pm.response.json()[0]._id);",
-							"    pm.environment.set(\"randomGroupName\", pm.response.json()[0].name);",
-							"    ",
-							"} catch(e) {",
-							"    console.log(e);",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "user",
-						"value": "{{user_admin}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:7425/api/groups",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7425",
-					"path": [
-						"api",
-						"groups"
-					]
-				},
-				"description": "Get groups"
-			},
-			"response": []
-		},
-		{
-			"name": "GROUP get groups with no access",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "e7bfcee0-6c60-448f-ab0b-c8073822306d",
-						"exec": [
-							"pm.test(\"REQUEST RESPONSE (status code is 401)\", function () {",
-							"    pm.response.to.have.status(401);",
-							"});",
-							"",
-							"// milliseconds",
-							"tests[`Response time is acceptable: < ${pm.environment.get('responceTime_GET')} ms`] = responseTime < pm.environment.get('responceTime_GET'); ",
-							"",
-							"// Checking whether the Content-type header is present.",
-							"tests[\"content-type header is present\"] = postman.getResponseHeader(\"content-type\");",
-							"",
-							"//Checing response fields",
-							"pm.test(\"REQUEST FAILED (Message: Unauthorized)\", function (err, res) {",
-							"    pm.expect(pm.response.text()).to.include(\"Unauthorized\");",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "user",
-						"value": "{{user_user}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:7425/api/roles",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "7425",
-					"path": [
-						"api",
-						"roles"
-					]
-				},
-				"description": "Get groups"
 			},
 			"response": []
 		}
