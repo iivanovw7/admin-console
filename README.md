@@ -3,24 +3,18 @@
 Admin console of some IT company. Allows to manage specific company's data.
 
 
-
-
 ---
 
 ## Table of Contents
 
-
-- [Installation](#installation)
-- [Requiremets](#requirements)
+- [Requirements](#requirements)
+- [Clone](#clone)
 - [Installation](#installation)
 - [Features](#features)
-- [Unit testing](#unit testing)
-- [Postman testing](#postman testing)
+- [Testing](#testing)
 - [License](#license)
 
 ---
-
-
 
 
 ## Requirements
@@ -44,11 +38,14 @@ Admin console of some IT company. Allows to manage specific company's data.
 
 > Backend: NodeJS, Express, MongoDB, Mongoose  
 
-## Unit testing
+## Testing
+
+#### Unit testing
 
 Unit tests cover all database models, all routes including authentication routes and helper-functions as well.
   
 > Libraries used 
+
 - [Jest](https://jestjs.io/)
 - [Supertest](https://github.com/visionmedia/supertest)
 - [Mokinggoose](https://github.com/alonronin/mockingoose)
@@ -59,7 +56,7 @@ Unit tests cover all database models, all routes including authentication routes
 `npm run tests` <br />
 
 
-## Postman testing
+#### Postman testing
 
 Repository contains postman tests backups, which can be used for API testing.
 

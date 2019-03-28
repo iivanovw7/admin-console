@@ -5,13 +5,11 @@ import { BrowserRouter } from 'react-router-dom';
 import routes from './routes';
 import Store from './store/index';
 import * as serviceWorker from './serviceWorker';
-import './styles/main.sass'
+import './styles/main.sass';
 
 const store = Store();
 
 const mountPoint = document.getElementById('root');
-
-//ReactDOM.render(<App/>, mountPoint);
 
 ReactDOM.render(
   <Provider store={store}>
