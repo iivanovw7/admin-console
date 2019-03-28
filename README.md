@@ -11,7 +11,8 @@ Admin console of some IT company. Allows to manage specific company's data.
 
 
 - [Installation](#installation)
-- [Requiremets](#requirements)
+- [Requirements](#requirements)
+- [Testing](#Testing)
 - [Installation](#installation)
 - [Features](#features)
 - [License](#license)
@@ -27,6 +28,35 @@ Admin console of some IT company. Allows to manage specific company's data.
 
 - [NPM](https://www.npmjs.com/get-npm)
 
+## Testing
+
+Unit tests cover all database models, all routes including authentication routes and helper-functions as well.
+
+> Libraries used:  
+- Jest
+- Supertest
+- Mokinggoose
+ 
+> To run unit tests:
+```
+npm install 
+npm run tests
+``` 
+ 
+
+##Postman testing
+
+Repository contains postman tests backups, which can be used for API testing.
+
+> To run postman tests:  
+- Upload samples data into db  `npm run reload`
+- Import postman collections from `./server/postman` directory
+- Fill in postman environment variables with correct mongoDB objectID :
+    - user_admin
+    - user_manager
+    - user_user
+- Run collection API_TEST with delay around `100`ms 
+
 
 ### Clone
 
@@ -41,6 +71,7 @@ Admin console of some IT company. Allows to manage specific company's data.
 > Frontend: ReactJS 
 
 > Backend: NodeJS, Express, MongoDB, Mongoose  
+
 
 ## License
 
