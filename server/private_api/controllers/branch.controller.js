@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import Branch from '../../models/Branch';
-import { getAsPage } from '../helper-functions';
+
 
 /**
  * Gets one listRoles of branches if called with listRoles and limit,
@@ -14,19 +14,32 @@ import { getAsPage } from '../helper-functions';
  */
 const listBranches = async (req, res) => {
 
-  const branches = await Branch.find({});
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (branches) {
+  const findPromise = Branch.find({})
+                            .skip(skipped)
+                            .limit(limit);
 
-    const page = req.headers.page && req.headers.limit
-      ? await getAsPage(req.headers.page, req.headers.limit, branches)
-      : branches;
+  const countPromise = Branch.countDocuments();
 
-    res.json(page);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
+
 };
 
 /**
@@ -118,7 +131,7 @@ const addBranch = async (req, res) => {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
-    const newBranch = {
+    await new Branch({
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
@@ -126,11 +139,10 @@ const addBranch = async (req, res) => {
       address: req.body.address,
       information: req.body.information,
       status: req.body.status
-    };
+    }).save();
 
     //Saving new object in to collection
-    const savedBranch = await newBranch.save();
-
+    const savedBranch = await Branch.findOne({ name: req.body.name });
     if (savedBranch) {
       res.status(201).json(savedBranch);
     } else {

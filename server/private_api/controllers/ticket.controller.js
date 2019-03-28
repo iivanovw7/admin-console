@@ -2,11 +2,12 @@ import httpStatus from 'http-status';
 import Ticket from '../../models/Ticket';
 import User from '../../models/User';
 import Branch from '../../models/Branch';
-import { defaultStatuses } from '../config/param-controllers';
-import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-functions';
+import { defaultStatuses } from '../config/constants.config';
+import { ifArrayContains } from '../helper-functions';
 
 /**
  * Imitation of email notification.
+ * TODO Add notifications logic
  * @returns {user.email, message}
  */
 
@@ -15,10 +16,10 @@ const sendNotifications = async ticket => {
   const user = await User.findOne({ _id: ticket.authorId });
 
   if (user) {
-    console.log('Send notification to ' + user.email);
-    console.log(ticket);
+    //console.log('Send notification to ' + user.email);
+    //console.log(ticket);
   } else {
-    console.log('User not found!');
+    //console.log('User not found!');
   }
 
 };
@@ -33,22 +34,35 @@ const sendNotifications = async ticket => {
  */
 const listTickets = async (req, res) => {
 
-  const tickets = await
-    Ticket.find({})
-          .populate({ path: 'authorId', model: User })
-          .populate({ path: 'branchId', model: Branch })
-          .sort({ created: '-1' });
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (tickets) {
+  const findPromise = Ticket.find({})
+                            .populate({ path: 'authorId', model: User })
+                            .populate({ path: 'branchId', model: Branch })
+                            .sort({ created: '-1' })
+                            .skip(skipped)
+                            .limit(limit);
 
-    const page = req.headers.page && req.headers.limit
-      ? await getAsPage(req.headers.page, req.headers.limit, tickets)
-      : tickets;
+  const countPromise = Ticket.countDocuments();
 
-    res.json(page);
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
+
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
+
 };
 
 /**
@@ -72,43 +86,58 @@ const getTicket = async (req, res) => {
 
 /**
  * Find tickets by query, by subject, name or surname
- * @requires {number} listRoles: req.headers.listRoles
+ * @requires {number} page: req.headers.page
  * @requires {number} limit: req.headers.limit
  * @requires {string} search: req.headers.search
  */
 const searchTicket = async (req, res) => {
 
-  const search = req.headers.search;
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
+  const search = req.headers.search; //string we are searching
 
-  const tickets = await Ticket.find({})
-                              .populate({ path: 'authorId', model: User })
-                              .populate({ path: 'branchId', model: Branch })
-                              .sort({ created: '-1' });
+  //querying tickets by subject
+  const idQuery = { $or: [{ name: search }, { surname: search }] };
 
-  if (tickets) {
+  //getting ids of tickets authors
+  const userIDs = await User.find(idQuery).distinct('_id');
 
-    let filtered = []; //initial search output
-    let cachedLength = tickets.length;
+  //querying tickets
+  const ticketQuery = {
+    $or: [
+      { subject: { $regex: search, $options: 'i' } },
+      { authorId: {$in: userIDs } }
+    ]
+  };
 
-    for (let i = 0; i < cachedLength; i++) {
+  const findPromise = await Ticket.find(ticketQuery)
+                                  .populate({ path: 'authorId', model: User })
+                                  .populate({ path: 'branchId', model: Branch })
+                                  .skip(skipped)
+                                  .limit(limit)
+                                  .sort({ created: '-1' });
 
-      let fields = [tickets[i].subject, tickets[i].authorId.name, tickets[i].authorId.surname];
+  const countPromise = await Ticket.find(ticketQuery).countDocuments();
 
-      if (ifStringsContain(fields, search)) {
-        filtered.push(tickets[i]); //adding new element in results
-      }
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
-    }
+  const pages = Math.ceil(results / limit);
 
-    const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
-    return res.json(page);
-
-  } else {
+  if (!output && results === 0) {
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
 
 };
+
 
 /**
  * Function creates new Ticket

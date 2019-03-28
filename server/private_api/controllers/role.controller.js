@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import Role from '../../models/Role';
 import User from '../../models/User';
-import { defaultRoles, mainRoles } from '../config/param-controllers';
-import { catchErrors, getAsPage, ifArrayContains } from '../helper-functions';
+import { defaultRoles, mainRoles } from '../config/constants.config';
+import { ifArrayContains } from '../helper-functions';
 
 /**
  * Function is called after removing a role,
@@ -49,19 +49,32 @@ function swapRoles(req, res, params) {
  */
 const listRoles = async (req, res) => {
 
-  const roles = await Role.find({});
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (roles) {
+  const findPromise = Role.find({})
+                          .skip(skipped)
+                          .limit(limit);
 
-    const page = req.headers.page && req.headers.limit
-      ? await getAsPage(req.headers.page, req.headers.limit, roles)
-      : roles;
+  const countPromise = Role.countDocuments();
 
-    res.json(page);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
+
 };
 
 /**

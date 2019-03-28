@@ -1,6 +1,6 @@
 import express from 'express';
 import validate from 'express-validation';
-import * as paramValidation from '../config/validation/param-validation-groups';
+import * as paramValidation from '../config/validation/groups.config';
 import * as groups from '../controllers/group.controller';
 import { catchErrors, checkAccess } from '../helper-functions';
 
