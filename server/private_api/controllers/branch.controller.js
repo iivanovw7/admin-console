@@ -1,8 +1,6 @@
 import httpStatus from 'http-status';
 import Branch from '../../models/Branch';
-import Group from '../../models/Group';
-import Role from '../../models/Role';
-import { getAsPage } from '../helper-functions';
+
 
 /**
  * Gets one listRoles of branches if called with listRoles and limit,
@@ -16,19 +14,32 @@ import { getAsPage } from '../helper-functions';
  */
 const listBranches = async (req, res) => {
 
-  const branches = await Branch.find({});
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (branches) {
+  const findPromise = Branch.find({})
+                            .skip(skipped)
+                            .limit(limit);
 
-    const page = req.headers.page && req.headers.limit
-      ? await getAsPage(req.headers.page, req.headers.limit, branches)
-      : branches;
+  const countPromise = Branch.countDocuments();
 
-    res.json(page);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
-  } else {
-    res.sendStatus(httpStatus.NOT_FOUND);
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
+
 };
 
 /**

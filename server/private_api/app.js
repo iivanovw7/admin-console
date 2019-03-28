@@ -4,16 +4,18 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
-import './config/param-passport.js';
-import dotenv from 'dotenv';
-const result = dotenv.config();
+import './config/passport.config.js';
 
-/** Getting ENV variables */
-if (result.error) {
-  throw result.error;
-}
+const allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+};
 
 const app = express();
+
+app.use(allowCrossDomain);
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(cookieParser());

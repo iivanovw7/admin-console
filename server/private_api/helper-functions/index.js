@@ -3,7 +3,7 @@ import Role from '../../models/Role';
 import User from '../../models/User';
 import Branch from '../../models/Branch';
 import Group from '../../models/Group';
-import { authRoles } from '../config/param-controllers';
+import { authRoles } from '../config/constants.config';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 
@@ -15,30 +15,6 @@ export const catchErrors = fn => {
   };
 };
 
-//function iterates over strings array and checks every string in order to find a match
-//with a input string
-export function ifStringsContain(array = [], value = '') {
-
-  for (const element of array) {
-    if (ifStringMatches(element, value)) {
-      return true;
-    }
-  }
-  return false;
-
-}
-
-//checks if string contains another string, and returns true if there is a match
-//uppercase insensitive
-export function ifStringMatches(string, value) {
-
-  if (!string || !value || typeof string !== 'string' || typeof value !== 'string') {
-    return false;
-  } else {
-    return (string.search(new RegExp(value, 'i')) !== -1);
-  }
-
-}
 
 /**
  * Forms value in months for date filter
@@ -142,12 +118,14 @@ export const getUserGroup = async id => {
  */
 export const checkAccess = async (req, res, next) => {
 
-  if (!ObjectId.isValid(req.headers.user)) {
+
+
+  if (!ObjectId.isValid(req.user._id)) {
     //console.log('Wrong user id!');
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
-    const id = ObjectId(req.headers.user);
+    const id = ObjectId(req.user._id);
 
     const role = await getUserRoleCode(id);
 
@@ -181,37 +159,3 @@ export function ifArrayContains(element, list) {
   return false;
 }
 
-/**
- * Function forms one listRoles of objects out of incoming list of objects
- * no mater what list it got in parameters
- *
- * @param currPage: {number}, current listRoles number
- * @param currLimit: {number}, number of elements for one listRoles
- * @param list: {[]}, array of objects
- *
- * @returns {Promise<{output: *[], pages: number, limit: *, listRoles: *}>}
- */
-export const getAsPage = async (currPage = 1, currLimit = 10, list = []) => {
-
-  //needed to keep input numbers inside certain limits
-  //in order to prevent unpredicted outputs
-  function limitNumber(min, max, val) {
-    return Math.round(Math.min(Math.max(val, min), max));
-  }
-
-  const results = list.length;
-
-  //applying limits of elements for one listRoles
-  const limit = limitNumber(1, 25, currLimit);
-
-  //applying limits for maximum listRoles number value
-  const pages = Math.ceil(list.length / limit);
-
-  //applying limits for input pageNumber value
-  const page = limitNumber(1, pages, currPage);
-
-  const skipped = (page * limit) - limit;
-  const output = list.slice(skipped, skipped + limit);
-
-  return { page, limit, pages, results, output };
-};

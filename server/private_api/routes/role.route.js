@@ -1,6 +1,6 @@
 import express from 'express';
 import validate from 'express-validation';
-import * as paramValidation from '../config/validation/param-validation-roles';
+import * as paramValidation from '../config/validation/roles.config';
 import { catchErrors, checkAccess } from '../helper-functions';
 import * as roles from '../controllers/role.controller';
 

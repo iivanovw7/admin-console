@@ -2,9 +2,17 @@ import Branch from '../../models/Branch';
 import Group from '../../models/Group';
 import User from '../../models/User';
 import Role from '../../models/Role';
-import { defaultRoles } from '../config/param-controllers';
-import { createTickets } from './__mocks__/tickets';
+import { defaultRoles } from '../config/constants.config';
 import mongoose from 'mongoose';
+
+//Functions to be tested
+import {
+  ifArrayContains,
+  getUserRoleCode,
+  getUserBranch,
+  getUserGroup,
+  checkAccess,
+} from '../helper-functions';
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.set('useFindAndModify', false);
@@ -18,18 +26,6 @@ let testBranch;
 let testUser;
 let testRole;
 
-//Functions to be tested
-import {
-  ifStringsContain,
-  ifArrayContains,
-  getUserRoleCode,
-  getUserBranch,
-  getUserGroup,
-  checkAccess,
-  getAsPage
-} from '../helper-functions';
-
-
 beforeAll(async (done) => {
 
   mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true })
@@ -41,7 +37,6 @@ beforeAll(async (done) => {
           });
 
   db = mongoose.connection;
-
 
   //create test group
   await new Group({
@@ -105,10 +100,6 @@ afterAll(async (done) => {
 describe('Checking helper-functions: ', function () {
 
   it('ifStringsContain(defaultRoles, admin) expects to be TRUE', async () => {
-    expect(await ifStringsContain(defaultRoles, 'admin')).toBe(true);
-  });
-
-  it('ifStringsContain(defaultRoles, admin) expects to be TRUE', async () => {
     expect(await ifArrayContains(defaultRoles, 'admin')).toBe(false);
   });
 
@@ -135,7 +126,7 @@ describe('Checking helper-functions: ', function () {
   it('checkAccess(req, res, next) expect TO NOT receive an auth error', async (done) => {
 
     const res = {};
-    const req = { headers: { user: testUser._id } };
+    const req = { user: testUser };
 
     const next = (err) => {
       expect(err).toBeFalsy();
@@ -143,21 +134,6 @@ describe('Checking helper-functions: ', function () {
     };
 
     await checkAccess(req, res, next);
-
-  });
-
-  it('getAsPage() expect to receive formatted list of records', async () => {
-
-    const length = 130;
-    const list = createTickets(length);
-
-    const formatted = await getAsPage(2, 11, list);
-
-    expect(formatted.page).toEqual(2);
-    expect(formatted.limit).toEqual(11);
-    expect(formatted.results).toEqual(length);
-    expect(formatted.output[0].id).toEqual(11);
-    expect(formatted.output).toHaveLength(11);
 
   });
 
