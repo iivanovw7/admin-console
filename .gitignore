@@ -4,8 +4,8 @@
 server/samples
 server/api.yaml
 server/node_modules
+client/node_modules
 
-/client/node_modules
 /.pnp
 .pnp.js
 
