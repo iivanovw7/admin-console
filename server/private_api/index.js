@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { app } from './app';
+
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 
 mongoose.set('useFindAndModify', false);

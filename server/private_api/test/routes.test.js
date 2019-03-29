@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import { checkAccess } from '../helper-functions';
 import * as models from './__mocks__/models.js';
 import request from 'supertest';
 import Branch from '../../models/Branch';

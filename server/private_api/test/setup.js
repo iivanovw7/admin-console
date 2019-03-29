@@ -1,11 +1,11 @@
 import path from 'path';
 import fs from 'fs';
-import MongoMemoryServer from 'mongodb-memory-server'
+import MongoMemoryServer from 'mongodb-memory-server';
 
 const globalConfigPath = path.join(__dirname, 'globalConfig.json');
 
 const mongod = new MongoMemoryServer({
-  autoStart: false,
+  autoStart: false
 });
 
 export default async () => {
@@ -16,7 +16,7 @@ export default async () => {
 
   const mongoConfig = {
     mongoDBName: 'jest',
-    mongoUri: await mongod.getConnectionString(),
+    mongoUri: await mongod.getConnectionString()
   };
 
   // Write global config to disk because all tests run in different contexts.

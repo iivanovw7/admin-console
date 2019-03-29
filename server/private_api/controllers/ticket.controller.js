@@ -107,7 +107,7 @@ const searchTicket = async (req, res) => {
   const ticketQuery = {
     $or: [
       { subject: { $regex: search, $options: 'i' } },
-      { authorId: {$in: userIDs } }
+      { authorId: { $in: userIDs } }
     ]
   };
 

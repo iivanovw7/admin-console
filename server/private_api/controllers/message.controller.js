@@ -195,52 +195,6 @@ const sendMessage = async (req, res) => {
 
 };
 
-/*
-
-const searchTicket = async (req, res) => {
-
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
-  const skipped = (page * limit) - limit;
-
-  //querying tickets by subject
-  const idQuery = { $or: [{ name: req.headers.search }, { surname: req.headers.search }] };
-
-  //getting ids of tickets authors
-  const userIDs = await User.find(idQuery).distinct('_id');
-
-  //querying tickets
-  const ticketQuery = {
-    $or: [
-      { subject: { $regex: req.headers.search, $options: 'i' } },
-      { authorId: {$in: userIDs } }
-    ]
-  };
-
-  const findPromise = await Ticket.find(ticketQuery).skip(skipped).limit(limit).sort({ created: '-1' });
-  const countPromise = await Ticket.find(ticketQuery).countDocuments();
-
-  const [output, results] = await Promise.all([findPromise, countPromise]);
-
-  const pages = Math.ceil(results / limit);
-
-  if (!output && results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
-  res.json({
-    page,
-    limit,
-    pages,
-    results,
-    output
-  });
-
-};
-
-
- */
-
 
 /**
  * Finds messages by subject, name or surname
@@ -316,59 +270,6 @@ const searchMessages = async (req, res) => {
   });
 
 };
-
-/*
-
-
-const searchMessages = async (req, res) => {
-
-  const user = await getUser({ _id: req.user._id });
-  const role = user.role.code; //users role code from database
-  const baseQuery = {}; //base search query
-  const search = req.headers.search; //string we are searching
-
-
-  //if user has access limit applying additional parameters to a search query
-  if (ifArrayContains(role, branchAccess)) {
-    baseQuery.branchId = user.branch;
-  }
-
-  //if user has access limit applying additional parameters to a search query
-  if (ifArrayContains(role, groupAccess)) {
-    baseQuery.groupId = user.group;
-  }
-
-  const msg = await Message.find(baseQuery)
-                           .populate({ path: 'senderId', model: User })
-                           .populate({ path: 'branchId', model: Branch })
-                           .populate({ path: 'groupId', model: Group })
-                           .sort({ created: '-1' });
-
-  if (msg) {
-
-    let filtered = []; //initial search output
-    let cachedLength = msg.length;
-
-    for (let i = 0; i < cachedLength; i++) {
-
-      let fields = [msg[i].subject, msg[i].senderId.name, msg[i].senderId.surname];
-
-      if (ifStringsContain(fields, search)) {
-        filtered.push(msg[i]); //adding new element in results
-      }
-    }
-
-    const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
-    return res.json(page);
-
-  } else {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
-};
-
-
- */
 
 
 export {
