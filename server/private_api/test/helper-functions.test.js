@@ -11,7 +11,7 @@ import {
   getUserRoleCode,
   getUserBranch,
   getUserGroup,
-  checkAccess,
+  checkAccess
 } from '../helper-functions';
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises

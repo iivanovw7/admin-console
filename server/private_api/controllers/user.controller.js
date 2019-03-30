@@ -272,7 +272,6 @@ const getUserHistory = async (req, res) => {
 
 };
 
-
 export {
   getUser,
   listUsers,

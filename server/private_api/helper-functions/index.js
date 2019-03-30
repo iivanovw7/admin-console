@@ -118,8 +118,6 @@ export const getUserGroup = async id => {
  */
 export const checkAccess = async (req, res, next) => {
 
-
-
   if (!ObjectId.isValid(req.user._id)) {
     //console.log('Wrong user id!');
     return res.sendStatus(httpStatus.BAD_REQUEST);

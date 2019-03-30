@@ -34,7 +34,7 @@ const usersCounter = async (limit, param) => {
   }
 
   const totalPromise = User.countDocuments(totalQuery);
-  const openedPromise =  User.countDocuments(activeQuery);
+  const openedPromise = User.countDocuments(activeQuery);
   const progressPromise = User.countDocuments(disabledQuery);
 
   const [total, active, disabled] = await Promise.all([

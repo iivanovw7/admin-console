@@ -1,7 +1,7 @@
-import React from 'react';
 
 //values and properties needed for input form validation
 export const validate = values => {
+
   const errors = {};
   if (!values.email) {
     errors.email = 'Поле обязательно';

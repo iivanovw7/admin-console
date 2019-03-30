@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
   created: { type: Date, default: Date.now },
   status: { type: Boolean, default: false },
   role: { type: mongoose.Schema.ObjectId, ref: 'Role', required: true }
+
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {

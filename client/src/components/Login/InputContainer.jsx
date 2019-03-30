@@ -15,6 +15,7 @@ export const InputContainer = (props) => {
           component={renderTextField}
           label={props.dataType}
           id={props.dataType}
+          {...props.data}
         />
       </Grid>
     </Grid>

@@ -1,4 +1,4 @@
-//roles available for authentication
+//list of roles available for authentication
 export const authRoles = [
   'ADMIN',
   'SUPPORT',

@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 Joi.objectId = require('joi-objectid')(Joi);
 
 // Validation for Users
@@ -56,11 +57,11 @@ export const getPageBranch = {
 // GET /api/users/group/:id
 export const getPageGroup = {
   params: {
-    id: Joi.objectId().required(),
+    id: Joi.objectId().required()
   },
   headers: {
     page: Joi.number().required(),
-    limit: Joi.number().required(),
+    limit: Joi.number().required()
   }
 };
 
@@ -69,7 +70,7 @@ export const getPageSearch = {
   headers: {
     search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
-    limit: Joi.number().required(),
+    limit: Joi.number().required()
   }
 };
 

@@ -10,8 +10,8 @@
     }
   },
   "rules": {
-    "semi": "error",
     "@getify/proper-ternary/nested": "error",
-    "@getify/proper-ternary/parens": "error"
+    "@getify/proper-ternary/parens": "error",
+    "semi": "error"
   }
 }

@@ -1,5 +1,5 @@
 // jest.config.js
-const { defaults } = require ('jest-config');
+const { defaults } = require('jest-config');
 
 module.exports = {
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
@@ -7,6 +7,6 @@ module.exports = {
   verbose: true,
   globalSetup: './setup.js',
   globalTeardown: './teardown.js',
-  testEnvironment: './mongo-environment.js',
+  testEnvironment: './mongo-environment.js'
 };
 

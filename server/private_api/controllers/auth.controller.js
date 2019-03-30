@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
         if (err) {
           return next(err);
         }
-        return res.sendStatus(httpStatus.OK);
+        return res.json(user);
       });
     }
   })(req, res, next);
