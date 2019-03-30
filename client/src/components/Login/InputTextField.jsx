@@ -16,8 +16,8 @@ export const renderTextField = ({
       label={label}
       type={type}
       name={name}
-      error={!!error}
-      helperText={error ? error : ' '}
+      error={!!error && touched}
+      helperText={error && touched ? error : ' '}
       {...input}
       {...custom}
       fullWidth

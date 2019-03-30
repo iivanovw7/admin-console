@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core';
 import React from 'react';
 import { Field } from 'redux-form';
-import { renderTextField } from './inputTextField';
+import { renderTextField } from './InputTextField';
 
 
 export const InputContainer = (props) => {

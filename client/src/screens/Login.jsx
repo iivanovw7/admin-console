@@ -4,43 +4,12 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { reduxForm } from 'redux-form';
 import { Helmet } from 'react-helmet';
-import { signInAction } from '../actions/index';
+import { signInAction, signOutAction } from '../actions/index';
 import { connect } from 'react-redux';
-import { InputContainer } from '../components/Login/inputContainer';
-import { errorMessage } from '../components/Login/inputErrorMessage';
-import { validate } from '../components/Login/inputValidation';
-
-const styles = theme => ({
-
-  [theme.breakpoints.down('sm')]: {
-    formContainer: {
-      boxShadow: 'none',
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center'
-    }
-  },
-  wrapper: {
-    maxWidth: '500px',
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%'
-  },
-  formContainer: {
-    padding: theme.spacing.unit,
-    maxWidth: '500px'
-  },
-  formPaper: {
-    margin: theme.spacing.unit * 2
-  },
-  paddingTop: theme.spacing.unit * 2,
-  paddingBottom: theme.spacing.unit * 2
-
-});
-
+import { InputContainer } from '../components/Login/InputContainer';
+import { errorMessage } from '../components/Login/InputErrorMessage';
+import { validate } from '../components/Login/InputValidation';
+import { LoginFormStyles } from '../components/UI/ThemeProperties';
 
 const Login = (props) => {
 
@@ -51,7 +20,6 @@ const Login = (props) => {
   const submit = (formValues) => {
     props.signInAction(formValues, props.history);
 
-    console.log(props)
   };
 
   return (
@@ -62,13 +30,13 @@ const Login = (props) => {
         <link rel="canonical" href=""/>
       </Helmet>
       <Paper className={classes.formContainer}>
-        <form className={classes.formPaper} onSubmit={submit()}>
+        <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
           <Typography variant="h5" component="h3">
             Sign In
           </Typography>
           <hr/>
-          <InputContainer dataType={'email'}/>
-          <InputContainer dataType={'password'}/>
+          <InputContainer dataType={'email'} data={email}/>
+          <InputContainer dataType={'password'} data={password}/>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
               <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}
@@ -101,5 +69,8 @@ const reduxFormLogin = reduxForm({
   fields: ['email', 'password']
 })(Login);
 
-export default connect(mapStateToProps, { signInAction })(withStyles(styles)(reduxFormLogin));
+export default connect(mapStateToProps, {
+  signInAction,
+  signOutAction
+})(withStyles(LoginFormStyles)(reduxFormLogin));
 

@@ -8,17 +8,18 @@ import Roles from './screens/Roles';
 import Groups from './screens/Groups';
 import Tickets from './screens/Tickets';
 import Login from './screens/Login';
+import requireAuth from './authentication/RequireAuth';
 
 export default (
   <Switch>
     <Route exact path={'/'} component={(Login)}/>
-    <Route path={'/statistics'} component={(Statistics)}/>
-    <Route path={'/messages'} component={(Messages)}/>
-    <Route path={'/staff'} component={(Users)}/>
-    <Route path={'/roles'} component={(Roles)}/>
-    <Route path={'/groups'} component={(Groups)}/>
-    <Route path={'/branches'} component={(Branches)}/>
-    <Route path={'/tickets'} component={(Tickets)}/>
+    <Route path={'/statistics'} component={requireAuth(Statistics)}/>
+    <Route path={'/staff'} component={requireAuth(Users)}/>
+    <Route path={'/roles'} component={requireAuth(Roles)}/>
+    <Route path={'/messages'} component={requireAuth(Messages)}/>
+    <Route path={'/tickets'} component={requireAuth(Tickets)}/>
+    <Route path={'/groups'} component={requireAuth(Groups)}/>
+    <Route path={'/branches'} component={requireAuth(Branches)}/>
   </Switch>
 );
 
