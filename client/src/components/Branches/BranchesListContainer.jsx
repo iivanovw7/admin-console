@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,20 +8,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Branches } from '../UI/ThemeProperties';
-import { fetchBranch } from '../../actions/index';
+import { fetchBranch, fetchBranches } from '../../actions/index';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 const BranchesListContainer = props => {
-  const { classes } = props;
+  const { classes, history, dispatch } = props;
 
   function displayStatus(status) {
     return (status) ? ('Active') : ('Disabled');
   }
 
   function handleBranchClick(id) {
-    fetchBranch(id);
-    console.log(id);
+    dispatch(fetchBranch(id, history));
   }
 
   return (

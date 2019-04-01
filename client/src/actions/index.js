@@ -115,10 +115,7 @@ export const fetchBranch = (id, history) => {
   return async dispatch => {
     await axios({
       method: 'get',
-      params: {
-        id: id
-      },
-      url: `${URL.PRIVATE_API}/branches`,
+      url: `${URL.PRIVATE_API}/branches/${id}`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -126,17 +123,17 @@ export const fetchBranch = (id, history) => {
       withCredentials: true
     })
       .then(response => {
-        // dispatch({
-        //   type: types.FETCH_SINGLE_BRANCH,
-        //   payload: response
-        // });
+        dispatch({
+          type: types.FETCH_SINGLE_BRANCH,
+          payload: response
+        }) && history.push(`/branches/${id}`);
       })
       .catch(error => {
         console.log(error);
         Cookies.remove('LoggedUserObject');
-        // dispatch({
-        //   type: types.UNAUTHENTICATED
-        // }) && history.push('/');
+        dispatch({
+          type: types.UNAUTHENTICATED
+        }) && history.push('/');
       });
   };
 

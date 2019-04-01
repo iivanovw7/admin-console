@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Statistics from './screens/Statistics';
 import Messages from './screens/Messages';
 import Branches from './screens/Branches';
+import BranchesDetails from './screens/BranchesDetails';
 import Users from './screens/Users';
 import Roles from './screens/Roles';
 import Groups from './screens/Groups';
@@ -21,6 +22,7 @@ export default (
     <Route path={'/messages'} component={requireAuth(Messages)}/>
     <Route path={'/tickets'} component={requireAuth(Tickets)}/>
     <Route path={'/groups'} component={requireAuth(Groups)}/>
+    <Route path={'/branches/:id'} component={requireAuth(BranchesDetails)}/>
     <Route path={'/branches'} component={requireAuth(Branches)}/>
   </Switch>
 );

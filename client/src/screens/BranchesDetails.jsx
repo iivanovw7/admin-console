@@ -6,23 +6,19 @@ import { Helmet } from 'react-helmet';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
 import { ContentStyles } from '../components/UI/ThemeProperties';
-import BranchesListContainer from '../components/Branches/BranchesListContainer';
-import { PageSelector } from '../components/UI/PageSelector';
-import AddNewButton from '../components/UI/AddNewButton';
 import Paper from '@material-ui/core/Paper';
-import { fetchBranches } from '../actions/index';
+import { fetchBranch } from '../actions/index';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const Branches = props => {
+const BranchesDetails = props => {
 
   const { classes, history } = props;
-  const limit = [8];
   const [mobileOpen, setDrawerState] = useState(false);
-  const list = props.branches.list.output;
+  const details = props.branches.list.output;
 
   useState(() => {
-    props.dispatch(fetchBranches(1, limit, history));
+    //props.dispatch(fetchBranch(1, limit, history));
   });
 
   const handleDrawerToggle = () => {
@@ -30,14 +26,14 @@ const Branches = props => {
   };
 
   const handlePage = (newPage) => {
-    return props.dispatch(fetchBranches(newPage, limit, history));
+    //return props.dispatch(fetchBranches(newPage, limit, history));
   };
 
   return (
     <div className={classes.root}>
       <Helmet>
         <meta charSet="utf-8"/>
-        <title>Admin console - Branches</title>
+        <title>Admin console - Create/Edit branch</title>
         <link rel="canonical" href=""/>
       </Helmet>
       <CssBaseline/>
@@ -47,22 +43,15 @@ const Branches = props => {
         <div className={classes.toolbar}/>
         <Paper className={classes.controlsContainer}>
           <div className={classes.selectorsContainer}>
-            <h2>Branches</h2>
+            <h2>Create/Edit branch</h2>
           </div>
-          <AddNewButton classes={classes}/>
-        </Paper>
-        {(list) ? (<BranchesListContainer history={props.history} dispatch={props.dispatch}/>) : (<p>Loading...</p>)}
-        <br/>
-        <Paper className={classes.controlsContainer}>
-          <div/>
-          <PageSelector classes={classes} data={props.branches} handlePage={handlePage}/>
         </Paper>
       </main>
     </div>
   );
 };
 
-Branches.propTypes = {
+BranchesDetails.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
@@ -71,5 +60,5 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranches })(withStyles(ContentStyles, { withTheme: true })(withRouter(Branches)));
+export default connect(mapStateToProps, { fetchBranch })(withStyles(ContentStyles, { withTheme: true })(withRouter(BranchesDetails)));
 
