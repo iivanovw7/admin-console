@@ -38,6 +38,7 @@ const DrawerNavigation = props => {
         <List>
           {items.map(item => (
             <DrawerNavigationItem
+              key={item.title}
               text={item.title}
               icon={item.icon}
               link={item.link}

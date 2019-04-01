@@ -94,3 +94,50 @@ export const fetchBranches = (page, limit, history) => {
 
 };
 
+export const addBranch = ({data}, history) => {
+
+  return async dispatch => {
+
+  }
+
+};
+
+export const updateBranch = ({data}, history) => {
+
+  return async dispatch => {
+
+  }
+
+};
+
+export const fetchBranch = (id, history) => {
+
+  return async dispatch => {
+    await axios({
+      method: 'get',
+      params: {
+        id: id
+      },
+      url: `${URL.PRIVATE_API}/branches`,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      withCredentials: true
+    })
+      .then(response => {
+        // dispatch({
+        //   type: types.FETCH_SINGLE_BRANCH,
+        //   payload: response
+        // });
+      })
+      .catch(error => {
+        console.log(error);
+        Cookies.remove('LoggedUserObject');
+        // dispatch({
+        //   type: types.UNAUTHENTICATED
+        // }) && history.push('/');
+      });
+  };
+
+};

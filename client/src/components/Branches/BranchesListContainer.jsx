@@ -8,41 +8,45 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Branches } from '../UI/ThemeProperties';
+import { fetchBranch } from '../../actions/index';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-let id = 0;
-
-function createData(name, status, statusControl, branchControl) {
-  id += 1;
-  return { id, name, status, statusControl, branchControl };
-}
-
-const rows = [
-  createData('Administrator', 'Active', 'Disable', 'Delete')
-];
-
-const  BranchesListContainer = props => {
+const BranchesListContainer = props => {
   const { classes } = props;
+
+  function displayStatus(status) {
+    return (status) ? ('Active') : ('Disabled');
+  }
+
+  function handleBranchClick(id) {
+    fetchBranch(id);
+    console.log(id);
+  }
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.tableCell}>Name</TableCell>
+            <TableCell className={classes.nameCell}>Name</TableCell>
+            <TableCell className={classes.addressCell} align="center">Address</TableCell>
+            <TableCell className={classes.tableCell} align="center">Employees</TableCell>
             <TableCell className={classes.tableCell} align="center">Status</TableCell>
-            <TableCell className={classes.tableCell} align="center"></TableCell>
-            <TableCell className={classes.tableCell} align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row" className={classes.tableCell}>
+          {props.branches.list.output.map(row => (
+            <TableRow key={row._id} onClick={() => {
+              handleBranchClick(row._id);
+            }} className={classes.rowClass}>
+              <TableCell component="th" scope="row" className={classes.nameCell}>
                 {row.name}
               </TableCell>
-              <TableCell className={classes.tableCell} align="center">{row.status}</TableCell>
-              <TableCell className={classes.tableCell} align="center">{row.statusControl}</TableCell>
-              <TableCell className={classes.tableCell} align="center">{row.branchControl}</TableCell>
+              <TableCell className={classes.addressCell} align="center">{row.address}</TableCell>
+              <TableCell className={classes.tableCell} align="center">xxx</TableCell>
+              <TableCell className={classes.tableCell}
+                         align="center">{displayStatus(row.status)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -55,4 +59,9 @@ BranchesListContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(Branches)(BranchesListContainer);
+function mapStateToProps(state) {
+  return { branches: state.branches };
+}
+
+export default connect(mapStateToProps, { fetchBranch })(withStyles(Branches)(withRouter(BranchesListContainer)));
+

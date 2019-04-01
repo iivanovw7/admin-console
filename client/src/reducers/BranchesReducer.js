@@ -16,6 +16,14 @@ export default function (state = initialState, action) {
         error: null,
       };
 
+    case types.FETCH_SINGLE_BRANCH:
+
+      return {
+        ...state,
+        list: action.payload.data,
+        error: null,
+      };
+
     case types.FETCH_ERROR:
       return {
         ...state,

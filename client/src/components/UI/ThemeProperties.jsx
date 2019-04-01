@@ -199,7 +199,30 @@ export const Branches = theme => ({
     paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
+  },
+  rowClass: {
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.black, 0.1),
+      cursor: 'pointer'
+    }
+  },
+  nameCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '30%',
+  },
+  addressCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    },
   }
 });
 
