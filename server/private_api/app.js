@@ -5,16 +5,19 @@ import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
 import './config/passport.config.js';
+import cors from 'cors';
 
 const allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
   next();
 };
 
 const app = express();
-
+app.use(cors({credentials: true, origin: true}));
 app.use(allowCrossDomain);
 
 // Takes the raw requests and turns them into usable properties on req.body

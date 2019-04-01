@@ -1,61 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
-import AppBarContainer from '../components/UI/AppBarContainer';
-import DrawerContainer from '../components/UI/DrawerContainer';
-import { ContentStyles } from '../components/UI/ThemeProperties';
+import { reduxForm } from 'redux-form';
+import { validate } from '../components/Login/InputValidation';
+import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
+import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
+import { ContentStyles, LoginFormStyles, NavigationStyles } from '../components/UI/ThemeProperties';
+import BranchesListContainer from '../components/Branches/BranchesListContainer';
+import { LimitSelector } from '../components/UI/LimitSelector';
+import { PageSelector } from '../components/UI/PageSelector';
+import AddNewButton from '../components/UI/AddNewButton';
+import Paper from '@material-ui/core/Paper';
+import { fetchBranches } from '../actions/index';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+const Branches = props => {
 
-const Branches = (props) => {
-
+  const { classes, history } = props;
+  const limits = [10, 20, 30];
   const [mobileOpen, setDrawerState] = useState(false);
+  const [currLimit, selectLimit] = useState(limits[0]);
+
+  useState(() => {props.dispatch(fetchBranches(1, currLimit, history))});
 
   const handleDrawerToggle = () => {
     setDrawerState(!mobileOpen);
   };
 
-  const { classes } = props;
+  const handleLimit = event => {
+    selectLimit(event.target.value);
+    return props.dispatch(fetchBranches(props.branches.list.page, currLimit, history));
+  };
+
+  const handlePage = (newPage) => {
+    return props.dispatch(fetchBranches(newPage, currLimit, history));
+  };
+
+  console.log(props.branches)
 
   return (
     <div className={classes.root}>
       <Helmet>
         <meta charSet="utf-8"/>
-        <title>Admin console</title>
+        <title>Admin console - Branches</title>
         <link rel="canonical" href=""/>
       </Helmet>
       <CssBaseline/>
-      <AppBarContainer handleDrawerToggle={handleDrawerToggle} />
+      <AppBarContainer handleDrawerToggle={handleDrawerToggle} dispatch={props.dispatch}/>
       <DrawerContainer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen}/>
       <main className={classes.content}>
         <div className={classes.toolbar}/>
         <h2>Branches</h2>
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-          elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-          hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-          velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-          Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-          viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-          Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus
-          at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-          ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus
-          sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-          In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo
-          viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-          ultrices sagittis orci a.
-        </Typography>
+        <Paper className={classes.controlsContainer}>
+          <div className={classes.selectorsContainer}>
+            <PageSelector classes={classes} data={props.branches} handlePage={handlePage}/>
+            <LimitSelector classes={classes} limit={currLimit} handleLimit={handleLimit}
+                           limits={limits}/>
+          </div>
+          <AddNewButton classes={classes}/>
+        </Paper>
+        <BranchesListContainer/>
+        <button onClick={() => {
+          props.dispatch(fetchBranches(1, 10, history));
+        }}>GET
+        </button>
+        <button onClick={() => {
+          console.log(props);
+        }}>1
+        </button>
       </main>
     </div>
   );
@@ -66,7 +81,9 @@ Branches.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(ContentStyles, { withTheme: true })(Branches);
+function mapStateToProps(state) {
+  return { branches: state.branches };
+}
 
-
+export default connect(mapStateToProps, { fetchBranches })(withStyles(ContentStyles, { withTheme: true })(withRouter(Branches)));
 

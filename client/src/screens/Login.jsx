@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { reduxForm } from 'redux-form';
 import { Helmet } from 'react-helmet';
-import { signInAction, signOutAction } from '../actions/index';
+import { signInAction } from '../actions/index';
 import { connect } from 'react-redux';
 import { InputContainer } from '../components/Login/InputContainer';
 import { errorMessage } from '../components/Login/InputErrorMessage';
@@ -26,7 +26,7 @@ const Login = (props) => {
     <div className={classes.wrapper}>
       <Helmet>
         <meta charSet="utf-8"/>
-        <title>Admin console</title>
+        <title>Admin console - Login</title>
         <link rel="canonical" href=""/>
       </Helmet>
       <Paper className={classes.formContainer}>
@@ -70,7 +70,6 @@ const reduxFormLogin = reduxForm({
 })(Login);
 
 export default connect(mapStateToProps, {
-  signInAction,
-  signOutAction
+  signInAction
 })(withStyles(LoginFormStyles)(reduxFormLogin));
 

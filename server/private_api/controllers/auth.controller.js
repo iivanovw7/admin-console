@@ -1,7 +1,6 @@
 import passport from 'passport';
 import httpStatus from 'http-status';
 
-
 /** Authentication handling,
  * according to parameters in params-passport.config.js
  *

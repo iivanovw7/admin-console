@@ -6,16 +6,18 @@ import { renderTextField } from './InputTextField';
 
 export const InputContainer = (props) => {
 
+  const {data, dataType} = props;
+
   return (
     <Grid container spacing={16} alignItems="flex-end">
       <Grid item md={true} sm={true} xs={true}>
         <Field
-          name={props.dataType}
-          type={props.dataType}
+          name={dataType}
+          type={dataType}
           component={renderTextField}
-          label={props.dataType}
-          id={props.dataType}
-          {...props.data}
+          label={dataType}
+          id={dataType}
+          {...data}
         />
       </Grid>
     </Grid>

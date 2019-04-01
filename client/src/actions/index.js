@@ -1,17 +1,19 @@
 import * as types from '../constants/ActionTypes';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import * as URL from '../constants/APIurl';
+import axios from 'axios';
 
 
-export function signInAction({ email, password }, history) {
-
+export const signInAction = ({ email, password }, history) => {
 
   const inOneWeek = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
 
-  //action creator dispatches if correct response received from API
-  return async (dispatch) => {
-    await axios.post(`${URL.PRIVATE_API}/auth/login`, { email, password })
+  return async dispatch => {
+
+    await axios.post(`${URL.PRIVATE_API}/auth/login`, {
+      email,
+      password
+    }, { withCredentials: true })
                .then(response => {
 
                  Cookies.set('LoggedUserObject', response.data, { expires: inOneWeek });
@@ -19,7 +21,8 @@ export function signInAction({ email, password }, history) {
 
                  dispatch({
                    type: types.AUTHENTICATED
-                 }).then(history.push('/statistics'));
+                 });
+                 history.push('/statistics');
 
                })
                .catch(error => {
@@ -31,21 +34,63 @@ export function signInAction({ email, password }, history) {
                });
 
   };
-}
+};
 
-//Sign out current user
-export function signOutAction(history) {
 
-  axios.get(`${URL.PRIVATE_API}/auth/logout`)
-       .then(response => {
-         Cookies.remove('LoggedUserObject');
-         history.push('/');
-         return { type: types.UNAUTHENTICATED };
-       })
-       .catch(error => {
-         Cookies.remove('LoggedUserObject');
-         history.push('/');
-         return { type: types.UNAUTHENTICATED };
-       });
+export const signOutAction = (history) => {
 
-}
+  console.log(history);
+
+  return async dispatch => {
+
+    await axios.get(`${URL.PRIVATE_API}/auth/logout`, { withCredentials: true })
+               .then(response => {
+                 Cookies.remove('LoggedUserObject');
+                 dispatch({
+                   type: types.UNAUTHENTICATED
+                 }) && history.push('/');
+               })
+               .catch(error => {
+                 console.log(error);
+                 Cookies.remove('LoggedUserObject');
+                 dispatch({
+                   type: types.UNAUTHENTICATED
+                 }) && history.push('/');
+               });
+  };
+
+
+};
+
+
+export const fetchBranches = (page, limit, history) => {
+
+  return async dispatch => {
+    await axios({
+      method: 'get',
+      url: `${URL.PRIVATE_API}/branches`,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        page: page,
+        limit: limit
+      },
+      withCredentials: true
+    })
+      .then(response => {
+        dispatch({
+          type: types.FETCH_BRANCHES,
+          payload: response
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        Cookies.remove('LoggedUserObject');
+        dispatch({
+          type: types.UNAUTHENTICATED
+        }) && history.push('/');
+      });
+  };
+
+};
+

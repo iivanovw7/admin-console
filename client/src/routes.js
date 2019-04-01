@@ -9,10 +9,12 @@ import Groups from './screens/Groups';
 import Tickets from './screens/Tickets';
 import Login from './screens/Login';
 import requireAuth from './authentication/RequireAuth';
+import noRequireAuth from './authentication/NoRequireAuth';
+
 
 export default (
   <Switch>
-    <Route exact path={'/'} component={(Login)}/>
+    <Route exact path={'/'} component={noRequireAuth(Login)}/>
     <Route path={'/statistics'} component={requireAuth(Statistics)}/>
     <Route path={'/staff'} component={requireAuth(Users)}/>
     <Route path={'/roles'} component={requireAuth(Roles)}/>

@@ -4,8 +4,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import DrawerNavigation from './DrawerNavigation';
 import { withStyles } from '@material-ui/core/styles';
-import { NavigationStyles } from './ThemeProperties';
-
+import { NavigationStyles } from '../ThemeProperties';
 
 const DrawerContainer = props => {
 

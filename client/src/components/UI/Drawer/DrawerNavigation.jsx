@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-import Branches from '../../screens/Branches';
-import Groups from '../../screens/Groups';
-import Messages from '../../screens/Messages';
-import Roles from '../../screens/Roles';
-import Statistics from '../../screens/Statistics';
-import Tickets from '../../screens/Tickets';
-import logo from '../../logo.svg';
+import Branches from '../../../screens/Branches';
+import Groups from '../../../screens/Groups';
+import Messages from '../../../screens/Messages';
+import Roles from '../../../screens/Roles';
+import Statistics from '../../../screens/Statistics';
+import Tickets from '../../../screens/Tickets';
+import logo from '../../../logo.svg';
 import NoSsr from '@material-ui/core/NoSsr';
-import { NavigationStyles } from './ThemeProperties';
-import { DrawerNavigationItem } from './DrawerNavigation_Item';
+import { NavigationStyles } from '../ThemeProperties';
+import { DrawerNavigationItem } from './DrawerNavigationItem';
 import { withStyles } from '@material-ui/core/styles';
 
 const DrawerNavigation = props => {

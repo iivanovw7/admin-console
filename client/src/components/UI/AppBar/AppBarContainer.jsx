@@ -11,14 +11,13 @@ import InputBase from '@material-ui/core/InputBase';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { NavigationStyles } from './ThemeProperties';
-import { signOutAction } from '../../actions/index';
+import { NavigationStyles } from '../ThemeProperties';
+import { signOutAction } from '../../../actions';
 import { withRouter } from 'react-router-dom';
-
 
 const AppBarContainer = props => {
 
-  const { classes, handleDrawerToggle, history } = props;
+  const { classes, handleDrawerToggle, history, dispatch } = props;
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -51,9 +50,7 @@ const AppBarContainer = props => {
             color="secondary"
             type="submit"
             style={{ textTransform: 'none' }}
-            onClick={() => {
-              signOutAction(history);
-            }}
+            onClick={() => {dispatch(signOutAction(history))}}
           >
             LOGOUT
           </Button>

@@ -48,7 +48,6 @@ Unit tests cover all database models, all routes including authentication routes
 
 - [Jest](https://jestjs.io/)
 - [Supertest](https://github.com/visionmedia/supertest)
-- [Mokinggoose](https://github.com/alonronin/mockingoose)
  
 > How to run unit tests
 

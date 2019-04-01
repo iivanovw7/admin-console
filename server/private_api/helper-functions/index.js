@@ -120,6 +120,7 @@ export const checkAccess = async (req, res, next) => {
 
   if (!ObjectId.isValid(req.user._id)) {
     //console.log('Wrong user id!');
+    console.log(req)
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
