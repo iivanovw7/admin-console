@@ -4,9 +4,18 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
-import './config/param-passport.js';
+import './config/passport.config.js';
+
+const allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+};
 
 const app = express();
+
+app.use(allowCrossDomain);
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(cookieParser());
@@ -30,6 +39,7 @@ app.use(passport.session());
 
 /** mount all routes on "/api" path */
 app.use('/api', routes);
+
 
 export { app };
 

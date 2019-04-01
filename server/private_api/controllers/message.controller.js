@@ -4,13 +4,14 @@ import User from '../../models/User';
 import Branch from '../../models/Branch';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
-import { fullAccess, branchAccess, groupAccess } from '../config/param-controllers';
-import { ifArrayContains, getAsPage, ifStringsContain } from '../helper-functions';
+import { fullAccess, branchAccess, groupAccess } from '../config/constants.config';
+import { ifArrayContains } from '../helper-functions';
 
 /**
  * Imitation of email notification.
  * Finds sender by id and throws contact details of its branch and group in console log
  * Also shows message passed in parameters
+ * TODO Add notifications logic
  */
 const sendNotifications = async message => {
 
@@ -20,16 +21,16 @@ const sendNotifications = async message => {
   const byGroup = message.groupId ? await User.find({ group: message.groupId }) : null;
 
   if (user) {
-    console.log(`Sending notification, message author: ${user.email}`);
+    //console.log(`Sending notification, message author: ${user.email}`);
     if (byBranch) {
-      console.log(`To recipients by branch: ${byBranch}`);
+      //console.log(`To recipients by branch: ${byBranch}`);
     }
     if (byGroup) {
-      console.log(`To recipients by group: ${byGroup}`);
+      //console.log(`To recipients by group: ${byGroup}`);
     }
-    console.log(message);
+    //console.log(message);
   } else {
-    console.log('User not found!');
+    //console.log('User not found!');
   }
 
 };
@@ -43,25 +44,37 @@ export const getUser = async (params) => {
 };
 
 // Function gets list of messages from db
-async function collectMessages(req, res, params, pagination) {
+async function collectMessages(req, res, params) {
 
-  const messages = await Message.find(params)
-                                .populate({ path: 'senderId', model: User })
-                                .populate({ path: 'branchId', model: Branch })
-                                .populate({ path: 'groupId', model: Group })
-                                .sort({ created: '-1' });
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
-  if (messages) {
+  const findPromise = Message.find(params)
+                             .populate({ path: 'senderId', model: User })
+                             .populate({ path: 'branchId', model: Branch })
+                             .populate({ path: 'groupId', model: Group })
+                             .skip(skipped)
+                             .limit(limit);
 
-    if (pagination) {
+  const countPromise = Message.countDocuments();
 
-      const page = await getAsPage(req.headers.page, req.headers.limit, messages);
-      return res.json(page);
-    }
-    return res.json(messages);
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
+  const pages = Math.ceil(results / limit);
+
+  if (!output && results === 0) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
-  return res.sendStatus(httpStatus.NOT_FOUND);
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
+
 }
 
 /**
@@ -72,19 +85,19 @@ async function collectMessages(req, res, params, pagination) {
  */
 const listMessages = async (req, res) => {
 
-  const user = await getUser({ _id: req.headers.user });
+  const user = await getUser({ _id: req.user._id });
   const role = user.role.code;
 
   if (ifArrayContains(role, fullAccess)) {
 
-    return collectMessages(req, res, {}, req.headers.page && req.headers.limit);
+    return collectMessages(req, res, {});
 
   } else {
 
     if (ifArrayContains(role, branchAccess)) {
-      return collectMessages(req, res, { branchId: user.branch }, req.headers.page && req.headers.limit);
+      return collectMessages(req, res, { branchId: user.branch });
     } else {
-      return collectMessages(req, res, { groupId: user.group }, req.headers.page && req.headers.limit);
+      return collectMessages(req, res, { groupId: user.group });
     }
   }
 };
@@ -116,7 +129,7 @@ const getMessage = async (req, res) => {
  */
 const getPageByGroup = async (req, res) => {
 
-  return collectMessages(req, res, { groupId: req.params.id }, true);
+  return collectMessages(req, res, { groupId: req.params.id });
 
 };
 
@@ -127,7 +140,7 @@ const getPageByGroup = async (req, res) => {
  */
 const getPageByBranch = async (req, res) => {
 
-  return collectMessages(req, res, { branchId: req.params.id }, true);
+  return collectMessages(req, res, { branchId: req.params.id });
 
 };
 
@@ -138,7 +151,7 @@ const getPageByBranch = async (req, res) => {
  */
 const getPageByUser = async (req, res) => {
 
-  return collectMessages(req, res, { senderId: req.params.id }, true);
+  return collectMessages(req, res, { senderId: req.params.id });
 
 };
 
@@ -157,14 +170,14 @@ const sendMessage = async (req, res) => {
     return (ifArrayContains(role, fullAccess) || ifArrayContains(role, list));
   }
 
-  const user = await getUser({ _id: req.headers.user });
+  const user = await getUser({ _id: req.user._id });
   const role = user.role.code;
 
   const message = {
 
     subject: req.body.subject,
     message: req.body.message,
-    senderId: req.headers.user,
+    senderId: req.user._id,
     branchId: checkSender(branchAccess) ? req.headers.branch : null,
     groupId: checkSender(groupAccess) ? req.headers.group : null
 
@@ -191,48 +204,70 @@ const sendMessage = async (req, res) => {
  */
 const searchMessages = async (req, res) => {
 
-  const user = await getUser({ _id: req.headers.user });
-  const role = user.role.code; //users role code from database
-  const baseQuery = {}; //base search query
-  const search = req.headers.search; //string we are searching
+  const page = req.headers.page || 1;
+  const limit = parseInt(req.headers.limit, 10) || 20;
+  const skipped = (page * limit) - limit;
 
+  //string we are searching
+  const search = req.headers.search;
+
+  //users role code from database
+  const user = await getUser({ _id: req.user._id });
+  const role = user.role.code;
+
+  //querying tickets by subject
+  const idQuery = { $or: [{ name: search }, { surname: search }] };
+
+  //getting ids of tickets authors
+  const userIDs = await User.find(idQuery).distinct('_id');
+
+  //querying tickets
+  const messagesQuery = {
+    $and: [
+      {
+        $or: [
+          { subject: { $regex: search, $options: 'i' } },
+          { authorId: { $in: userIDs } }
+        ]
+      }
+    ]
+  };
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, branchAccess)) {
-    baseQuery.branchId = user.branch;
+    messagesQuery.$and.push({ branchId: user.branch });
   }
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, groupAccess)) {
-    baseQuery.groupId = user.group;
+    messagesQuery.$and.push({ groupId: user.group });
   }
 
-  const msg = await Message.find(baseQuery)
-                           .populate({ path: 'senderId', model: User })
-                           .populate({ path: 'branchId', model: Branch })
-                           .populate({ path: 'groupId', model: Group })
-                           .sort({ created: '-1' });
+  const findPromise = await Message.find(messagesQuery)
+                                   .populate({ path: 'senderId', model: User })
+                                   .populate({ path: 'branchId', model: Branch })
+                                   .populate({ path: 'groupId', model: Group })
+                                   .skip(skipped)
+                                   .limit(limit)
+                                   .sort({ created: '-1' });
 
-  if (msg) {
+  const countPromise = await Message.find(messagesQuery).countDocuments();
 
-    let filtered = []; //initial search output
-    let cachedLength = msg.length;
+  const [output, results] = await Promise.all([findPromise, countPromise]);
 
-    for (let i = 0; i < cachedLength; i++) {
+  const pages = Math.ceil(results / limit);
 
-      let fields = [msg[i].subject, msg[i].senderId.name, msg[i].senderId.surname];
-
-      if (ifStringsContain(fields, search)) {
-        filtered.push(msg[i]); //adding new element in results
-      }
-    }
-
-    const page = await getAsPage(req.headers.page, req.headers.limit, filtered);
-    return res.json(page);
-
-  } else {
+  if (!output && results === 0) {
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
+
+  res.json({
+    page,
+    limit,
+    pages,
+    results,
+    output
+  });
 
 };
 

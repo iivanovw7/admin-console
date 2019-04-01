@@ -1,4 +1,4 @@
-//roles available for authentication
+//list of roles available for authentication
 export const authRoles = [
   'ADMIN',
   'SUPPORT',
@@ -55,7 +55,6 @@ export const defaultStatuses = [
   'Reopened',
   'Cannot be done'
 ];
-
 
 /**
  * List of statuses for statistics controller, used to apply search queries dynamically
