@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 export default function (ComposedComponent) {
+
   class NotAuthentication extends Component {
+
     componentWillMount() {
       if (this.props.authenticated) {
         this.props.history.push('/statistics');

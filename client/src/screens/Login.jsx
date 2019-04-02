@@ -4,22 +4,19 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { reduxForm } from 'redux-form';
 import { Helmet } from 'react-helmet';
-import { signInAction } from '../actions/index';
+import { signInAction } from '../actions/auth';
 import { connect } from 'react-redux';
-import { InputContainer } from '../components/Login/InputContainer';
-import { errorMessage } from '../components/Login/InputErrorMessage';
-import { validate } from '../components/Login/InputValidation';
+import { LoginContainer } from '../components/Login/LoginContainer';
+import { errorMessage } from '../components/Login/Form/ErrorMessage';
+import { validate } from '../components/Login/Form/Validation';
 import { LoginFormStyles } from '../components/UI/ThemeProperties';
 
 const Login = (props) => {
 
-  const { classes } = props;
-
-  const { fields: { email, password }, handleSubmit } = props;
+  const { classes, handleSubmit } = props;
 
   const submit = (formValues) => {
     props.signInAction(formValues, props.history);
-
   };
 
   return (
@@ -35,8 +32,8 @@ const Login = (props) => {
             Sign In
           </Typography>
           <hr/>
-          <InputContainer dataType={'email'} data={email}/>
-          <InputContainer dataType={'password'} data={password}/>
+          <LoginContainer dataType={'email'}/>
+          <LoginContainer dataType={'password'}/>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
               <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}

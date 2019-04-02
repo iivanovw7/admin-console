@@ -1,12 +1,12 @@
 import { Grid } from '@material-ui/core';
 import React from 'react';
 import { Field } from 'redux-form';
-import { renderTextField } from './InputTextField';
+import { renderTextField } from './Form/TextField';
 
 
-export const InputContainer = (props) => {
+export const LoginContainer = (props) => {
 
-  const {data, dataType} = props;
+  const { dataType } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">
@@ -17,7 +17,6 @@ export const InputContainer = (props) => {
           component={renderTextField}
           label={dataType}
           id={dataType}
-          {...data}
         />
       </Grid>
     </Grid>

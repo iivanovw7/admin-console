@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { connect } from 'react-redux';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import { Branches } from '../UI/ThemeProperties';
-import { fetchBranch, fetchBranches } from '../../actions/index';
-import { connect } from 'react-redux';
+import { fetchBranch } from '../../actions/branches';
 import { withRouter } from 'react-router-dom';
 
-const BranchesListContainer = props => {
+const BranchesContainer = props => {
   const { classes, history, dispatch } = props;
 
   function displayStatus(status) {
@@ -54,7 +54,7 @@ const BranchesListContainer = props => {
   );
 };
 
-BranchesListContainer.propTypes = {
+BranchesContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -62,5 +62,5 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranch })(withStyles(Branches)(withRouter(BranchesListContainer)));
+export default connect(mapStateToProps, { fetchBranch })(withStyles(Branches)(withRouter(BranchesContainer)));
 

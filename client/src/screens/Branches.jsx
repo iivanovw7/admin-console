@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { withStyles } from '@material-ui/core/styles';
-import { Helmet } from 'react-helmet';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
+import { withStyles } from '@material-ui/core/styles';
 import { ContentStyles } from '../components/UI/ThemeProperties';
-import BranchesListContainer from '../components/Branches/BranchesListContainer';
+import BranchesListContainer from '../components/Branches/BranchesContainer';
 import { PageSelector } from '../components/UI/PageSelector';
 import AddNewButton from '../components/UI/AddNewButton';
 import Paper from '@material-ui/core/Paper';
-import { fetchBranches } from '../actions/index';
+import { fetchBranches } from '../actions/branches';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 const Branches = props => {
-
   const { classes, history } = props;
   const limit = [8];
   const [mobileOpen, setDrawerState] = useState(false);
+  const [currentPage, setCurrentPage] = useState(props.branches.list.page);
   const list = props.branches.list.output;
 
-  useState(() => {
-    props.dispatch(fetchBranches(1, limit, history));
-  });
+  useEffect(() => {
+    props.dispatch(fetchBranches(currentPage, limit, history));
+  }, [currentPage]);
 
   const handleDrawerToggle = () => {
     setDrawerState(!mobileOpen);
   };
 
   const handlePage = (newPage) => {
-    return props.dispatch(fetchBranches(newPage, limit, history));
+    setCurrentPage(newPage);
   };
 
   return (
@@ -49,9 +49,12 @@ const Branches = props => {
           <div className={classes.selectorsContainer}>
             <h2>Branches</h2>
           </div>
-          <AddNewButton classes={classes}/>
+          <AddNewButton classes={classes} history={history} element={'branches'}/>
         </Paper>
-        {(list) ? (<BranchesListContainer history={props.history} dispatch={props.dispatch}/>) : (<p>Loading...</p>)}
+        {
+          (list) ?
+            (<BranchesListContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
+        }
         <br/>
         <Paper className={classes.controlsContainer}>
           <div/>

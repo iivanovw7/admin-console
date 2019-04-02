@@ -12,7 +12,7 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { NavigationStyles } from '../ThemeProperties';
-import { signOutAction } from '../../../actions';
+import { signOutAction } from '../../../actions/auth';
 import { withRouter } from 'react-router-dom';
 
 const AppBarContainer = props => {

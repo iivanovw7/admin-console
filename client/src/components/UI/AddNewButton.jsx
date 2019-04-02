@@ -7,11 +7,18 @@ import withWidth from '@material-ui/core/withWidth';
 
 const AddNewButton = props => {
 
-  const { classes, width } = props;
+  const { classes, width, history, element } = props;
+
+  function handleClick() {
+    return history.push(history.push(`/${element}/new`));
+  }
 
   const mobileButton = () => {
     return (
-      <Button size="small" className={classes.margin}>
+      <Button size="small" className={classes.margin}
+              onClick={() => {
+                handleClick();
+              }}>
         NEW
       </Button>
     );
@@ -19,19 +26,21 @@ const AddNewButton = props => {
 
   const desktopButton = () => {
     return (
-      <Fab color="primary" size="small" aria-label="Add" className={classes.fab}>
-        <AddIcon />
+      <Fab color="primary" size="small" aria-label="Add" className={classes.fab}
+           onClick={() => {
+             handleClick();
+           }}>
+        <AddIcon/>
       </Fab>
     );
   };
 
   const components = {
     xs: mobileButton(),
-    sm: mobileButton(),
+    sm: mobileButton()
   };
 
   const Component = components[width] || desktopButton();
-
 
   return (
     <div className={classes.formRoot}>
@@ -42,7 +51,7 @@ const AddNewButton = props => {
 };
 
 AddNewButton.propTypes = {
-  width: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired
 };
 
 export default withWidth()(AddNewButton);

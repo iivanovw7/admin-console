@@ -1,20 +1,19 @@
-
 //values and properties needed for input form validation
 export const validate = values => {
 
   const errors = {};
 
   if (!values.email) {
-    errors.email = 'Поле обязательно';
+    errors.email = 'Field is required!';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Не верный формат почтового адреса!';
+    errors.email = 'Wrong email format!';
   }
   if (!values.password) {
-    errors.password = 'Поле обязательно!';
+    errors.password = 'Field is required!';
   } else if (values.password.length > 15) {
-    errors.password = 'Не более пятнадцати символов!';
+    errors.password = 'Must contain less than 15 symbols!';
   } else if (values.password.length < 3) {
-    errors.password = 'Не менее трех символов!';
+    errors.password = 'Must contain at least 3 symbols!';
   }
 
   return errors;

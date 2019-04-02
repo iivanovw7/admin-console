@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import authReducer from './AuthReducer';
-import branches from './BranchesReducer';
+import authReducer from './authReducer';
+import banchesReducer from './branchesReducer';
 
 const rootReducer = combineReducers({
-  branches,
+  branches: banchesReducer,
   form: formReducer,
   auth: authReducer,
 });

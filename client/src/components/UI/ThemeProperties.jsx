@@ -190,13 +190,15 @@ export const Branches = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto'
+    overflowX: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'hidden'
   },
   table: {
     minWidth: 200
   },
   tableCell: {
-    paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5,
@@ -223,6 +225,17 @@ export const Branches = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
-  }
+  },
+  branchPaper: {
+    width: '100%',
+    maxWidth: 600,
+    margin: theme.spacing.unit * 2
+  },
+});
+
+export const Notification = theme => ({
+  close: {
+    padding: theme.spacing.unit / 2,
+  },
 });
 

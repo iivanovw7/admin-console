@@ -12,8 +12,8 @@ export const PageSelector = props => {
     return (
       <Button size="small"
               disabled={
-                page === 1 && title === 'PREV' ||
-                page === pages && title === 'NEXT'
+                (page === 1 && title === 'PREV') ||
+                (page === pages && title === 'NEXT')
               }
               className={classes.margin}
               onClick={() => {
