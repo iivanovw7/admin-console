@@ -16,7 +16,7 @@ export const DrawerNavigationItem = (props) => {
       to={link}
       key={text}
       activeClassName={classes.active}
-      disableTouchRipple = { true }
+      disableTouchRipple={true}
     >
       <ListItemIcon>
         <Icon>{icon}</Icon>

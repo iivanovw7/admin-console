@@ -201,7 +201,7 @@ export const Branches = theme => ({
   tableCell: {
     paddingLeft: 10,
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   rowClass: {
     '&:hover': {
@@ -214,7 +214,7 @@ export const Branches = theme => ({
     paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    width: '30%',
+    width: '30%'
   },
   addressCell: {
     paddingRight: 5,
@@ -224,18 +224,18 @@ export const Branches = theme => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
-    },
+    }
   },
   branchPaper: {
     width: '100%',
     maxWidth: 600,
     margin: theme.spacing.unit * 2
-  },
+  }
 });
 
 export const Notification = theme => ({
   close: {
-    padding: theme.spacing.unit / 2,
-  },
+    padding: theme.spacing.unit / 2
+  }
 });
 

@@ -61,7 +61,6 @@ export const addBranch = (formValues, history) => {
       withCredentials: true
     })
       .then(response => {
-        history.push(`/branches`);
         dispatch({
           type: types.ADD_BRANCH,
           payload: response

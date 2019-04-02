@@ -32,7 +32,7 @@ export const CheckboxContainer = (props) => {
 
 export const TextInputContainer = (props) => {
 
-  const {dataType, rows, type, normalize} = props;
+  const { dataType, rows, type, normalize } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">

@@ -11,6 +11,7 @@ import { validate } from './Form/Validation';
 import { Branches } from '../UI/ThemeProperties';
 import { addBranch, updateBranch } from '../../actions/branches';
 import normalizePhone from './Form/Normalizer';
+import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 
 const BranchContainer = props => {
 
@@ -34,6 +35,17 @@ const BranchContainer = props => {
       (props.addBranch(formValues, history)) : (props.updateBranch(formValues, branch._id, history));
   };
 
+  const showAlert = (message) => {
+    return (
+      <AlertSnackbar
+        message={message}
+        afterConfirm={() => {
+          history.push(`/branches`);
+        }}
+      />
+    );
+  };
+
   return (
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
@@ -45,17 +57,18 @@ const BranchContainer = props => {
         <TextInputContainer dataType={'address'} type={'text'} rows={4}/>
         <TextInputContainer dataType={'information'} type={'text'} rows={4}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
+        {(props.errorMessage) ? (showAlert(props.errorMessage)) : ('')}
+        {(props.successMessage) ? (showAlert(props.successMessage)) : ('')}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
-            variant="outlined" color="primary" style={{ textTransform: 'none', margin: 5 }}
+            variant="contained" color="primary" style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
-              history.push(history.push(`/branches`));
+              history.push(`/branches`);
             }}>
             CANCEL
           </Button>
-          <Button variant="outlined" color="primary" type="submit"
+          <Button variant="contained" color="primary" type="submit"
                   style={{ textTransform: 'none', margin: 5 }}>SAVE</Button>
-          {errorMessage(props)}
         </Grid>
       </form>
     </Paper>
@@ -70,6 +83,7 @@ BranchContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.branches.error,
+    successMessage: state.branches.success,
     branches: state.branches
   };
 }

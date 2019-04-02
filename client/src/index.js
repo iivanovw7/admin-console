@@ -15,7 +15,7 @@ const mountPoint = document.getElementById('root');
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter >
+    <BrowserRouter>
       <MuiThemeProvider theme={themeProperties}>
         {routes}
       </MuiThemeProvider>

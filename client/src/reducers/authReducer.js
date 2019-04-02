@@ -1,24 +1,24 @@
-import * as types from '../constants/ActionTypes'
+import * as types from '../constants/ActionTypes';
 import Cookies from 'js-cookie';
 
 
 const initialState = {
   user: {
     authenticated: typeof Cookies.get('LoggedUserObject') !== 'undefined',
-    loggedUserObject: Cookies.getJSON('LoggedUserObject'),
+    loggedUserObject: Cookies.getJSON('LoggedUserObject')
   },
-  error: null,
+  error: null
 };
 
-export default function(state = initialState, action) {
-  switch(action.type) {
+export default function (state = initialState, action) {
+  switch (action.type) {
     case types.AUTHENTICATED:
       return {
         ...state,
         user: {
           ...state.user,
           authenticated: true,
-          loggedUserObject: action.user,
+          loggedUserObject: action.user
         },
         error: null
       };
@@ -35,11 +35,11 @@ export default function(state = initialState, action) {
     case types.AUTHENTICATION_ERROR:
       return {
         ...state,
-        error: "Authentication error!"
+        error: 'Authentication error!'
       };
     default:
       return {
-        ...state,
+        ...state
       };
   }
 }

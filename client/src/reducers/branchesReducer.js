@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
         list: {},
         branch: {},
         error: null,
-        success: `New Branch ${action.payload.data} created!`
+        success: `New Branch ${action.payload.data.name} created!`
       };
 
     case types.FETCH_ERROR:
@@ -47,7 +47,7 @@ export default function (state = initialState, action) {
         ...state,
         list: {},
         branch: {},
-        error: 'Error!',
+        error: 'Error while getting data!',
         success: null
       };
 

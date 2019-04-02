@@ -21,7 +21,6 @@ const enhancer = composeEnhancers(
 );
 
 
-
 export default function Store() {
   return createStore(reducers, enhancer);
 }

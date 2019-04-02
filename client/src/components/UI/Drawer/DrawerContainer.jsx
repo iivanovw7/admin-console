@@ -20,7 +20,7 @@ const DrawerContainer = props => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{
-            paper: classes.drawerPaper,
+            paper: classes.drawerPaper
           }}
         >
           <DrawerNavigation/>
@@ -29,12 +29,12 @@ const DrawerContainer = props => {
       <Hidden xsDown implementation="css">
         <Drawer
           classes={{
-            paper: classes.drawerPaper,
+            paper: classes.drawerPaper
           }}
           variant="permanent"
           open
         >
-         <DrawerNavigation/>
+          <DrawerNavigation/>
         </Drawer>
       </Hidden>
     </nav>

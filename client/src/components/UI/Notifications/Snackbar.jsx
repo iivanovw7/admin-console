@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import {Notification} from '../ThemeProperties';
+import { fetchBranches } from '../../../actions/branches';
+import { Notification } from '../ThemeProperties';
 
 
-const AlertSnackbar = (props) =>  {
+const AlertSnackbar = (props) => {
 
-  const { classes } = props;
+  const { classes, afterConfirm } = props;
   const [opened, handleSnackbar] = useState(false);
 
   const handleClick = () => {
@@ -22,28 +23,31 @@ const AlertSnackbar = (props) =>  {
       return;
     }
 
+    afterConfirm();
     handleSnackbar(false);
   };
 
+  useEffect(() => {
+    if (props.message) {
+      handleClick();
+    }
+  }, []);
+
   return (
     <div>
-      <Button onClick={handleClick}>Open simple snackbar</Button>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         open={opened}
         autoHideDuration={6000}
-        onClose={this.handleClose}
+        onClose={handleClose}
         ContentProps={{
-          'aria-describedby': 'message-id',
+          'aria-describedby': 'message-id'
         }}
-        message={<span id="message-id">Note archived</span>}
+        message={<span id="message-id">{props.message}</span>}
         action={[
-          <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
-            UNDO
-          </Button>,
           <IconButton
             key="close"
             aria-label="Close"
@@ -51,8 +55,8 @@ const AlertSnackbar = (props) =>  {
             className={classes.close}
             onClick={handleClose}
           >
-            <CloseIcon />
-          </IconButton>,
+            <CloseIcon/>
+          </IconButton>
         ]}
       />
     </div>
@@ -60,7 +64,7 @@ const AlertSnackbar = (props) =>  {
 };
 
 AlertSnackbar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(Notification)(AlertSnackbar);

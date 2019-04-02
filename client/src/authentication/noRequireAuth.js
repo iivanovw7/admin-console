@@ -19,7 +19,7 @@ export default function (ComposedComponent) {
     }
 
     PropTypes = {
-      router: PropTypes.object,
+      router: PropTypes.object
     };
 
     render() {
@@ -28,7 +28,7 @@ export default function (ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return {authenticated: state.auth.user.authenticated};
+    return { authenticated: state.auth.user.authenticated };
   }
 
 

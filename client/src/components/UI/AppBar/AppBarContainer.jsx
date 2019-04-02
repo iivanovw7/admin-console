@@ -50,7 +50,9 @@ const AppBarContainer = props => {
             color="secondary"
             type="submit"
             style={{ textTransform: 'none' }}
-            onClick={() => {dispatch(signOutAction(history))}}
+            onClick={() => {
+              dispatch(signOutAction(history));
+            }}
           >
             LOGOUT
           </Button>

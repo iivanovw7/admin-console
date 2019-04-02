@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const renderCheckbox = ({
                           id,
-                          input,
+                          input
                         }) => {
   return (
     <Checkbox

@@ -6,14 +6,14 @@ import Login from '../../screens/Login';
 const fixture = {
   example: {
     result: fromJS({
-      testing: 'data',
-    }),
-  },
+      testing: 'data'
+    })
+  }
 };
 
 describe('ExampleView', () => {
   it('Should render a blank div without data', () => {
-    const el = shallow(<Login />);
+    const el = shallow(<Login/>);
 
     expect(el.length).toEqual(1);
     //TODO fill with desired output
