@@ -283,3 +283,26 @@ export const Notification = theme => ({
   }
 });
 
+export const Buttons = theme => ({
+  formRoot: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  [theme.breakpoints.down('sm')]: {
+    mobile: {
+      display: 'flex'
+    },
+    desktop: {
+      display: 'none'
+    }
+  },
+  [theme.breakpoints.up('sm')]: {
+    mobile: {
+      display: 'none'
+    },
+    desktop: {
+      display: 'flex'
+    }
+  }
+});
+

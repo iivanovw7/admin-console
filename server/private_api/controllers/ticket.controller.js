@@ -28,14 +28,14 @@ const sendNotifications = async ticket => {
 /**
  * Gets one listRoles of tickets if called with listRoles and limit,
  * if not - returns full list of tickets
- * @headers {number} listRoles: req.headers.listRoles
- * @headers {number} limit: req.headers.limit
+ * @query {number} listRoles: req.query.listRoles
+ * @query {number} limit: req.query.limit
  *
  */
 const listTickets = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = Ticket.find({})
@@ -86,16 +86,16 @@ const getTicket = async (req, res) => {
 
 /**
  * Find tickets by query, by subject, name or surname
- * @requires {number} page: req.headers.page
- * @requires {number} limit: req.headers.limit
- * @requires {string} search: req.headers.search
+ * @requires {number} page: req.query.page
+ * @requires {number} limit: req.query.limit
+ * @requires {string} search: req.query.search
  */
 const searchTicket = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
-  const search = req.headers.search; //string we are searching
+  const search = req.query.search; //string we are searching
 
   //querying tickets by subject
   const idQuery = { $or: [{ name: search }, { surname: search }] };

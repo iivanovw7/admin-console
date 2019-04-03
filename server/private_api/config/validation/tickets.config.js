@@ -28,7 +28,7 @@ export const addTicket = {
 
 // GET /api/tickets/listRoles
 export const getPage = {
-  headers: {
+  query: {
     page: Joi.number().min(1).max(2000),
     limit: Joi.number().min(1).max(2000)
   }
@@ -43,7 +43,7 @@ export const getTicket = {
 
 // GET /api/tickets/search
 export const getPageSearch = {
-  headers: {
+  query: {
     search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
     limit: Joi.number().required()

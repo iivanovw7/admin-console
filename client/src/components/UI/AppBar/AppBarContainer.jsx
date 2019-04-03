@@ -1,18 +1,13 @@
 import Cookies from 'js-cookie';
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
+import { AppBar, IconButton, Toolbar, InputBase, Button, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { NavigationStyles } from '../ThemeProperties';
-import { signOutAction } from '../../../actions/auth';
+import { logoutUser } from '../../../actions/auth';
 import { withRouter } from 'react-router-dom';
 
 const AppBarContainer = props => {
@@ -51,7 +46,7 @@ const AppBarContainer = props => {
             type="submit"
             style={{ textTransform: 'none' }}
             onClick={() => {
-              dispatch(signOutAction(history));
+              dispatch(logoutUser(history));
             }}
           >
             LOGOUT
@@ -71,8 +66,6 @@ function mapStateToProps(state) {
   return { user: state.auth.user.loggedUserObject };
 }
 
-export default connect(mapStateToProps, {
-  signOutAction
-})(withStyles(NavigationStyles, { withTheme: true })(withRouter(AppBarContainer)));
+export default connect(mapStateToProps, { logoutUser })(withStyles(NavigationStyles, { withTheme: true })(withRouter(AppBarContainer)));
 
 

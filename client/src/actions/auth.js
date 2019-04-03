@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import * as URL from '../constants/APIurl';
 import axios from 'axios';
 
-export const signInAction = ({ email, password }, history) => {
+export const loginUser = ({ email, password }, history) => {
 
   const inOneWeek = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));
 
@@ -14,10 +14,8 @@ export const signInAction = ({ email, password }, history) => {
       password
     }, { withCredentials: true })
                .then(response => {
-
                  Cookies.set('LoggedUserObject', response.data, { expires: inOneWeek });
                  Cookies.set('username', response.data.name, { expires: inOneWeek });
-
                  dispatch({
                    type: types.AUTHENTICATED
                  });
@@ -35,7 +33,7 @@ export const signInAction = ({ email, password }, history) => {
   };
 };
 
-export const signOutAction = history => {
+export const logoutUser = history => {
 
   return async dispatch => {
 

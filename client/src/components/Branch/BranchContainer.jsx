@@ -1,14 +1,13 @@
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, Paper } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { TextInputContainer, CheckboxContainer } from '../UI/Forms/InputContainers';
 import { validateBranch } from '../UI/Forms/validate';
 import { Container } from '../UI/ThemeProperties';
-import { addBranch, updateBranch } from '../../actions/branches';
+import { addNewBranch, updateBranch } from '../../actions/branches';
 import normalizePhone from '../UI/Forms/normalizer';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 
@@ -108,6 +107,6 @@ const reduxFromBranch = reduxForm({
 })(BranchContainer);
 
 export default connect(mapStateToProps, {
-  addBranch,
+  addBranch: addNewBranch,
   updateBranch
 })(withStyles(Container)(reduxFromBranch));

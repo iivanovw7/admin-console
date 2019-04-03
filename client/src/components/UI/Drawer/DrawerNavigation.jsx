@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
+import { Divider, List, NoSsr } from '@material-ui/core';
 import logo from '../../../logo.svg';
-import NoSsr from '@material-ui/core/NoSsr';
 import { NavigationStyles } from '../ThemeProperties';
 import { DrawerNavigationItem } from './DrawerNavigationItem';
 import { withStyles } from '@material-ui/core/styles';

@@ -11,7 +11,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case types.AUTHENTICATED:
+    case types.AUTHENTICATED: {
       return {
         ...state,
         user: {
@@ -21,7 +21,8 @@ export default function (state = initialState, action) {
         },
         error: null
       };
-    case types.UNAUTHENTICATED:
+    }
+    case types.UNAUTHENTICATED: {
       return {
         ...state,
         user: {
@@ -31,11 +32,13 @@ export default function (state = initialState, action) {
         },
         error: null
       };
-    case types.AUTHENTICATION_ERROR:
+    }
+    case types.AUTHENTICATION_ERROR: {
       return {
         ...state,
         error: 'Authentication error!'
       };
+    }
     default:
       return {
         ...state

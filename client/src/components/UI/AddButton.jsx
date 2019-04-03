@@ -1,58 +1,41 @@
+import { withStyles } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import withWidth from '@material-ui/core/withWidth';
+import { Buttons } from './ThemeProperties';
 
 const AddButton = props => {
 
-  const { classes, width, history, element } = props;
+  const { classes, history, element } = props;
 
   function handleClick() {
     return history.push(history.push(`/${element}/new`));
   }
 
-  function mobileButton() {
-    return (
-      <Button size="small" className={classes.margin}
+  return (
+    <div className={classes.formRoot}>
+      <Button size="small" className={classes.mobile}
               onClick={() => {
                 handleClick();
               }}>
         <strong>Create</strong>
       </Button>
-    );
-  }
-
-  function desktopButton() {
-    return (
-      <Fab color="primary" size="small" aria-label="Add" className={classes.fab}
+      <Fab color="primary" size="small" aria-label="Add" className={classes.desktop}
            onClick={() => {
              handleClick();
            }}>
         <AddIcon/>
       </Fab>
-    );
-  }
-
-  const components = {
-    xs: mobileButton(),
-    sm: mobileButton()
-  };
-
-  const Component = components[width] || desktopButton();
-
-  return (
-    <div className={classes.formRoot}>
-      {Component}
     </div>
   );
 
 };
 
 AddButton.propTypes = {
-  width: PropTypes.string.isRequired
+  classes: PropTypes.object.isRequired
 };
 
-export default withWidth()(AddButton);
+export default withStyles(Buttons, { withTheme: true })(AddButton);
 

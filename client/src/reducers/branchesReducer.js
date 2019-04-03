@@ -12,7 +12,7 @@ const initialState = {
 export default function (state = initialState, action) {
 
   switch (action.type) {
-    case types.FETCH_BRANCHES:
+    case types.FETCH_BRANCHES: {
       return {
         ...state,
         list: action.payload.data,
@@ -20,8 +20,8 @@ export default function (state = initialState, action) {
         error: null,
         success: null
       };
-
-    case types.FETCH_BRANCH:
+    }
+    case types.FETCH_BRANCH: {
       return {
         ...state,
         list: {},
@@ -29,8 +29,8 @@ export default function (state = initialState, action) {
         error: null,
         success: null
       };
-
-    case types.ADD_BRANCH:
+    }
+    case types.ADD_BRANCH: {
       return {
         ...state,
         list: {},
@@ -38,8 +38,8 @@ export default function (state = initialState, action) {
         error: null,
         success: `New Branch "${action.payload.data.name}" created!`
       };
-
-    case types.UPDATE_BRANCH:
+    }
+    case types.UPDATE_BRANCH: {
       return {
         ...state,
         list: {},
@@ -47,8 +47,8 @@ export default function (state = initialState, action) {
         error: null,
         success: `Branch "${action.payload.data.name}" successfully modified!`
       };
-
-    case types.FETCH_ERROR:
+    }
+    case types.FETCH_ERROR: {
       return {
         ...state,
         list: {},
@@ -56,8 +56,8 @@ export default function (state = initialState, action) {
         error: 'Error while getting data!',
         success: null
       };
-
-    case types.ERROR:
+    }
+    case types.ERROR: {
       return {
         ...state,
         list: {},
@@ -65,7 +65,7 @@ export default function (state = initialState, action) {
         error: 'Error!',
         success: null
       };
-
+    }
     default:
       return {
         ...state

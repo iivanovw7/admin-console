@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import { Paper, Table, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Container } from '../UI/ThemeProperties';
-import { fetchBranch } from '../../actions/branches';
+import { getSingleBranch } from '../../actions/branches';
 import { withRouter } from 'react-router-dom';
 
 const BranchesContainer = props => {
@@ -20,7 +15,7 @@ const BranchesContainer = props => {
   }
 
   function handleBranchClick(id) {
-    dispatch(fetchBranch(id, history));
+    dispatch(getSingleBranch(id, history));
   }
 
   return (
@@ -63,5 +58,5 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranch })(withStyles(Container)(withRouter(BranchesContainer)));
+export default connect(mapStateToProps, { fetchBranch: getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
 

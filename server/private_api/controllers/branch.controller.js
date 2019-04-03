@@ -6,16 +6,16 @@ import Branch from '../../models/Branch';
  * Gets one listRoles of branches if called with listRoles and limit,
  * if not - returns full list of branches
  *
- * @headers {number} listRoles: req.body.listRoles
- * @headers {number} limit: req.body.limit
+ * @query {number} listRoles: req.body.listRoles
+ * @query {number} limit: req.body.limit
  *
  * @returns {listRoles}
  *
  */
 const listBranches = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = Branch.find({})

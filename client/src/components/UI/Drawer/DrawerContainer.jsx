@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
+import { Drawer, Hidden } from '@material-ui/core';
 import DrawerNavigation from './DrawerNavigation';
 import { withStyles } from '@material-ui/core/styles';
 import { NavigationStyles } from '../ThemeProperties';

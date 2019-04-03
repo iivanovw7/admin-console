@@ -9,22 +9,29 @@ import Roles from './screens/Roles';
 import Groups from './screens/Groups';
 import Tickets from './screens/Tickets';
 import Login from './screens/Login';
-import requireAuth from './authentication/requireAuth';
-import noRequireAuth from './authentication/noRequireAuth';
+import protectedContent from './layouts/protectedContent';
+import loginLayout from './layouts/loginLayout';
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3><code>{location.pathname}</code> not found!</h3>
+  </div>
+);
 
 export default (
   <Switch>
-    <Route exact path={'/'} component={noRequireAuth(Login)}/>
-    <Route path={'/statistics'} component={requireAuth(Statistics)}/>
-    <Route path={'/staff'} component={requireAuth(Users)}/>
-    <Route path={'/roles'} component={requireAuth(Roles)}/>
-    <Route path={'/messages'} component={requireAuth(Messages)}/>
-    <Route path={'/tickets'} component={requireAuth(Tickets)}/>
-    <Route path={'/groups'} component={requireAuth(Groups)}/>
-    <Route path={'/branches/:id'} component={requireAuth(BranchesDetails)}/>
-    <Route path={'/branches/new'} component={requireAuth(BranchesDetails)}/>
-    <Route path={'/branches'} component={requireAuth(Branches)}/>
+    <Route exact path={'/'} component={loginLayout(Login)}/>
+    <Route path={'/statistics'} component={protectedContent(Statistics)}/>
+    <Route path={'/roles'} component={protectedContent(Roles)}/>
+    <Route path={'/staff'} component={protectedContent(Users)}/>
+    <Route path={'/messages'} component={protectedContent(Messages)}/>
+    <Route path={'/tickets'} component={protectedContent(Tickets)}/>
+    <Route path={'/groups'} component={protectedContent(Groups)}/>
+    <Route path={'/branches/:id'} component={protectedContent(BranchesDetails)}/>
+    <Route path={'/branches/new'} component={protectedContent(BranchesDetails)}/>
+    <Route path={'/branches'} component={protectedContent(Branches)}/>
+    <Route component={NoMatch}/>
   </Switch>
 );
+
 

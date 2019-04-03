@@ -12,7 +12,7 @@ export const getRole = {
 };
 //GET /api/roles/listRoles
 export const getPageRoles = {
-  headers: {
+  query: {
     page: Joi.number(),
     limit: Joi.number()
   }

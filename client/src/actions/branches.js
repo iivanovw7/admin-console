@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import * as URL from '../constants/APIurl';
 import axios from 'axios';
 
-export const fetchBranches = (page, limit, history) => {
+export const getBranches = (page, limit, history) => {
 
   return async dispatch => {
     await axios({
@@ -12,6 +12,8 @@ export const fetchBranches = (page, limit, history) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {
         page: page || 1,
         limit: limit || 10
       },
@@ -35,7 +37,7 @@ export const fetchBranches = (page, limit, history) => {
 
 };
 
-export const addBranch = formValues => {
+export const addNewBranch = formValues => {
 
   const { name, email, phone, fax, address, information, status } = formValues;
 
@@ -97,7 +99,7 @@ export const updateBranch = (formValues, id) => {
     };
 };
 
-export const fetchBranch = (id, history) => {
+export const getSingleBranch = (id, history) => {
 
   return async dispatch => {
     await axios({

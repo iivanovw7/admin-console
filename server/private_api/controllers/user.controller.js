@@ -27,16 +27,16 @@ const getUser = async (req, res) => {
 /**
  * Get one listRoles of users
  *
- * @headers {number} listRoles: req.headers.listRoles
- * @headers {number} limit: req.headers.limit
+ * @query {number} listRoles: req.query.listRoles
+ * @query {number} limit: req.query.limit
  *
  * @returns {listRoles} Returns single listRoles or full list
  *
  */
 const listUsers = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = User.find({})
@@ -70,14 +70,14 @@ const listUsers = async (req, res) => {
 /**Find users by group id
  *
  * @requires {objectId} id: req.params.id
- * @requires {number} listRoles: req.headers.listRoles
- * @requires {number} limit: req.headers.limit
+ * @requires {number} listRoles: req.query.listRoles
+ * @requires {number} limit: req.query.limit
  *
  */
 const getUsersByGroup = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = User.find({ group: req.params.id })
@@ -110,14 +110,14 @@ const getUsersByGroup = async (req, res) => {
 /**Find users by branch id
  *
  * @requires {objectId} id: req.params.id
- * @requires {number} listRoles: req.headers.listRoles
- * @requires {number} limit: req.headers.limit
+ * @requires {number} listRole req.query.listRoles
+ * @requires {number} limit: req.query.limit
  *
  */
 const getUsersByBranch = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = User.find({ branch: req.params.id })
@@ -150,21 +150,21 @@ const getUsersByBranch = async (req, res) => {
 
 /**Find users by query, by name or email
  *
- * @requires {number} listRoles: req.headers.listRoles
- * @requires {number} limit: req.headers.limit
- * @requires {string} search: req.headers.search
+ * @requires {number} listRoles: req.query.listRoles
+ * @requires {number} limit: req.query.limit
+ * @requires {string} search: req.query.search
  */
 const searchUsers = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const query = {
     $or: [
-      { name: req.headers.search },
-      { surname: req.headers.search },
-      { email: req.headers.search }
+      { name: req.query.search },
+      { surname: req.query.search },
+      { email: req.query.search }
     ]
   };
 
@@ -239,11 +239,11 @@ const updateUser = async (req, res) => {
  */
 const getUserHistory = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
-  const queryLimit = setQueryLimit(req.headers.months);
+  const queryLimit = setQueryLimit(req.query.months);
   const query = { created: { $gt: queryLimit }, actionTarget: req.params.id };
 
   const findPromise = await History.find(query)

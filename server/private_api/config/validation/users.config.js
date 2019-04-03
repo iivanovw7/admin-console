@@ -15,7 +15,7 @@ export const getUserHistory = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  query: {
     months: Joi.number().required().min(1).max(1000),
     page: Joi.number().required(),
     limit: Joi.number().required()
@@ -37,7 +37,7 @@ export const updateUser = {
 
 // GET /api/users/listRoles
 export const getPage = {
-  headers: {
+  query: {
     page: Joi.number().min(1).max(2000),
     limit: Joi.number().min(1).max(2000)
   }
@@ -48,7 +48,7 @@ export const getPageBranch = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  query: {
     page: Joi.number().required(),
     limit: Joi.number().required()
   }
@@ -59,7 +59,7 @@ export const getPageGroup = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  query: {
     page: Joi.number().required(),
     limit: Joi.number().required()
   }
@@ -67,7 +67,7 @@ export const getPageGroup = {
 
 // GET /api/users/search
 export const getPageSearch = {
-  headers: {
+  query: {
     search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
     limit: Joi.number().required()

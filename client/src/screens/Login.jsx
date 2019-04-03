@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { reduxForm } from 'redux-form';
 import { Helmet } from 'react-helmet';
-import { signInAction } from '../actions/auth';
+import { loginUser } from '../actions/auth';
 import { connect } from 'react-redux';
 import { LoginField } from '../components/Login/LoginField';
 import { errorMessage } from '../components/UI/Forms/ErrorMessage';
@@ -20,34 +20,27 @@ const Login = props => {
   };
 
   return (
-    <div className={classes.loginWrapper}>
-      <Helmet>
-        <meta charSet="utf-8"/>
-        <title>Admin console - Login</title>
-        <link rel="canonical" href=""/>
-      </Helmet>
-      <Paper className={classes.loginFormContainer}>
-        <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
-          <Typography variant="h5" component="h3">
-            Sign In
-          </Typography>
-          <hr/>
-          <LoginField dataType={'email'}/>
-          <LoginField dataType={'password'}/>
-          <Grid container alignItems="center" justify="space-between">
-            <Grid item>
-              <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}
-                      variant="text" color="primary">Forgot password ?</Button>
-            </Grid>
+    <Paper className={classes.loginFormContainer}>
+      <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
+        <Typography variant="h5" component="h3">
+          Sign In
+        </Typography>
+        <hr/>
+        <LoginField dataType={'email'}/>
+        <LoginField dataType={'password'}/>
+        <Grid container alignItems="center" justify="space-between">
+          <Grid item>
+            <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}
+                    variant="text" color="primary">Forgot password ?</Button>
           </Grid>
-          <Grid container justify="flex-start" style={{ marginTop: '10px' }}>
-            <Button variant="outlined" color="primary" type="submit"
-                    style={{ textTransform: 'none' }}>SIGN IN</Button>
-            {errorMessage(props)}
-          </Grid>
-        </form>
-      </Paper>
-    </div>
+        </Grid>
+        <Grid container justify="flex-start" style={{ marginTop: '10px' }}>
+          <Button variant="outlined" color="primary" type="submit"
+                  style={{ textTransform: 'none' }}>SIGN IN</Button>
+          {errorMessage(props)}
+        </Grid>
+      </form>
+    </Paper>
   );
 };
 
@@ -60,8 +53,6 @@ function mapStateToProps(state) {
   return { errorMessage: state.auth.error };
 }
 
-
-
 const reduxFormLogin = reduxForm({
   validate: validateLogin,
   form: 'login',
@@ -69,6 +60,6 @@ const reduxFormLogin = reduxForm({
 })(Login);
 
 export default connect(mapStateToProps, {
-  signInAction
+  signInAction: loginUser
 })(withStyles(LoginFormStyles)(reduxFormLogin));
 
