@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import { NavLink } from 'react-router-dom';
 
-export const DrawerNavigationItem = (props) => {
+export const DrawerNavigationItem = props => {
 
   const { classes, link, text, icon } = props;
 

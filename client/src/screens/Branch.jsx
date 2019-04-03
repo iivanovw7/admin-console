@@ -7,20 +7,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
-import { ContentStyles } from '../components/UI/ThemeProperties';
+import { Wrapper } from '../components/UI/ThemeProperties';
 import Paper from '@material-ui/core/Paper';
 import { fetchBranch } from '../actions/branches';
-import BranchDetailsContainer from '../components/Branch/BranchContainer';
+import BranchContainer from '../components/Branch/BranchContainer';
 
 const Branch = props => {
   const { classes, history } = props;
   const branch = props.branches.branch;
   const [mobileOpen, setDrawerState] = useState(false);
-  //const details = props.branches.single;
 
-  const handleDrawerToggle = () => {
+  function handleDrawerToggle() {
     setDrawerState(!mobileOpen);
-  };
+  }
 
   return (
     <div className={classes.root}>
@@ -32,8 +31,7 @@ const Branch = props => {
       <CssBaseline/>
       <AppBarContainer handleDrawerToggle={handleDrawerToggle} dispatch={props.dispatch}/>
       <DrawerContainer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen}/>
-      <main className={classes.content}>
-        <div className={classes.toolbar}/>
+      <main className={classes.contentSingle}>
         <Paper className={classes.controlsContainer}>
           <div className={classes.selectorsContainer}>
             <h2>Create/Edit branch</h2>
@@ -41,7 +39,7 @@ const Branch = props => {
         </Paper>
         {
           (branch) ?
-            (<BranchDetailsContainer history={history}/>) : (<p>Loading...</p>)
+            (<BranchContainer history={history}/>) : (<p>Loading...</p>)
         }
       </main>
     </div>
@@ -57,7 +55,7 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranch })(withStyles(ContentStyles, { withTheme: true })(withRouter(Branch)));
+export default connect(mapStateToProps, { fetchBranch })(withStyles(Wrapper, { withTheme: true })(withRouter(Branch)));
 
 
 

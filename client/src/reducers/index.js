@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import authReducer from './authReducer';
-import banchesReducer from './branchesReducer';
+import branchesReducer from './branchesReducer';
 
 const rootReducer = combineReducers({
-  branches: banchesReducer,
   form: formReducer,
-  auth: authReducer
+  auth: authReducer,
+  branches: branchesReducer,
 });
 
 export default rootReducer;

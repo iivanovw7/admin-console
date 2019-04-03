@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { TextField } from '@material-ui/core';
 
@@ -7,6 +8,9 @@ export const renderTextField = ({
                                   input,
                                   label,
                                   name,
+                                  rows = 1,
+                                  rowsMax = 1,
+                                  variant,
                                   meta: { touched, error, warning },
                                   ...custom
                                 }) => {
@@ -18,10 +22,29 @@ export const renderTextField = ({
       name={name}
       error={!!error && touched}
       helperText={error && touched ? error : ' '}
-      {...input}
-      {...custom}
+      variant={variant}
+      multiline
+      rows={rows}
+      rowsMax={rows}
       fullWidth
       required
+      {...input}
+      {...custom}
     />
+
   );
 };
+
+renderTextField.propTypes = {
+  checked: PropTypes.bool,
+  onChange: PropTypes.object,
+  id: PropTypes.string,
+  input: PropTypes.object,
+  type: PropTypes.string,
+  rows: PropTypes.number,
+  rowsMax: PropTypes.number,
+  name: PropTypes.string,
+  variant: PropTypes.string
+};
+
+

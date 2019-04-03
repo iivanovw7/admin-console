@@ -1,7 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import Cookies from 'js-cookie';
 
-
 const initialState = {
   user: {
     authenticated: typeof Cookies.get('LoggedUserObject') !== 'undefined',

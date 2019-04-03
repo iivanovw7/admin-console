@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
 
-const renderCheckbox = ({
+export const renderCheckbox = ({
                           id,
                           input
                         }) => {
@@ -18,7 +18,8 @@ const renderCheckbox = ({
 
 renderCheckbox.propTypes = {
   checked: PropTypes.bool,
-  onChange: PropTypes.object
+  onChange: PropTypes.object,
+  id: PropTypes.string,
+  input: PropTypes.object,
 };
 
-export default renderCheckbox;

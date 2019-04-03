@@ -110,7 +110,7 @@ export const NavigationStyles = theme => ({
 export const LoginFormStyles = theme => ({
 
   [theme.breakpoints.down('sm')]: {
-    formContainer: {
+    loginFormContainer: {
       boxShadow: 'none',
       height: '100%',
       display: 'flex',
@@ -118,7 +118,7 @@ export const LoginFormStyles = theme => ({
       justifyContent: 'center'
     }
   },
-  wrapper: {
+  loginWrapper: {
     maxWidth: '500px',
     margin: '0 auto',
     display: 'flex',
@@ -126,7 +126,7 @@ export const LoginFormStyles = theme => ({
     justifyContent: 'center',
     height: '100%'
   },
-  formContainer: {
+  loginFormContainer: {
     padding: theme.spacing.unit,
     maxWidth: '500px'
   },
@@ -139,14 +139,33 @@ export const LoginFormStyles = theme => ({
 });
 
 //Exporting material-ui main styles
-export const ContentStyles = theme => ({
+export const Wrapper = theme => ({
   root: {
     display: 'flex'
   },
   toolbar: theme.mixins.toolbar,
-  content: {
+  contentSingle: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    marginTop: '64px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+  contentList: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3,
+    marginTop: '64px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      height: '90vh'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    }
   },
   formRoot: {
     display: 'flex',
@@ -186,7 +205,7 @@ export const ContentStyles = theme => ({
   }
 });
 
-export const Branches = theme => ({
+export const Container = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
@@ -195,8 +214,9 @@ export const Branches = theme => ({
     justifyContent: 'center',
     overflow: 'hidden'
   },
-  table: {
-    minWidth: 200
+  tables: {
+    minWidth: 200,
+    width: '100%'
   },
   tableCell: {
     paddingLeft: 10,
@@ -207,14 +227,28 @@ export const Branches = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.black, 0.1),
       cursor: 'pointer'
-    }
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: '48px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '100%',
+    },
   },
   nameCell: {
     paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    width: '30%'
+
+    [theme.breakpoints.up('sm')]: {
+      width: '30%',
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      width: '60%',
+    }
+
   },
   addressCell: {
     paddingRight: 5,
@@ -222,6 +256,16 @@ export const Branches = theme => ({
     paddingTop: 5,
     paddingBottom: 5,
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
+  employeesCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '30%',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }

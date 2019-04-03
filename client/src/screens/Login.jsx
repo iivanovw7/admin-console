@@ -6,34 +6,34 @@ import { reduxForm } from 'redux-form';
 import { Helmet } from 'react-helmet';
 import { signInAction } from '../actions/auth';
 import { connect } from 'react-redux';
-import { LoginContainer } from '../components/Login/LoginContainer';
-import { errorMessage } from '../components/Login/Form/ErrorMessage';
-import { validate } from '../components/Login/Form/Validation';
+import { LoginField } from '../components/Login/LoginField';
+import { errorMessage } from '../components/UI/Forms/ErrorMessage';
+import { validateLogin } from '../components/UI/Forms/validate';
 import { LoginFormStyles } from '../components/UI/ThemeProperties';
 
-const Login = (props) => {
+const Login = props => {
 
   const { classes, handleSubmit } = props;
 
-  const submit = (formValues) => {
+  const submit = formValues => {
     props.signInAction(formValues, props.history);
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.loginWrapper}>
       <Helmet>
         <meta charSet="utf-8"/>
         <title>Admin console - Login</title>
         <link rel="canonical" href=""/>
       </Helmet>
-      <Paper className={classes.formContainer}>
+      <Paper className={classes.loginFormContainer}>
         <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
           <Typography variant="h5" component="h3">
             Sign In
           </Typography>
           <hr/>
-          <LoginContainer dataType={'email'}/>
-          <LoginContainer dataType={'password'}/>
+          <LoginField dataType={'email'}/>
+          <LoginField dataType={'password'}/>
           <Grid container alignItems="center" justify="space-between">
             <Grid item>
               <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}
@@ -60,8 +60,10 @@ function mapStateToProps(state) {
   return { errorMessage: state.auth.error };
 }
 
+
+
 const reduxFormLogin = reduxForm({
-  validate,
+  validate: validateLogin,
   form: 'login',
   fields: ['email', 'password']
 })(Login);

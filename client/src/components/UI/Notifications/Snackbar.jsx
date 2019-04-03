@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { fetchBranches } from '../../../actions/branches';
 import { Notification } from '../ThemeProperties';
 
 
-const AlertSnackbar = (props) => {
+const AlertSnackbar = props => {
 
-  const { classes, afterConfirm } = props;
+  const { classes, message, afterConfirm, success } = props;
   const [opened, handleSnackbar] = useState(false);
 
   const handleClick = () => {
@@ -23,12 +21,15 @@ const AlertSnackbar = (props) => {
       return;
     }
 
-    afterConfirm();
+    if (afterConfirm) {
+      afterConfirm();
+    }
+
     handleSnackbar(false);
   };
 
   useEffect(() => {
-    if (props.message) {
+    if (message) {
       handleClick();
     }
   }, []);
@@ -41,12 +42,19 @@ const AlertSnackbar = (props) => {
           horizontal: 'left'
         }}
         open={opened}
-        autoHideDuration={6000}
-        onClose={handleClose}
+        autoHideDuration={5000}
+        onClose={() => {
+          afterConfirm();
+        }}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}
-        message={<span id="message-id">{props.message}</span>}
+        message={
+          <span id="message-id"
+                style={(success) ? ({ color: 'green' }) : ({ color: 'red' })}>
+            {message}
+          </span>
+        }
         action={[
           <IconButton
             key="close"

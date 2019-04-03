@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import withWidth from '@material-ui/core/withWidth';
 
-const AddNewButton = props => {
+const AddButton = props => {
 
   const { classes, width, history, element } = props;
 
@@ -13,18 +13,18 @@ const AddNewButton = props => {
     return history.push(history.push(`/${element}/new`));
   }
 
-  const mobileButton = () => {
+  function mobileButton() {
     return (
       <Button size="small" className={classes.margin}
               onClick={() => {
                 handleClick();
               }}>
-        NEW
+        <strong>Create</strong>
       </Button>
     );
-  };
+  }
 
-  const desktopButton = () => {
+  function desktopButton() {
     return (
       <Fab color="primary" size="small" aria-label="Add" className={classes.fab}
            onClick={() => {
@@ -33,7 +33,7 @@ const AddNewButton = props => {
         <AddIcon/>
       </Fab>
     );
-  };
+  }
 
   const components = {
     xs: mobileButton(),
@@ -50,9 +50,9 @@ const AddNewButton = props => {
 
 };
 
-AddNewButton.propTypes = {
+AddButton.propTypes = {
   width: PropTypes.string.isRequired
 };
 
-export default withWidth()(AddNewButton);
+export default withWidth()(AddButton);
 

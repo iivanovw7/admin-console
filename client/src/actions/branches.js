@@ -35,18 +35,7 @@ export const fetchBranches = (page, limit, history) => {
 
 };
 
-export const uploadBranch = (formValues, history) => {
-
-  console.log(formValues);
-  console.log(history);
-  return async dispatch => {
-
-  };
-
-};
-
-
-export const addBranch = (formValues, history) => {
+export const addBranch = formValues => {
 
   const { name, email, phone, fax, address, information, status } = formValues;
 
@@ -78,12 +67,34 @@ export const addBranch = (formValues, history) => {
 
 };
 
-export const updateBranch = ({ data }, id, history) => {
+export const updateBranch = (formValues, id) => {
 
-  return async dispatch => {
+    const { name, email, phone, fax, address, information, status } = formValues;
 
-  };
+    return async dispatch => {
 
+      await axios({
+        method: 'put',
+        url: `${URL.PRIVATE_API}/branches/${id}`,
+        data: {
+          name, email, phone, fax, address, information, status
+        },
+        withCredentials: true
+      })
+        .then(response => {
+          dispatch({
+            type: types.UPDATE_BRANCH,
+            payload: response
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          dispatch({
+            type: types.ERROR
+          });
+        });
+
+    };
 };
 
 export const fetchBranch = (id, history) => {
@@ -101,7 +112,7 @@ export const fetchBranch = (id, history) => {
       .then(response => {
         history.push(`/branches/${id}`);
         dispatch({
-          type: types.FETCH_SINGLE_BRANCH,
+          type: types.FETCH_BRANCH,
           payload: response
         });
       })

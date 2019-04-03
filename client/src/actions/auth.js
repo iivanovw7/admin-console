@@ -35,7 +35,7 @@ export const signInAction = ({ email, password }, history) => {
   };
 };
 
-export const signOutAction = (history) => {
+export const signOutAction = history => {
 
   return async dispatch => {
 

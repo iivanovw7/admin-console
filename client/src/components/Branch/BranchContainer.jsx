@@ -5,12 +5,11 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import { TextInputContainer, CheckboxContainer } from './Form/InputContainers';
-import { errorMessage } from './Form/ErrorMessage';
-import { validate } from './Form/Validation';
-import { Branches } from '../UI/ThemeProperties';
+import { TextInputContainer, CheckboxContainer } from '../UI/Forms/InputContainers';
+import { validateBranch } from '../UI/Forms/validate';
+import { Container } from '../UI/ThemeProperties';
 import { addBranch, updateBranch } from '../../actions/branches';
-import normalizePhone from './Form/Normalizer';
+import normalizePhone from '../UI/Forms/normalizer';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 
 const BranchContainer = props => {
@@ -30,18 +29,19 @@ const BranchContainer = props => {
     });
   }, [branch]);
 
-  const submit = (formValues) => {
+  const submit = formValues => {
     return (!branch._id) ?
-      (props.addBranch(formValues, history)) : (props.updateBranch(formValues, branch._id, history));
+      (props.addBranch(formValues)) : (props.updateBranch(formValues, branch._id));
   };
 
-  const showAlert = (message) => {
+  const showAlert = (message, success) => {
     return (
       <AlertSnackbar
         message={message}
         afterConfirm={() => {
           history.push(`/branches`);
         }}
+        success={success}
       />
     );
   };
@@ -57,18 +57,31 @@ const BranchContainer = props => {
         <TextInputContainer dataType={'address'} type={'text'} rows={4}/>
         <TextInputContainer dataType={'information'} type={'text'} rows={4}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
-        {(props.errorMessage) ? (showAlert(props.errorMessage)) : ('')}
-        {(props.successMessage) ? (showAlert(props.successMessage)) : ('')}
+        {
+          (props.errorMessage) ?
+            (showAlert(props.errorMessage, false)) : ('')
+        }
+        {
+          (props.successMessage) ?
+            (showAlert(props.successMessage, true)) : ('')
+        }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
-            variant="contained" color="primary" style={{ textTransform: 'none', margin: 5 }}
+            variant="contained" color="primary"
+            style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/branches`);
             }}>
             CANCEL
           </Button>
-          <Button variant="contained" color="primary" type="submit"
-                  style={{ textTransform: 'none', margin: 5 }}>SAVE</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+
+            style={{ textTransform: 'none', margin: 5 }}>
+            SAVE
+          </Button>
         </Grid>
       </form>
     </Paper>
@@ -89,7 +102,7 @@ function mapStateToProps(state) {
 }
 
 const reduxFromBranch = reduxForm({
-  validate,
+  validate: validateBranch,
   form: 'branch',
   fields: ['name', 'email', 'phone', 'fax', 'address', 'information', 'status']
 })(BranchContainer);
@@ -97,4 +110,4 @@ const reduxFromBranch = reduxForm({
 export default connect(mapStateToProps, {
   addBranch,
   updateBranch
-})(withStyles(Branches)(reduxFromBranch));
+})(withStyles(Container)(reduxFromBranch));

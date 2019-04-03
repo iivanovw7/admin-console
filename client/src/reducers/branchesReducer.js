@@ -13,7 +13,6 @@ export default function (state = initialState, action) {
 
   switch (action.type) {
     case types.FETCH_BRANCHES:
-
       return {
         ...state,
         list: action.payload.data,
@@ -22,8 +21,7 @@ export default function (state = initialState, action) {
         success: null
       };
 
-    case types.FETCH_SINGLE_BRANCH:
-
+    case types.FETCH_BRANCH:
       return {
         ...state,
         list: {},
@@ -33,13 +31,21 @@ export default function (state = initialState, action) {
       };
 
     case types.ADD_BRANCH:
-
       return {
         ...state,
         list: {},
         branch: {},
         error: null,
-        success: `New Branch ${action.payload.data.name} created!`
+        success: `New Branch "${action.payload.data.name}" created!`
+      };
+
+    case types.UPDATE_BRANCH:
+      return {
+        ...state,
+        list: {},
+        branch: {},
+        error: null,
+        success: `Branch "${action.payload.data.name}" successfully modified!`
       };
 
     case types.FETCH_ERROR:

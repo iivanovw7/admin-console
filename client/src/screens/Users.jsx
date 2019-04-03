@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
-import { ContentStyles } from '../components/UI/ThemeProperties';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 
 const Users = (props) => {
@@ -59,7 +59,7 @@ Users.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(ContentStyles, { withTheme: true })(Users);
+export default withStyles(Wrapper, { withTheme: true })(Users);
 
 
 

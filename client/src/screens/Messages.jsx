@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
-import { ContentStyles } from '../components/UI/ThemeProperties';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 
 const Messages = (props) => {
@@ -60,7 +60,7 @@ Messages.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(ContentStyles, { withTheme: true })(Messages);
+export default withStyles(Wrapper, { withTheme: true })(Messages);
 
 
 

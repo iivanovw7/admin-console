@@ -3,7 +3,8 @@ import React from 'react';
 import { Field } from 'redux-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { renderTextField } from './TextField';
-import renderCheckbox from './Checkbox';
+import { renderCheckbox } from './Checkbox';
+import PropTypes from 'prop-types';
 
 export const CheckboxContainer = (props) => {
 
@@ -30,6 +31,12 @@ export const CheckboxContainer = (props) => {
 
 };
 
+CheckboxContainer.propTypes = {
+  label: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.string
+};
+
 export const TextInputContainer = (props) => {
 
   const { dataType, rows, type, normalize } = props;
@@ -45,6 +52,8 @@ export const TextInputContainer = (props) => {
           id={dataType}
           normalize={normalize}
           rows={rows}
+          rowsMax={rows}
+          variant={"outlined"}
         />
       </Grid>
     </Grid>
@@ -52,3 +61,8 @@ export const TextInputContainer = (props) => {
 
 };
 
+TextInputContainer.propTypes = {
+  dataType: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.string
+};

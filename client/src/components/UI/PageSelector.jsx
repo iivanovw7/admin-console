@@ -8,7 +8,7 @@ export const PageSelector = props => {
   const page = data.list.page || 1;
   const pages = data.list.pages || 10;
 
-  const button = (title, value) => {
+  const selectorButton =(title, value) => {
     return (
       <Button size="small"
               disabled={
@@ -27,13 +27,13 @@ export const PageSelector = props => {
   return (
     <div className={classes.formRoot}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {button('PREV', page - 1)}
+        {selectorButton('PREV', page - 1)}
       </div>
       <Typography style={{ alignItems: 'center', display: 'flex', margin: '10px' }}>
-        <strong>Page {page}</strong>
+        <strong>Page {page} of {pages}</strong>
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {button('NEXT', page + 1)}
+        {selectorButton('NEXT', page + 1)}
       </div>
     </div>
   );

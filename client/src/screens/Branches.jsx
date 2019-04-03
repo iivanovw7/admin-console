@@ -5,10 +5,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
 import { withStyles } from '@material-ui/core/styles';
-import { ContentStyles } from '../components/UI/ThemeProperties';
+import { Wrapper } from '../components/UI/ThemeProperties';
 import BranchesListContainer from '../components/Branches/BranchesContainer';
 import { PageSelector } from '../components/UI/PageSelector';
-import AddNewButton from '../components/UI/AddNewButton';
+import AddNewButton from '../components/UI/AddButton';
 import Paper from '@material-ui/core/Paper';
 import { fetchBranches } from '../actions/branches';
 import { connect } from 'react-redux';
@@ -16,22 +16,24 @@ import { withRouter } from 'react-router-dom';
 
 const Branches = props => {
   const { classes, history } = props;
-  const limit = [8];
-  const [mobileOpen, setDrawerState] = useState(false);
+  const limit = [8]; //limit of elements for current page
+  const [mobileOpen, setDrawerState] = useState(false); //mobile drawer state
+
+  //current page number
   const [currentPage, setCurrentPage] = useState(props.branches.list.page);
-  const list = props.branches.list.output;
+  const list = props.branches.list.output; //list of elements fetched
 
   useEffect(() => {
     props.dispatch(fetchBranches(currentPage, limit, history));
   }, [currentPage]);
 
-  const handleDrawerToggle = () => {
+  function handleDrawerToggle() {
     setDrawerState(!mobileOpen);
-  };
+  }
 
-  const handlePage = (newPage) => {
+  function handlePage(newPage) {
     setCurrentPage(newPage);
-  };
+  }
 
   return (
     <div className={classes.root}>
@@ -43,18 +45,19 @@ const Branches = props => {
       <CssBaseline/>
       <AppBarContainer handleDrawerToggle={handleDrawerToggle} dispatch={props.dispatch}/>
       <DrawerContainer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen}/>
-      <main className={classes.content}>
-        <div className={classes.toolbar}/>
-        <Paper className={classes.controlsContainer}>
-          <div className={classes.selectorsContainer}>
-            <h2>Branches</h2>
-          </div>
-          <AddNewButton classes={classes} history={history} element={'branches'}/>
-        </Paper>
-        {
-          (list) ?
-            (<BranchesListContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
-        }
+      <main className={classes.contentList}>
+        <div>
+          <Paper className={classes.controlsContainer}>
+            <div className={classes.selectorsContainer}>
+              <h2>Branches</h2>
+            </div>
+            <AddNewButton classes={classes} history={history} element={'branches'}/>
+          </Paper>
+          {
+            (list) ?
+              (<BranchesListContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
+          }
+        </div>
         <br/>
         <Paper className={classes.controlsContainer}>
           <div/>
@@ -74,5 +77,5 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranches })(withStyles(ContentStyles, { withTheme: true })(withRouter(Branches)));
+export default connect(mapStateToProps, { fetchBranches })(withStyles(Wrapper, { withTheme: true })(withRouter(Branches)));
 
