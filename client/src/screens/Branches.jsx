@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Wrapper } from '../components/UI/ThemeProperties';
-import BranchesListContainer from '../components/Branches/BranchesContainer';
+import BranchesContainer from '../components/Branches/BranchesContainer';
 import { PageSelector } from '../components/UI/PageSelector';
 import AddNewButton from '../components/UI/AddButton';
 import { getBranches } from '../actions/branches';
@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 
 const Branches = props => {
   const { classes, history } = props;
-  const limit = 8; //limit of elements for current page
+  const limit = 8; //default limit of elements for current page
 
   //current page number
   const [currentPage, setCurrentPage] = useState(props.branches.list.page);
@@ -21,7 +21,6 @@ const Branches = props => {
   useEffect(() => {
     props.dispatch(getBranches(currentPage, limit, history));
   }, [currentPage]);
-
 
   function handlePage(newPage) {
     setCurrentPage(newPage);
@@ -38,7 +37,7 @@ const Branches = props => {
         </Paper>
         {
           (list) ?
-            (<BranchesListContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
+            (<BranchesContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
         }
       </div>
       <br/>

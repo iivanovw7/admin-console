@@ -42,9 +42,8 @@ const AppBarContainer = props => {
           &nbsp;
           <Button
             variant="outlined"
-            color="secondary"
             type="submit"
-            style={{ textTransform: 'none' }}
+            style={{ textTransform: 'none', color: 'white', borderColor: 'white' }}
             onClick={() => {
               dispatch(logoutUser(history));
             }}

@@ -30,7 +30,7 @@ const BranchContainer = props => {
 
   const submit = formValues => {
     return (!branch._id) ?
-      (props.addBranch(formValues)) : (props.updateBranch(formValues, branch._id));
+      (props.addNewBranch(formValues)) : (props.updateBranch(formValues, branch._id));
   };
 
   const showAlert = (message, success) => {

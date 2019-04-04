@@ -1,5 +1,7 @@
+import { Typography } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import { NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React from 'react';
-import { Button, Typography } from '@material-ui/core';
 
 export const PageSelector = props => {
 
@@ -7,32 +9,37 @@ export const PageSelector = props => {
   const page = data.list.page || 1;
   const pages = data.list.pages || 10;
 
-  const selectorButton = (title, value) => {
+  const pagesNavigation = (title, value) => {
     return (
-      <Button size="small"
-              disabled={
-                (page === 1 && title === 'PREV') ||
-                (page === pages && title === 'NEXT')
-              }
-              className={classes.margin}
-              onClick={() => {
-                handlePage(value);
-              }}>
-        {title}
-      </Button>
+      <IconButton
+        className={classes.button}
+        aria-label={title}
+        color="primary"
+        disabled={
+          (page === 1 && title === 'Back')
+          ||
+          (page === pages && title === 'Next')
+        }
+        onClick={() => {
+          handlePage(value);
+        }}
+      >
+        {(title === 'Next') ?
+          (<NavigateNext/>) : (<NavigateBefore/>)}
+      </IconButton>
     );
   };
 
   return (
     <div className={classes.formRoot}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {selectorButton('PREV', page - 1)}
+      <div style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
+        {pagesNavigation('Back', page - 1)}
       </div>
       <Typography style={{ alignItems: 'center', display: 'flex', margin: '10px' }}>
         <strong>Page {page} of {pages}</strong>
       </Typography>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {selectorButton('NEXT', page + 1)}
+      <div style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
+        {pagesNavigation('Next', page + 1)}
       </div>
     </div>
   );

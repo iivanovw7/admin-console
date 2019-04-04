@@ -41,7 +41,7 @@ const AlertSnackbar = props => {
           horizontal: 'left'
         }}
         open={opened}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={() => {
           afterConfirm();
         }}

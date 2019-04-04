@@ -23,10 +23,18 @@ const BranchesContainer = props => {
       <Table className={classes.tables}>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.nameCell}>Name</TableCell>
-            <TableCell className={classes.addressCell} align="center">Address</TableCell>
-            <TableCell className={classes.employeesCell} align="center">Employees</TableCell>
-            <TableCell className={classes.tableCell} align="center">Status</TableCell>
+            <TableCell className={classes.branchNameCell}>
+              <h3>Name</h3>
+            </TableCell>
+            <TableCell className={classes.branchAddressCell} align="center">
+              <h3>Address</h3>
+            </TableCell>
+            <TableCell className={classes.branchEmployeesCell} align="center">
+              <h3>Employees</h3>
+            </TableCell>
+            <TableCell className={classes.tableCell} align="center">
+              <h3>Status</h3>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,14 +42,17 @@ const BranchesContainer = props => {
             <TableRow key={row._id}
                       onClick={() => {
                         handleBranchClick(row._id);
-                      }} className={classes.rowClass}>
-              <TableCell component="th" scope="row" className={classes.nameCell}>
+                      }} className={classes.branchRowClass}>
+              <TableCell component="th" scope="row" className={classes.branchNameCell}>
                 {row.name}
               </TableCell>
-              <TableCell className={classes.addressCell} align="center">{row.address}</TableCell>
-              <TableCell className={classes.employeesCell} align="center">xxx</TableCell>
-              <TableCell className={classes.tableCell}
-                         align="center">{displayStatus(row.status)}</TableCell>
+              <TableCell className={classes.branchAddressCell} align="center">{row.address}</TableCell>
+              <TableCell className={classes.branchEmployeesCell} align="center">xxx</TableCell>
+              <TableCell className={classes.tableCell} align="center">
+                <strong>
+                  {displayStatus(row.status)}
+                </strong>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

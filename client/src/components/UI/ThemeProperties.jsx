@@ -1,4 +1,5 @@
 import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { createMuiTheme } from '@material-ui/core/styles';
 
@@ -18,8 +19,9 @@ export const themeProperties = createMuiTheme({
   },
   palette: {
     primary: blue,
-    secondary: {
-      main: '#ffffff'
+    secondary: red,
+    logout: {
+      main: '#FFFFFF'
     }
   },
   status: {
@@ -202,6 +204,15 @@ export const Wrapper = theme => ({
     alignItems: 'center',
     paddingRight: 10,
     paddingLeft: 10
+  },
+  icon: {
+    margin: theme.spacing.unit * 2,
+  },
+  iconHover: {
+    margin: theme.spacing.unit * 2,
+    '&:hover': {
+      color: red[800],
+    },
   }
 });
 
@@ -223,7 +234,7 @@ export const Container = theme => ({
     paddingTop: 5,
     paddingBottom: 5
   },
-  rowClass: {
+  branchRowClass: {
     '&:hover': {
       backgroundColor: fade(theme.palette.common.black, 0.1),
       cursor: 'pointer'
@@ -235,7 +246,7 @@ export const Container = theme => ({
       height: '100%'
     }
   },
-  nameCell: {
+  branchNameCell: {
     paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
@@ -250,7 +261,7 @@ export const Container = theme => ({
     }
 
   },
-  addressCell: {
+  branchAddressCell: {
     paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
@@ -260,7 +271,7 @@ export const Container = theme => ({
       display: 'none'
     }
   },
-  employeesCell: {
+  branchEmployeesCell: {
     paddingRight: 5,
     paddingLeft: 10,
     paddingTop: 5,
@@ -274,6 +285,53 @@ export const Container = theme => ({
     width: '100%',
     maxWidth: 600,
     margin: theme.spacing.unit * 2
+  },
+  groupRowClass: {
+    [theme.breakpoints.up('sm')]: {
+      height: '48px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '100%'
+    }
+  },
+  groupNameCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+
+    [theme.breakpoints.up('sm')]: {
+      width: '40%'
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      width: '60%'
+    },
+
+  },
+  groupStatusCell: {
+    paddingRight: 10,
+    paddingLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+
+    [theme.breakpoints.up('sm')]: {
+      width: '10%'
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      width: '30%'
+    }
+  },
+  groupDesktopCell: {
+    paddingRight: 5,
+    paddingLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '10%',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   }
 });
 

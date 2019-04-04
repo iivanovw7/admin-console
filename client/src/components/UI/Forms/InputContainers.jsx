@@ -2,11 +2,12 @@ import { Grid } from '@material-ui/core';
 import React from 'react';
 import { Field } from 'redux-form';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { renderTextField } from './TextField';
 import { renderCheckbox } from './Checkbox';
 import PropTypes from 'prop-types';
 
-export const CheckboxContainer = (props) => {
+export const CheckboxContainer = props => {
 
   const { label, name, value } = props;
 

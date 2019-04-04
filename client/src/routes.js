@@ -1,16 +1,17 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Statistics from './screens/Statistics';
-import Messages from './screens/Messages';
-import Branches from './screens/Branches';
-import BranchesDetails from './screens/Branch';
-import Users from './screens/Users';
-import Roles from './screens/Roles';
-import Groups from './screens/Groups';
-import Tickets from './screens/Tickets';
-import Login from './screens/Login';
-import protectedContent from './layouts/protectedContent';
 import loginLayout from './layouts/loginLayout';
+import protectedContent from './layouts/protectedContent';
+import Branch from './screens/Branch';
+import Branches from './screens/Branches';
+import Group from './screens/Group';
+import Groups from './screens/Groups';
+import Login from './screens/Login';
+import Messages from './screens/Messages';
+import Roles from './screens/Roles';
+import Statistics from './screens/Statistics';
+import Tickets from './screens/Tickets';
+import Users from './screens/Users';
 
 const NoMatch = ({ location }) => (
   <div>
@@ -26,9 +27,11 @@ export default (
     <Route path={'/staff'} component={protectedContent(Users)}/>
     <Route path={'/messages'} component={protectedContent(Messages)}/>
     <Route path={'/tickets'} component={protectedContent(Tickets)}/>
+    <Route path={'/groups/:id'} component={protectedContent(Group)}/>
+    <Route path={'/groups/new'} component={protectedContent(Group)}/>
     <Route path={'/groups'} component={protectedContent(Groups)}/>
-    <Route path={'/branches/:id'} component={protectedContent(BranchesDetails)}/>
-    <Route path={'/branches/new'} component={protectedContent(BranchesDetails)}/>
+    <Route path={'/branches/:id'} component={protectedContent(Branch)}/>
+    <Route path={'/branches/new'} component={protectedContent(Branch)}/>
     <Route path={'/branches'} component={protectedContent(Branches)}/>
     <Route component={NoMatch}/>
   </Switch>

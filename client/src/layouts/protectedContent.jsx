@@ -11,6 +11,7 @@ import { Wrapper } from '../components/UI/ThemeProperties';
 export default function (ComposedComponent) {
 
   const protectedContent = props => {
+
     const { classes, history } = props;
     const [mobileOpen, setDrawerState] = useState(false);
 

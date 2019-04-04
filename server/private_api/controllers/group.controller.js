@@ -126,7 +126,7 @@ const updateGroup = async (req, res) => {
     const data = {
       name: req.body.name,
       status: req.body.status,
-      permissions: req.body.permission,
+      permissions: req.body.permissions,
       description: req.body.description
     };
 

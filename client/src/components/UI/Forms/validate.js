@@ -62,3 +62,28 @@ export const validateLogin = values => {
 
   return errors;
 };
+
+export const validateGroup = values => {
+
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = 'Field is required!';
+  } else if (values.name.length < 3) {
+    errors.name = 'Must be 3 characters!';
+  }
+
+  if (!values.description) {
+    errors.description = 'Field is required!';
+  } else if (values.description.length < 3) {
+    errors.description = 'Must be 3 characters!';
+  }
+
+  if (!values.status && values.permissions) {
+    errors.permissions = 'Permissions could not be set for disabled group!'
+  }
+
+  console.log(values)
+
+  return errors;
+};

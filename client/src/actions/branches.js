@@ -42,7 +42,6 @@ export const addNewBranch = formValues => {
   const { name, email, phone, fax, address, information, status } = formValues;
 
   return async dispatch => {
-
     await axios({
       method: 'post',
       url: `${URL.PRIVATE_API}/branches`,
@@ -74,7 +73,6 @@ export const updateBranch = (formValues, id) => {
   const { name, email, phone, fax, address, information, status } = formValues;
 
   return async dispatch => {
-
     await axios({
       method: 'put',
       url: `${URL.PRIVATE_API}/branches/${id}`,
