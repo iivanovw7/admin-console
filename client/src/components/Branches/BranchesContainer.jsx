@@ -58,5 +58,5 @@ function mapStateToProps(state) {
   return { branches: state.branches };
 }
 
-export default connect(mapStateToProps, { fetchBranch: getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
+export default connect(mapStateToProps, { getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
 

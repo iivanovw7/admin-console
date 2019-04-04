@@ -107,6 +107,6 @@ const reduxFromBranch = reduxForm({
 })(BranchContainer);
 
 export default connect(mapStateToProps, {
-  addBranch: addNewBranch,
+  addNewBranch,
   updateBranch
 })(withStyles(Container)(reduxFromBranch));

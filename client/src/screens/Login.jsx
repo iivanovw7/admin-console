@@ -59,7 +59,5 @@ const reduxFormLogin = reduxForm({
   fields: ['email', 'password']
 })(Login);
 
-export default connect(mapStateToProps, {
-  signInAction: loginUser
-})(withStyles(LoginFormStyles)(reduxFormLogin));
+export default connect(mapStateToProps, { loginUser })(withStyles(LoginFormStyles)(reduxFormLogin));
 
