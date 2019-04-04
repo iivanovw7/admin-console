@@ -7,7 +7,7 @@ export const PageSelector = props => {
   const page = data.list.page || 1;
   const pages = data.list.pages || 10;
 
-  const selectorButton =(title, value) => {
+  const selectorButton = (title, value) => {
     return (
       <Button size="small"
               disabled={

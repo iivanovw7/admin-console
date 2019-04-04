@@ -11,8 +11,8 @@ import { withRouter } from 'react-router-dom';
 export default function (ComposedComponent) {
 
   const protectedContent = props => {
-    const { classes, history } = props;
-    const [mobileOpen, setDrawerState] = useState(false);
+    const { classes history } = props;
+    const [mobileOpen setDrawerState] = useState(false);
 
     const handleDrawerToggle = () => {
       setDrawerState(!mobileOpen);

@@ -53,7 +53,7 @@ export const TextInputContainer = (props) => {
           normalize={normalize}
           rows={rows}
           rowsMax={rows}
-          variant={"outlined"}
+          variant={'outlined'}
         />
       </Grid>
     </Grid>

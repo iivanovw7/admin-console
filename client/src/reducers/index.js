@@ -6,7 +6,7 @@ import branchesReducer from './branchesReducer';
 const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
-  branches: branchesReducer,
+  branches: branchesReducer
 });
 
 export default rootReducer;

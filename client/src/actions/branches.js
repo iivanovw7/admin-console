@@ -11,7 +11,7 @@ export const getBranches = (page, limit, history) => {
       url: `${URL.PRIVATE_API}/branches`,
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       params: {
         page: page || 1,
@@ -71,32 +71,32 @@ export const addNewBranch = formValues => {
 
 export const updateBranch = (formValues, id) => {
 
-    const { name, email, phone, fax, address, information, status } = formValues;
+  const { name, email, phone, fax, address, information, status } = formValues;
 
-    return async dispatch => {
+  return async dispatch => {
 
-      await axios({
-        method: 'put',
-        url: `${URL.PRIVATE_API}/branches/${id}`,
-        data: {
-          name, email, phone, fax, address, information, status
-        },
-        withCredentials: true
-      })
-        .then(response => {
-          dispatch({
-            type: types.UPDATE_BRANCH,
-            payload: response
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          dispatch({
-            type: types.ERROR
-          });
+    await axios({
+      method: 'put',
+      url: `${URL.PRIVATE_API}/branches/${id}`,
+      data: {
+        name, email, phone, fax, address, information, status
+      },
+      withCredentials: true
+    })
+      .then(response => {
+        dispatch({
+          type: types.UPDATE_BRANCH,
+          payload: response
         });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: types.ERROR
+        });
+      });
 
-    };
+  };
 };
 
 export const getSingleBranch = (id, history) => {

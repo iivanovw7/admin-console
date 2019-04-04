@@ -151,7 +151,7 @@ export const Wrapper = theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: '100%',
+    height: '100%'
   },
   contentList: {
     flexGrow: 1,
@@ -164,7 +164,7 @@ export const Wrapper = theme => ({
       height: '90vh'
     },
     [theme.breakpoints.down('sm')]: {
-      height: '100%',
+      height: '100%'
     }
   },
   formRoot: {
@@ -229,11 +229,11 @@ export const Container = theme => ({
       cursor: 'pointer'
     },
     [theme.breakpoints.up('sm')]: {
-      height: '48px',
+      height: '48px'
     },
     [theme.breakpoints.down('sm')]: {
-      height: '100%',
-    },
+      height: '100%'
+    }
   },
   nameCell: {
     paddingRight: 5,
@@ -242,11 +242,11 @@ export const Container = theme => ({
     paddingBottom: 5,
 
     [theme.breakpoints.up('sm')]: {
-      width: '30%',
+      width: '30%'
     },
 
     [theme.breakpoints.down('sm')]: {
-      width: '60%',
+      width: '60%'
     }
 
   },

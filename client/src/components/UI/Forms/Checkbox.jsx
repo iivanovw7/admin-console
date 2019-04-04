@@ -17,6 +17,6 @@ renderCheckbox.propTypes = {
   checked: PropTypes.bool,
   onChange: PropTypes.object,
   id: PropTypes.string,
-  input: PropTypes.object,
+  input: PropTypes.object
 };
 
