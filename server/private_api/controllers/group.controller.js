@@ -19,6 +19,7 @@ import { ifArrayContains } from '../helper-functions';
  * { changes: result }
  */
 function swapGroups(req, res, params) {
+
   Group.findOne({ name: 'Other' })
        .then(group => {
 
@@ -45,9 +46,9 @@ function swapGroups(req, res, params) {
 /**
  * Function creates new Group if it doesn`t exists in db
  *
- * @requires name: req.headers.name,
- * @requires description: req.headers.description,
- * @requires status: req.headers.status,
+ * @requires name: req.query.name,
+ * @requires description: req.query.description,
+ * @requires status: req.query.status,
  *
  * @param req
  * @param res
@@ -142,14 +143,14 @@ const updateGroup = async (req, res) => {
 
 /**
  * Get one listRoles of groups
- * @headers {number} listRoles: req.headers.listRoles
- * @headers {number} limit: req.headers.limit
+ * @query {number} listRoles: req.query.listRoles
+ * @query {number} limit: req.query.limit
  *
  */
 const listGroups = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = Group.find({})
@@ -179,14 +180,13 @@ const listGroups = async (req, res) => {
  * Deletes group, removes all same groups in Users list
  *
  * @requires  {objectId} id: req.params.id
- * @param     {objectId} req.headers.group
+ * @param     {objectId} req.query.group
  * @returns   swap(req,res,next,{removedGroup: removedGroup});
  * (Calls swap groups function to change deleted group to 'Other')
  */
 const removeGroup = async (req, res) => {
 
   const group = await Group.findOne({ _id: req.params.id });
-
 
   if (!group) {
     res.sendStatus(httpStatus.BAD_REQUEST);

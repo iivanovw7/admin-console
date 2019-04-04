@@ -1,0 +1,1 @@
+export const PRIVATE_API = 'http://localhost:7425/api';

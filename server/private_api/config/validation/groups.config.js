@@ -5,7 +5,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 // Validation for Groups
 //GET /api/groups/listRoles
 export const getPageGroups = {
-  headers: {
+  query: {
     page: Joi.number().min(1).max(2000),
     limit: Joi.number().min(1).max(2000)
   }

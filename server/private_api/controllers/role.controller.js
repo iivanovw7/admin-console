@@ -43,14 +43,14 @@ function swapRoles(req, res, params) {
  * Gets one list of Roles if called with page number and limit,
  * if not - returns full list of Roles
  *
- * @headers {number} listRoles: req.headers.listRoles
- * @headers {number} limit: req.headers.limit
+ * @query {number} listRoles: req.query.listRoles
+ * @query {number} limit: req.query.limit
  *
  */
 const listRoles = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = Role.find({})
@@ -98,8 +98,8 @@ const getRole = async (req, res) => {
  * Update existing role
  *
  * @requires {objectId} id: req.params.id
- * @parameter {string} description: req.headers.description
- * @parameter {string} active: req.headers.active
+ * @parameter {string} description: req.query.description
+ * @parameter {string} active: req.query.active
  *
  * @returns {Role} Returns updated role
  */
@@ -126,12 +126,12 @@ const updateRole = async (req, res) => {
 
 /**
  * Function creates new Role if it doesn`t exists in db
- * @requires name: req.headers.name,
- * @requires code: req.headers.code,
- * @requires description: req.headers.description,
- * active: req.headers.active,
- * public: req.headers.public,
- * editable: req.headers.editable
+ * @requires name: req.query.name,
+ * @requires code: req.query.code,
+ * @requires description: req.query.description,
+ * active: req.query.active,
+ * public: req.query.public,
+ * editable: req.query.editable
  * @param req
  * @param res
  * @returns
@@ -139,7 +139,7 @@ const updateRole = async (req, res) => {
  */
 const addRole = async (req, res) => {
 
-  const role = await Role.findOne({ code: req.headers.code, name: req.headers.name });
+  const role = await Role.findOne({ code: req.query.code, name: req.query.name });
 
   // If another object with same parameters exists,
   // return error
@@ -171,11 +171,11 @@ const addRole = async (req, res) => {
 /**
  * Deletes role, removes all same roles in Users list
  * @requires {objectId} id: req.params.id
- * @param {objectId} req.headers.role
+ * @param {objectId} req.query.role
  * another role Id, to change Users roles
  * @returns swapRoles(req,res,next,{removedRole: removedRole});
  * (Calls swap roles function to change deleted role to another one,
- * if role parameter passed in headers, if not - removes roles)
+ * if role parameter passed in query, if not - removes roles)
  * )
  */
 const removeRole = async (req, res) => {

@@ -16,7 +16,6 @@ import { ifArrayContains } from '../helper-functions';
 const sendNotifications = async message => {
 
   const user = await User.findOne({ _id: message.senderId });
-
   const byBranch = message.branchId ? await User.find({ branch: message.branchId }) : null;
   const byGroup = message.groupId ? await User.find({ group: message.groupId }) : null;
 
@@ -46,8 +45,8 @@ export const getUser = async (params) => {
 // Function gets list of messages from db
 async function collectMessages(req, res, params) {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   const findPromise = Message.find(params)
@@ -58,9 +57,7 @@ async function collectMessages(req, res, params) {
                              .limit(limit);
 
   const countPromise = Message.countDocuments();
-
   const [output, results] = await Promise.all([findPromise, countPromise]);
-
   const pages = Math.ceil(results / limit);
 
   if (!output && results === 0) {
@@ -79,8 +76,8 @@ async function collectMessages(req, res, params) {
 
 /**
  * Return one listRoles from full messages list
- * @headers {number} listRoles: req.headers.listRoles
- * @headers {number} limit: req.headers.limit
+ * @query {number} listRoles: req.query.listRoles
+ * @query {number} limit: req.query.limit
  * @returns  {listRoles}
  */
 const listMessages = async (req, res) => {
@@ -159,9 +156,9 @@ const getPageByUser = async (req, res) => {
  * Function sends new message to group or branch members
  * @param req.body.subject,
  * @param req.body.message,
- * @param req.headers.user,
- * @param req.headers.branch,
- * @param req.headers.group,
+ * @param req.query.user,
+ * @param req.query.branch,
+ * @param req.query.group,
  * @returns {message}
  */
 const sendMessage = async (req, res) => {
@@ -174,13 +171,11 @@ const sendMessage = async (req, res) => {
   const role = user.role.code;
 
   const message = {
-
     subject: req.body.subject,
     message: req.body.message,
     senderId: req.user._id,
-    branchId: checkSender(branchAccess) ? req.headers.branch : null,
-    groupId: checkSender(groupAccess) ? req.headers.group : null
-
+    branchId: checkSender(branchAccess) ? req.query.branch : null,
+    groupId: checkSender(groupAccess) ? req.query.group : null
   };
 
   const newMessage = await new Message(message);
@@ -198,18 +193,18 @@ const sendMessage = async (req, res) => {
 
 /**
  * Finds messages by subject, name or surname
- * @requires {number} listRoles: req.headers.listRoles
- * @requires {number} limit: req.headers.limit
- * @requires {string} search: req.headers.search
+ * @requires {number} listRoles: req.query.listRoles
+ * @requires {number} limit: req.query.limit
+ * @requires {string} search: req.query.search
  */
 const searchMessages = async (req, res) => {
 
-  const page = req.headers.page || 1;
-  const limit = parseInt(req.headers.limit, 10) || 20;
+  const page = req.query.page || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
 
   //string we are searching
-  const search = req.headers.search;
+  const search = req.query.search;
 
   //users role code from database
   const user = await getUser({ _id: req.user._id });

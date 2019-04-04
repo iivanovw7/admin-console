@@ -5,7 +5,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 // Validation for Messages
 // GET /api/messages/listRoles
 export const getPage = {
-  headers: {
+  query: {
     page: Joi.number().min(1).max(2000),
     limit: Joi.number().min(1).max(2000)
   }
@@ -23,7 +23,7 @@ export const getPageById = {
   params: {
     id: Joi.objectId().required()
   },
-  headers: {
+  query: {
     page: Joi.number().required(),
     limit: Joi.number().required()
   }
@@ -31,7 +31,7 @@ export const getPageById = {
 
 // POST /api/messages/new
 export const sendMessage = {
-  headers: {
+  query: {
     branch: Joi.objectId(),
     group: Joi.objectId()
   },
@@ -43,7 +43,7 @@ export const sendMessage = {
 
 // GET /api/messages/search
 export const pageSearch = {
-  headers: {
+  query: {
     search: Joi.string().min(3).max(50).required(),
     page: Joi.number().required(),
     limit: Joi.number().required()

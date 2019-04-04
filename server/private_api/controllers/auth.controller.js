@@ -1,7 +1,6 @@
 import passport from 'passport';
 import httpStatus from 'http-status';
 
-
 /** Authentication handling,
  * according to parameters in params-passport.config.js
  *
@@ -22,7 +21,7 @@ const login = async (req, res, next) => {
         if (err) {
           return next(err);
         }
-        return res.sendStatus(httpStatus.OK);
+        return res.json(user);
       });
     }
   })(req, res, next);

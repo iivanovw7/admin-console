@@ -176,7 +176,7 @@ const ticketsCounter = async (limit, param) => {
 async function getStatistics(req, res, next) {
 
   //sets time limit in months
-  const limit = setQueryLimit(req.headers.months);
+  const limit = setQueryLimit(req.query.months);
   //gets users id
   const id = mongoose.Types.ObjectId(req.user._id);
   //gets user role
@@ -245,8 +245,8 @@ async function getStatistics(req, res, next) {
 
 /**
  * Gets number of users
- * @param req.headers.user - user id
- * @param req.headers.month - time limit to collect data
+ * @param req.query.user - user id
+ * @param req.query.month - time limit to collect data
  * returns callback()
  */
 const usersStats = async (req, res) => {
@@ -257,8 +257,8 @@ const usersStats = async (req, res) => {
 
 /**
  * Gets number of messages
- * @param req.headers.user - user id
- * @param req.headers.month - time limit to collect data
+ * @param req.query.user - user id
+ * @param req.query.month - time limit to collect data
  * returns callback()
  *
  */
@@ -280,7 +280,7 @@ const groupsStats = async (req, res) => {
 
 /**
  * Gets number of permissions
- * @param req.headers.user - user id
+ * @param req.query.user - user id
  * @returns {{total, active, disabled}}
  */
 const permissionsStats = async (req, res) => {
@@ -296,7 +296,7 @@ const permissionsStats = async (req, res) => {
 /**
  * Gets numbers of tickets by categories.
  * Gets total.
- * @param req.headers.user - user id
+ * @param req.query.user - user id
  * @returns {{total, opened, in_progress, closed, reopened, cannot_be_done}}
  */
 const ticketsStats = async (req, res) => {

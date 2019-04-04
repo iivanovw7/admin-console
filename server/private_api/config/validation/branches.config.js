@@ -5,7 +5,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 // Validation for Branches
 //GET /api/branches/listRoles
 export const getPageBranches = {
-  headers: {
+  query: {
     page: Joi.number().min(1).max(2000),
     limit: Joi.number().min(1).max(2000)
   }

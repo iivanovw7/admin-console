@@ -3,24 +3,18 @@
 Admin console of some IT company. Allows to manage specific company's data.
 
 
-
-
 ---
 
 ## Table of Contents
 
-
-- [Installation](#installation)
 - [Requirements](#requirements)
-- [Testing](#Testing)
+- [Clone](#clone)
 - [Installation](#installation)
 - [Features](#features)
+- [Testing](#testing)
 - [License](#license)
 
 ---
-
-
-
 
 ## Requirements
 
@@ -28,33 +22,51 @@ Admin console of some IT company. Allows to manage specific company's data.
 
 - [NPM](https://www.npmjs.com/get-npm)
 
+
+### Clone
+
+- Clone this repo to your local machine using `https://github.com/iivanovw7/admin-console.git`
+
+## Installation
+
+
+
+## Features
+
+> Frontend: ReactJS 
+
+> Backend: NodeJS, Express, MongoDB, Mongoose  
+
 ## Testing
 
+#### Unit testing
+
 Unit tests cover all database models, all routes including authentication routes and helper-functions as well.
+  
+> Libraries used 
 
-> Libraries used:  
-- Jest
-- Supertest
-- Mokinggoose
- 
-> To run unit tests:
-```
-npm install 
-npm run tests
-``` 
- 
+- [Jest](https://jestjs.io/)
+- [Supertest](https://github.com/visionmedia/supertest)
 
-##Postman testing
+ 
+> How to run unit tests
+
+`npm install` <br />
+`npm run tests` <br />
+
+
+#### Postman testing
 
 Repository contains postman tests backups, which can be used for API testing.
 
-> To run postman tests:  
+> How to run postman tests  
+
 - Upload samples data into db  `npm run reload`
 - Import postman collections from `./server/postman` directory
 - Fill in postman environment variables with correct mongoDB objectID :
-    - user_admin
-    - user_manager
-    - user_user
+   > - user_admin
+   > - user_manager
+   > - user_user
 - Run collection API_TEST with delay around `100`ms 
 
 

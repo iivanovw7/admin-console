@@ -125,7 +125,7 @@ describe('Verifying AUTH routes.', () => {
       .then((response) => {
         cookie = response.headers['set-cookie'];
         expect(response).not.toBeNull();
-        expect(response.text).toMatch('OK');
+        expect(response.body.name).toMatch('HELPER_TEST_USER_NAME');
         expect(response.statusCode).toBe(200);
         done();
       });
