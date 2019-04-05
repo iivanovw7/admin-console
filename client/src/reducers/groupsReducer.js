@@ -68,21 +68,20 @@ export default function (state = initialState, action) {
         success: `Group "${action.payload.data.name}" status changed to "${displayStatus(action.payload.data.status)}"!`
       };
     }
+    case types.ERROR: {
+      return {
+        ...state,
+        group: {},
+        error: 'Error!',
+        success: null
+      };
+    }
     case types.FETCH_ERROR: {
       return {
         ...state,
         list: {},
         group: {},
         error: 'Error while getting data!',
-        success: null
-      };
-    }
-    case types.ERROR: {
-      return {
-        ...state,
-        list: {},
-        group: {},
-        error: 'Error!',
         success: null
       };
     }

@@ -2,18 +2,27 @@ import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from 
 import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { changeGroupStatus, deleteGroup, getGroups, getSingleGroup } from '../../actions/groups';
-import { debounce } from '../UI/Forms/debounce.js';
-import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
+import Warning from '../UI/Dialogs/Warning';
+import { debounce } from '../UI/Forms/debounce';
+import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
+
 
 const GroupsContainer = props => {
   const { classes, history, dispatch } = props;
+  const [confDialog, dialogState] = useState(false);
+  const [groupToDelete, setToDelete] = useState(null);
   const currPage = props.groups.list.page || 1;
   const currLimit = props.groups.list.limit || 8;
+
+  useEffect(() => {
+    dialogState(false);
+    setToDelete(null);
+  }, []);
 
   function displayStatus(status) {
     return (status) ? ('Active') : ('Disabled');
@@ -23,7 +32,40 @@ const GroupsContainer = props => {
     dispatch(getSingleGroup(id, history));
   }
 
-  const showAlert = (message, success) => {
+  function handleDeleteAction(id) {
+    setToDelete(id);
+    dialogState(true);
+  }
+
+  function DialogueWindow() {
+    return (
+      <Warning
+        opened={confDialog}
+        close={() => {
+          dialogState(false);
+        }}
+        message={'All users of removed group will be assigned to "Other" group.'}
+        request={() => {
+          dialogState(false);
+          dispatch(deleteGroup(groupToDelete, history));
+        }}
+        mainText={'You are about to DELETE group! Are you sure ?'}
+      />
+    );
+  }
+
+  //Triggers notification if any there any messages in props
+  function displayNotifications() {
+    if (props.errorMessage) {
+      return displayNotification(props.errorMessage, false);
+    }
+    if (props.successMessage) {
+      return displayNotification(props.successMessage, true);
+    }
+  }
+
+  //Returns notification container
+  const displayNotification = (message, success) => {
     return (
       <AlertSnackbar
         message={message}
@@ -43,7 +85,7 @@ const GroupsContainer = props => {
         onClick={
           debounce(() => {
             (text === 'Delete') ?
-              (dispatch(deleteGroup(id, history)))
+              (handleDeleteAction(id))
               :
               (dispatch(changeGroupStatus(id, history)));
           }, 500)
@@ -90,27 +132,23 @@ const GroupsContainer = props => {
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
                 {
-                  ((row.status)) ?
+                  (row.status) ?
                     (actionButton('Disable', 'secondary', row._id))
                     :
                     (actionButton('Activate', 'primary', row._id))
                 }
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
-                {actionButton('Delete', 'secondary', row._id)}
+                {
+                  actionButton('Delete', 'secondary', row._id)
+                }
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {
-        (props.errorMessage) ?
-          (showAlert(props.errorMessage, false)) : ('')
-      }
-      {
-        (props.successMessage) ?
-          (showAlert(props.successMessage, true)) : ('')
-      }
+      {DialogueWindow()}
+      {displayNotifications()}
     </Paper>
   );
 };

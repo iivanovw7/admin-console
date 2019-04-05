@@ -199,6 +199,8 @@ const removeGroup = async (req, res) => {
       } else {
         res.sendStatus(httpStatus.NOT_FOUND);
       }
+    } else {
+      res.sendStatus(httpStatus.BAD_REQUEST);
     }
   }
 };
