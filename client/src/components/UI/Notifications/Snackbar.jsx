@@ -65,7 +65,7 @@ const AlertSnackbar = props => {
         message={
           <span id="client-snackbar" className={classes.message}>
           <Icon className={(success) ? (classes.success) : (classes.error)} />
-            {message}
+            &nbsp; &nbsp; {message}
         </span>
         }
         action={[

@@ -1,14 +1,15 @@
-import Cookies from 'js-cookie';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { AppBar, IconButton, Toolbar, InputBase, Button, Typography } from '@material-ui/core';
+import { AppBar, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
+import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { withStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationStyles } from '../ThemeProperties';
-import { logoutUser } from '../../../actions/auth';
 import { withRouter } from 'react-router-dom';
+import { logoutUser } from '../../../actions/auth';
+import { NavigationStyles } from '../ThemeProperties';
 
 const AppBarContainer = props => {
 
@@ -40,16 +41,15 @@ const AppBarContainer = props => {
         <Typography className={classes.toolbarUserName} variant="h6" color="inherit" noWrap>
           {Cookies.get('username')}
           &nbsp;
-          <Button
-            variant="outlined"
-            type="submit"
-            style={{ textTransform: 'none', color: 'white', borderColor: 'white' }}
+          <IconButton
+            style={{ textTransform: 'none', color: 'white' }}
+            aria-label="Delete"
             onClick={() => {
               dispatch(logoutUser(history));
             }}
           >
-            LOGOUT
-          </Button>
+            <Icon>exit_to_app</Icon>
+          </IconButton>
         </Typography>
       </Toolbar>
     </AppBar>

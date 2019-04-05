@@ -31,8 +31,8 @@ export const updateRole = {
   body: {
     description: Joi.string().min(3).max(500).required(),
     active: Joi.bool().required(),
-    public: Joi.bool().required(),
-    editable: Joi.bool().required()
+    isPublic: Joi.bool().required(),
+    isEditable: Joi.bool().required()
   }
 };
 // POST /api/roles/
@@ -42,8 +42,8 @@ export const addRole = {
     code: Joi.string().min(3).max(50).required(),
     description: Joi.string().min(3).max(500).required(),
     active: Joi.bool().required(),
-    public: Joi.bool(),
-    editable: Joi.bool()
+    isPublic: Joi.bool(),
+    isEditable: Joi.bool()
   }
 };
 

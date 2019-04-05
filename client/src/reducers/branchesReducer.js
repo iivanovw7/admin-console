@@ -15,8 +15,8 @@ export default function (state = initialState, action) {
     case types.FETCH_BRANCHES: {
       return {
         ...state,
-        list: action.payload.data,
         branch: {},
+        list: action.payload.data,
         error: null,
         success: null
       };

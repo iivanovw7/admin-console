@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Wrapper } from '../components/UI/ThemeProperties';
-import BranchesContainer from '../components/Branches/BranchesContainer';
-import { PageSelector } from '../components/UI/PageSelector';
-import AddNewButton from '../components/UI/AddButton';
-import { getBranches } from '../actions/branches';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { getBranches } from '../actions/branches';
+import BranchesContainer from '../components/Branches/BranchesContainer';
+import AddNewButton from '../components/UI/AddButton';
+import { PageSelector } from '../components/UI/PageSelector';
+import { Wrapper } from '../components/UI/ThemeProperties';
+import Spinner from '../components/UI/Spinner';
 
 const Branches = props => {
   const { classes, history } = props;
@@ -35,10 +36,7 @@ const Branches = props => {
           </div>
           <AddNewButton history={history} element={'branches'}/>
         </Paper>
-        {
-          (list) ?
-            (<BranchesContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
-        }
+        {(!list) ? (<Spinner />) : (<BranchesContainer dispatch={props.dispatch}/>)}
       </div>
       <br/>
       <Paper className={classes.controlsContainer}>

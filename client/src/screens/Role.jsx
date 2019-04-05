@@ -1,17 +1,17 @@
-import { Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleGroup } from '../actions/groups';
-import GroupContainer from '../components/Group/GroupContainer';
+import { Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { Wrapper } from '../components/UI/ThemeProperties';
+import { getSingleRole } from '../actions/roles';
+import RoleContainer from '../components/Role/RoleContainer';
 import Spinner from '../components/UI/Spinner';
 
-const Group = props => {
+const Role = props => {
   const { classes, history } = props;
-  const group = props.groups.group;
+  const role = props.roles.role;
 
   return (
     <main className={classes.contentSingle}>
@@ -20,20 +20,20 @@ const Group = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      {(!group) ? (<Spinner />) : (<GroupContainer history={history}/>)}
+      {(!role) ? (<Spinner />) : (<RoleContainer history={history}/>)}
     </main>
   );
 };
 
-Group.propTypes = {
+Role.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    groups: state.groups
+    roles: state.roles
   };
 }
 
-export default connect(mapStateToProps, { getSingleGroup })(withStyles(Wrapper, { withTheme: true })(withRouter(Group)));
+export default connect(mapStateToProps, { getSingleRole })(withStyles(Wrapper, { withTheme: true })(withRouter(Role)));

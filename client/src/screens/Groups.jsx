@@ -8,6 +8,7 @@ import GroupsContainer from '../components/Groups/GroupsContainer';
 import AddNewButton from '../components/UI/AddButton';
 import { PageSelector } from '../components/UI/PageSelector';
 import { Wrapper } from '../components/UI/ThemeProperties';
+import Spinner from '../components/UI/Spinner';
 
 const Groups = props => {
   const { classes, history } = props;
@@ -34,10 +35,7 @@ const Groups = props => {
           </div>
           <AddNewButton history={history} element={'groups'}/>
         </Paper>
-        {
-          (list) ?
-            (<GroupsContainer dispatch={props.dispatch}/>) : (<p>Loading...</p>)
-        }
+        {(!list) ? (<Spinner />) : (<GroupsContainer dispatch={props.dispatch}/>)}
       </div>
       <br/>
       <Paper className={classes.controlsContainer}>

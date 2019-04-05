@@ -1,9 +1,9 @@
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import blue from '@material-ui/core/colors/blue';
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const drawerWidth = 240;
 
@@ -147,6 +147,14 @@ export const Wrapper = theme => ({
   root: {
     display: 'flex'
   },
+  spinnerBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    alignItems: 'center',
+    margin: '50px'
+  },
   toolbar: theme.mixins.toolbar,
   contentSingle: {
     flexGrow: 1,
@@ -208,13 +216,13 @@ export const Wrapper = theme => ({
     paddingLeft: 10
   },
   icon: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2
   },
   iconHover: {
     margin: theme.spacing.unit * 2,
     '&:hover': {
-      color: red[800],
-    },
+      color: red[800]
+    }
   }
 });
 
@@ -308,7 +316,7 @@ export const Container = theme => ({
 
     [theme.breakpoints.down('sm')]: {
       width: '60%'
-    },
+    }
 
   },
   groupStatusCell: {
@@ -342,28 +350,28 @@ export const Notification = theme => ({
     padding: theme.spacing.unit / 2
   },
   success: {
-    backgroundColor: green[600],
+    backgroundColor: green[600]
   },
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: theme.palette.error.dark
   },
   info: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.primary.dark
   },
   warning: {
-    backgroundColor: amber[700],
+    backgroundColor: amber[700]
   },
   icon: {
-    fontSize: 20,
+    fontSize: 20
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   message: {
     display: 'flex',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export const Buttons = theme => ({

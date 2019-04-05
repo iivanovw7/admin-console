@@ -1,12 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Wrapper } from '../components/UI/ThemeProperties';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getSingleBranch } from '../actions/branches';
 import BranchContainer from '../components/Branch/BranchContainer';
+import { Wrapper } from '../components/UI/ThemeProperties';
+import Spinner from '../components/UI/Spinner';
 
 const Branch = props => {
   const { classes, history } = props;
@@ -19,10 +20,7 @@ const Branch = props => {
           <h2>Create/Edit branch</h2>
         </div>
       </Paper>
-      {
-        (branch) ?
-          (<BranchContainer history={history}/>) : (<p>Loading...</p>)
-      }
+      {(!branch) ? (<Spinner />) : (<BranchContainer history={history}/>)}
     </main>
   );
 };

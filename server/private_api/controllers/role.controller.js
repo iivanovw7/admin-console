@@ -112,8 +112,8 @@ const updateRole = async (req, res) => {
     const data = {
       description: req.body.description,
       active: req.body.active ? true : ifArrayContains(role.code, mainRoles),
-      public: req.body.public,
-      editable: req.body.editable
+      public: req.body.isPublic,
+      editable: req.body.isEditable
     };
 
     const updatedRole = await
@@ -152,8 +152,8 @@ const addRole = async (req, res) => {
       code: req.body.code,
       description: req.body.description,
       active: req.body.active,
-      public: req.body.public,
-      editable: req.body.editable
+      public: req.body.isPublic,
+      editable: req.body.isEditable
     });
 
     //Saving new object in to collection

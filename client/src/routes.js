@@ -8,6 +8,7 @@ import Group from './screens/Group';
 import Groups from './screens/Groups';
 import Login from './screens/Login';
 import Messages from './screens/Messages';
+import Role from './screens/Role';
 import Roles from './screens/Roles';
 import Statistics from './screens/Statistics';
 import Tickets from './screens/Tickets';
@@ -23,10 +24,12 @@ export default (
   <Switch>
     <Route exact path={'/'} component={loginLayout(Login)}/>
     <Route path={'/statistics'} component={protectedContent(Statistics)}/>
-    <Route path={'/roles'} component={protectedContent(Roles)}/>
     <Route path={'/staff'} component={protectedContent(Users)}/>
     <Route path={'/messages'} component={protectedContent(Messages)}/>
     <Route path={'/tickets'} component={protectedContent(Tickets)}/>
+    <Route path={'/roles/:id'} component={protectedContent(Role)}/>
+    <Route path={'/roles/new'} component={protectedContent(Role)}/>
+    <Route path={'/roles'} component={protectedContent(Roles)}/>
     <Route path={'/groups/:id'} component={protectedContent(Group)}/>
     <Route path={'/groups/new'} component={protectedContent(Group)}/>
     <Route path={'/groups'} component={protectedContent(Groups)}/>

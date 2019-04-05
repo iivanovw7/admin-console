@@ -4,10 +4,13 @@ import { Drawer, Hidden } from '@material-ui/core';
 import DrawerNavigation from './DrawerNavigation';
 import { withStyles } from '@material-ui/core/styles';
 import { NavigationStyles } from '../ThemeProperties';
+import { logoutUser } from '../../../actions/auth';
+import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
 
 const DrawerContainer = props => {
 
-  const { classes, theme, handleDrawerToggle, mobileOpen } = props;
+  const { classes, theme, handleDrawerToggle, mobileOpen, history, dispatch } = props;
 
   return (
     <nav className={classes.drawer}>
@@ -23,6 +26,16 @@ const DrawerContainer = props => {
           }}
         >
           <DrawerNavigation/>
+          <br/>
+          <Button
+            color="primary"
+            className={classes.button}
+            onClick={() => {
+              dispatch(logoutUser(history));
+            }}
+          >
+            Logout
+          </Button>
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
@@ -34,6 +47,16 @@ const DrawerContainer = props => {
           open
         >
           <DrawerNavigation/>
+          <br/>
+          <Button
+            color="primary"
+            className={classes.button}
+            onClick={() => {
+              dispatch(logoutUser(history));
+            }}
+          >
+            Logout
+          </Button>
         </Drawer>
       </Hidden>
     </nav>
@@ -47,4 +70,4 @@ DrawerContainer.propTypes = {
   mobileOpen: PropTypes.bool
 };
 
-export default withStyles(NavigationStyles, { withTheme: true })(DrawerContainer);
+export default connect(null, { logoutUser } )(withStyles(NavigationStyles, { withTheme: true })(DrawerContainer));

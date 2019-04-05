@@ -5,19 +5,19 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { changeGroupStatus, deleteGroup, getGroups, getSingleGroup } from '../../actions/groups';
+import { changeRoleStatus, deleteRole, getRoles, getSingleRole } from '../../actions/roles';
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
-import { actionButton } from './GroupsActionButton';
-import { deleteButton } from './GroupsDeleteButton';
+import { actionButton } from './RolesActionButton';
+import { deleteButton } from './RolesDeleteButton';
 
-const GroupsContainer = props => {
+const RolesContainer = props => {
   const { classes, history, dispatch } = props;
   const [confDialog, dialogState] = useState(false);
-  const [groupToDelete, setToDelete] = useState(null);
-  const currPage = props.groups.list.page || 1;
-  const currLimit = props.groups.list.limit || 8;
+  const [roleToDelete, setToDelete] = useState(null);
+  const currPage = props.roles.list.page || 1;
+  const currLimit = props.roles.list.limit || 8;
 
   useEffect(() => {
     dialogState(false);
@@ -28,8 +28,8 @@ const GroupsContainer = props => {
     return (status) ? ('Active') : ('Disabled');
   }
 
-  function handleGroupClick(id) {
-    dispatch(getSingleGroup(id, history));
+  function handleRoleClick(id) {
+    dispatch(getSingleRole(id, history));
   }
 
   function handleDeleteAction(id) {
@@ -44,12 +44,12 @@ const GroupsContainer = props => {
         close={() => {
           dialogState(false);
         }}
-        message={'All users of removed group will be assigned to "Other" group.'}
+        message={'Removed role will be removed for all users.'}
         request={() => {
           dialogState(false);
-          dispatch(deleteGroup(groupToDelete, history));
+          dispatch(deleteRole(roleToDelete, history));
         }}
-        mainText={'You are about to DELETE group! Are you sure ?'}
+        mainText={'You are about to DELETE role! Are you sure ?'}
       />
     );
   }
@@ -70,7 +70,7 @@ const GroupsContainer = props => {
       <AlertSnackbar
         message={message}
         afterConfirm={() => {
-          dispatch(getGroups(currPage, currLimit, history));
+          dispatch(getRoles(currPage, currLimit, history));
         }}
         success={success}
       />
@@ -79,10 +79,10 @@ const GroupsContainer = props => {
 
   //function return control buttons according to current state of element
   function showActionButton(row) {
-    if (row.status) {
+    if (row.active) {
       return actionButton('Disable', 'secondary', row, classes, dispatch, history);
     }
-    return actionButton('Activate', 'primary', row, classes, dispatch, history);
+    return actionButton('Activate', 'primary', row, classes, dispatch);
   }
 
   //returns delete button with parameters
@@ -106,14 +106,14 @@ const GroupsContainer = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.groups.list.output.map(row => (
+          {props.roles.list.output.map(row => (
             <TableRow key={row._id} className={classes.groupRowClass}>
               <TableCell component="th" scope="row" className={classes.groupNameCell}>
                 <Link
                   component="button"
                   variant="body2"
                   onClick={() => {
-                    handleGroupClick(row._id, history);
+                    handleRoleClick(row._id, history);
                   }}
                 >
                   {row.name}
@@ -121,14 +121,14 @@ const GroupsContainer = props => {
               </TableCell>
               <TableCell className={classes.groupStatusCell} align="center">
                 <strong>
-                  {displayStatus(row.status)}
+                  {displayStatus(row.active)}
                 </strong>
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
-               {showActionButton(row)}
+                {showActionButton(row)}
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
-               {showDeleteButton(row)}
+                {showDeleteButton(row)}
               </TableCell>
             </TableRow>
           ))}
@@ -140,21 +140,21 @@ const GroupsContainer = props => {
   );
 };
 
-GroupsContainer.propTypes = {
+RolesContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    groups: state.groups,
-    errorMessage: state.groups.error,
-    successMessage: state.groups.success
+    roles: state.roles,
+    errorMessage: state.roles.error,
+    successMessage: state.roles.success
   };
 }
 
 export default connect(mapStateToProps, {
-  getSingleGroup,
-  deleteGroup,
-  changeGroupStatus,
-  getGroups
-})(withStyles(Container)(withRouter(GroupsContainer)));
+  getSingleRole,
+  deleteRole,
+  changeRoleStatus,
+  getRoles
+})(withStyles(Container)(withRouter(RolesContainer)));

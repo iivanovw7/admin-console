@@ -25,22 +25,26 @@ export const validateBranch = values => {
 
   if (!values.name) {
     errors.name = 'Field is required!';
+  } else if (values.name.length < 3) {
+    errors.name = 'Must contain at least 3 symbols!';
+  } else if (values.name.length > 30) {
+    errors.name = 'Too many characters!';
   }
 
   if (!values.address) {
     errors.address = 'Field is required!';
+  } else if (values.address.length < 3) {
+    errors.address = 'Must contain at least 3 symbols!';
+  } else if (values.address.length > 499) {
+    errors.address = 'Too many characters!';
   }
 
   if (!values.information) {
     errors.information = 'Field is required!';
-  }
-
-  if (!values.password) {
-    errors.password = 'Field is required!';
-  } else if (values.password.length > 15) {
-    errors.password = 'Must contain less than 15 symbols!';
-  } else if (values.password.length < 3) {
-    errors.password = 'Must contain at least 3 symbols!';
+  } else if (values.information.length < 3) {
+    errors.information = 'Must contain at least 3 symbols!';
+  } else if (values.information.length > 499) {
+    errors.information = 'Too many characters!';
   }
 
   return errors;
@@ -56,8 +60,12 @@ export const validateLogin = values => {
     errors.email = 'Invalid email address';
   }
 
-  if (!values.name) {
-    errors.name = 'Field is required!';
+  if (!values.password) {
+    errors.password = 'Field is required!';
+  } else if (values.password.length > 15) {
+    errors.password = 'Must contain less than 15 symbols!';
+  } else if (values.password.length < 3) {
+    errors.password = 'Must contain at least 3 symbols!';
   }
 
   return errors;
@@ -71,19 +79,53 @@ export const validateGroup = values => {
     errors.name = 'Field is required!';
   } else if (values.name.length < 3) {
     errors.name = 'Must be 3 characters!';
+  } else if (values.name.length > 40) {
+    errors.name = 'Too many characters!';
   }
 
   if (!values.description) {
     errors.description = 'Field is required!';
   } else if (values.description.length < 3) {
     errors.description = 'Must be 3 characters!';
+  } else if (values.description.length > 499) {
+    errors.description = 'Too many characters!';
   }
 
   if (!values.status && values.permissions) {
-    errors.permissions = 'Permissions could not be set for disabled group!'
+    errors.permissions = 'Permissions could not be set for disabled group!';
   }
-
-  console.log(values)
 
   return errors;
 };
+
+export const validateRole = values => {
+
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = 'Field is required!';
+  } else if (values.name.length < 3) {
+    errors.name = 'Must be 3 characters!';
+  } else if (values.name.length > 40) {
+    errors.name = 'Too many characters!';
+  }
+
+  if (!values.code) {
+    errors.code = 'Field is required!';
+  } else if (values.code.length < 3) {
+    errors.code = 'Must be 3 characters!';
+  } else if (values.code.length > 40) {
+    errors.code = 'Too many characters!';
+  }
+
+  if (!values.description) {
+    errors.description = 'Field is required!';
+  } else if (values.description.length < 3) {
+    errors.description = 'Must be 3 characters!';
+  } else if (values.description.length > 499) {
+    errors.description = 'Too many characters!';
+  }
+
+  return errors;
+};
+

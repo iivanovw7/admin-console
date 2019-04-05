@@ -34,8 +34,16 @@ export default function (ComposedComponent) {
           <link rel="canonical" href=""/>
         </Helmet>
         <CssBaseline/>
-        <AppBarContainer handleDrawerToggle={handleDrawerToggle} dispatch={props.dispatch}/>
-        <DrawerContainer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen}/>
+        <AppBarContainer
+          handleDrawerToggle={handleDrawerToggle}
+          dispatch={props.dispatch}
+        />
+        <DrawerContainer
+          handleDrawerToggle={handleDrawerToggle}
+          mobileOpen={mobileOpen}
+          history={history}
+          dispatch={props.dispatch}
+        />
         <ComposedComponent {...props} />
       </div>
 

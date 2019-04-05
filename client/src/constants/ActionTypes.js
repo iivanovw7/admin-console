@@ -20,3 +20,11 @@ export const CHANGE_GROUP_STATUS = 'CHANGE_GROUP_STATUS';
 //COMMON
 export const ERROR = 'ERROR';
 export const FETCH_ERROR = 'FETCH_ERROR';
+
+//ROLES
+export const FETCH_ROLES = 'FETCH_ROLES';
+export const FETCH_ROLE = 'FETCH_ROLE';
+export const UPDATE_ROLE = 'UPDATE_ROLE';
+export const ADD_ROLE = 'ADD_ROLE';
+export const DELETE_ROLE = 'DELETE_ROLE';
+export const CHANGE_ROLE_STATUS = 'CHANGE_ROLE_STATUS';
