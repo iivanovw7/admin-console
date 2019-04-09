@@ -13,7 +13,7 @@ import Spinner from '../components/UI/Spinner';
 import RolesContainer from './Roles';
 
 const Branches = props => {
-  const { classes, history } = props;
+  const { classes, history, dispatch } = props;
   const limit = 7; //default limit of elements for current page
 
   //current page number
@@ -37,7 +37,7 @@ const Branches = props => {
           </div>
           <AddNewButton history={history} element={'branches'}/>
         </Paper>
-        {!branches ? <Spinner /> : <BranchesContainer branches={branches} page={currentPage} limit={limit} dispatch={props.dispatch}/>}
+        {!branches ? <Spinner /> : <BranchesContainer branches={branches} page={currentPage} limit={limit} dispatch={dispatch}/>}
       </div>
       <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
         <p style={{color: 'red'}}>{props.errorMessage}</p>

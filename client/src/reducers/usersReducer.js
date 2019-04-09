@@ -7,7 +7,8 @@ const initialState = {
   },
   user: null,
   error: null,
-  success: null
+  success: null,
+  confirmed: false,
 };
 
 function displayStatus(status) {
@@ -21,7 +22,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         list: action.payload.data,
-        user: null,
         error: null,
         success: null
       };
@@ -37,17 +37,27 @@ export default function (state = initialState, action) {
     case types.UPDATE_USER: {
       return {
         ...state,
-        user: null,
+        user: {},
         error: null,
-        success: message(action.payload.data.name + ' ' + action.payload.data.surname, action, 'en')
+        success: message(
+          action.payload.data.name + ' ' + action.payload.data.surname,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.CHANGE_USER_STATUS: {
       return {
         ...state,
-        user: null,
         error: null,
-        success: message(action.payload.data.name + ' ' + action.payload.data.surname, action, 'en', displayStatus(action.payload.data.active))
+        success: message(
+          action.payload.data.name + ' ' + action.payload.data.surname,
+          action,
+          'en',
+          displayStatus(action.payload.data.active)
+        ),
+        confirmed: false,
       };
     }
     case types.ERROR: {
@@ -57,8 +67,13 @@ export default function (state = initialState, action) {
           page: 1
         },
         user: null,
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
     }
     case types.FETCH_ERROR: {
@@ -68,9 +83,20 @@ export default function (state = initialState, action) {
           page: 1
         },
         user: null,
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
+    }
+    case types.CONFIRM_NOTIFICATION: {
+      return {
+        ...state,
+        confirmed: true,
+      }
     }
     default:
       return {

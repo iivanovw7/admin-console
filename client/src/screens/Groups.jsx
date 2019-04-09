@@ -12,7 +12,7 @@ import Spinner from '../components/UI/Spinner';
 import RolesContainer from './Roles';
 
 const Groups = props => {
-  const { classes, history } = props;
+  const { classes, history, dispatch } = props;
   const limit = 7; //default limit of elements for current page
 
   //current page number
@@ -36,7 +36,7 @@ const Groups = props => {
           </div>
           <AddNewButton history={history} element={'groups'}/>
         </Paper>
-        {!groups ? <Spinner /> : <GroupsContainer groups={groups} page={currentPage} limit={limit} dispatch={props.dispatch}/>}
+        {!groups ? <Spinner /> : <GroupsContainer groups={groups} page={currentPage} limit={limit} dispatch={dispatch}/>}
       </div>
       <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
         <p style={{color: 'red'}}>{props.errorMessage}</p>

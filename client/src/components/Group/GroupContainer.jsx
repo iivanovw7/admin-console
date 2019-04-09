@@ -12,7 +12,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const GroupContainer = props => {
 
-  const { classes, history, handleSubmit } = props;
+  const { classes, history, handleSubmit, dispatch } = props;
   const group = props.groups.group;
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const GroupContainer = props => {
 
   const showAlert = (message, success) => (
     <AlertSnackbar
+      dispatch={dispatch}
       message={message}
       afterConfirm={() => {
         history.push(`/groups`);
@@ -48,11 +49,11 @@ const GroupContainer = props => {
         <CheckboxContainer name={'permissions'} label={'Available for permissions'} value={''}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {
-          props.errorMessage ?
+          props.errorMessage && !props.messageConfirmed ?
             showAlert(props.errorMessage, false) : ''
         }
         {
-          props.successMessage ?
+          props.successMessage && !props.messageConfirmed ?
             showAlert(props.successMessage, true) : ''
         }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
@@ -88,6 +89,7 @@ function mapStateToProps(state) {
   return {
     errorMessage: state.groups.error,
     successMessage: state.groups.success,
+    messageConfirmed: state.groups.confirmed,
     groups: state.groups
   };
 }

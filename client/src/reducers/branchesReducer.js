@@ -8,7 +8,8 @@ const initialState = {
   branch: {},
   error: null,
   fetchError: null,
-  success: null
+  success: null,
+  confirmed: false,
 };
 
 export default function (state = initialState, action) {
@@ -36,7 +37,12 @@ export default function (state = initialState, action) {
         ...state,
         branch: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.UPDATE_BRANCH: {
@@ -44,7 +50,12 @@ export default function (state = initialState, action) {
         ...state,
         branch: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.FETCH_ERROR: {
@@ -54,8 +65,13 @@ export default function (state = initialState, action) {
           page: 1
         },
         branch: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
     }
     case types.ERROR: {
@@ -65,9 +81,20 @@ export default function (state = initialState, action) {
           page: 1
         },
         branch: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
+    }
+    case types.CONFIRM_NOTIFICATION: {
+      return {
+        ...state,
+        confirmed: true,
+      }
     }
     default:
       return {

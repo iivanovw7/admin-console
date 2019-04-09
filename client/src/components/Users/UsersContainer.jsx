@@ -1,11 +1,10 @@
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Link } from '@material-ui/core';
+import { Link, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getRoles } from '../../actions/roles';
-import { getUsers, getSingleUser } from '../../actions/users';
+import { getSingleUser, getUsers } from '../../actions/users';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 import { actionCheckBox } from './UsersActionCheckBox';
@@ -14,11 +13,6 @@ const UsersContainer = props => {
   const { classes, history, dispatch, users, limit, page } = props;
   const currPage = page || 1;
   const currLimit = limit || 8;
-  console.log(props);
-
-  useEffect(() => {
-    props.dispatch(getRoles(1, 100, history));
-  }, []);
 
   function displayStatus(status) {
     return status ? 'Active' : 'Disabled';
@@ -30,10 +24,10 @@ const UsersContainer = props => {
 
   //Triggers notification if there are any messages in props
   function displayNotifications() {
-    if (props.errorMessage) {
+    if (props.errorMessage && !props.messageConfirmed) {
       return displayNotification(props.errorMessage, false);
     }
-    if (props.successMessage) {
+    if (props.successMessage && !props.messageConfirmed) {
       return displayNotification(props.successMessage, true);
     }
   }
@@ -41,6 +35,7 @@ const UsersContainer = props => {
   //Returns notification container
   const displayNotification = (message, success) => (
     <AlertSnackbar
+      dispatch={dispatch}
       message={message}
       afterConfirm={() => {
         dispatch(getUsers(currPage, currLimit, history));
@@ -109,8 +104,12 @@ UsersContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.users.error,
-    successMessage: state.users.success
+    successMessage: state.users.success,
+    messageConfirmed: state.users.confirmed
   };
 }
 
-export default connect(mapStateToProps, { getUsers, getSingleUser })(withStyles(Container)(withRouter(UsersContainer)));
+export default connect(mapStateToProps, {
+  getUsers,
+  getSingleUser
+})(withStyles(Container)(withRouter(UsersContainer)));

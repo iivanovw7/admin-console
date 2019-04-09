@@ -11,7 +11,7 @@ import { Wrapper } from '../components/UI/ThemeProperties';
 import Spinner from '../components/UI/Spinner';
 
 const Roles = props => {
-  const { classes, history } = props;
+  const { classes, history, dispatch } = props;
   const limit = 7; //default limit of elements for current page
 
   //current page number
@@ -35,7 +35,7 @@ const Roles = props => {
           </div>
           <AddNewButton history={history} element={'roles'}/>
         </Paper>
-        {!roles ? <Spinner /> : <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={props.dispatch}/>}
+        {!roles ? <Spinner /> : <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={dispatch}/>}
       </div>
       <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
         <p style={{color: 'red'}}>{props.errorMessage}</p>

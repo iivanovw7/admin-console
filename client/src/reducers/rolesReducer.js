@@ -7,7 +7,8 @@ const initialState = {
   },
   role: {},
   error: null,
-  success: null
+  success: null,
+  confirmed: false,
 };
 
 function displayStatus(status) {
@@ -39,7 +40,12 @@ export default function (state = initialState, action) {
         ...state,
         role: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.UPDATE_ROLE: {
@@ -47,7 +53,12 @@ export default function (state = initialState, action) {
         ...state,
         role: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.DELETE_ROLE: {
@@ -55,7 +66,12 @@ export default function (state = initialState, action) {
         ...state,
         role: {},
         error: null,
-        success: message(action.payload.data[1].removedRole.name, action, 'en')
+        success: message(
+          action.payload.data[1].removedRole.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.CHANGE_ROLE_STATUS: {
@@ -63,7 +79,13 @@ export default function (state = initialState, action) {
         ...state,
         role: {},
         error: null,
-        success: message(action.payload.data.newRole.name, action, 'en', displayStatus(action.payload.data.newRole.active)),
+        success: message(
+          action.payload.data.newRole.name,
+          action,
+          'en',
+          displayStatus(action.payload.data.newRole.active)
+        ),
+        confirmed: false,
       };
     }
     case types.ERROR: {
@@ -73,8 +95,13 @@ export default function (state = initialState, action) {
           page: 1
         },
         role: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
     }
     case types.FETCH_ERROR: {
@@ -84,9 +111,20 @@ export default function (state = initialState, action) {
           page: 1
         },
         role: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
+    }
+    case types.CONFIRM_NOTIFICATION: {
+      return {
+        ...state,
+        confirmed: true,
+      }
     }
     default:
       return {

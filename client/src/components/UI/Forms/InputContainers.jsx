@@ -1,10 +1,10 @@
-import { Grid, MenuItem, FormControlLabel, Select, InputLabel, FormControl } from '@material-ui/core';
+import { Grid, MenuItem, FormControlLabel, InputLabel, FormControl } from '@material-ui/core';
 import React from 'react';
 import { Field } from 'redux-form';
 import { renderTextField } from './TextField';
 import { renderCheckbox } from './Checkbox';
-import { renderSelectField } from './SelectField';
 import PropTypes from 'prop-types';
+import { Select } from 'redux-form-material-ui';
 
 export const CheckboxContainer = props => {
 
@@ -66,7 +66,33 @@ export const TextInputContainer = props => {
 
 export const SelectInputContainer = props => {
 
-  const { dataType, label, value, list } = props;
+  const { dataType, label, list, placeholder, value } = props;
+
+  return (
+    <Grid container spacing={16} alignItems="flex-end">
+      <Grid item md={true} sm={true} xs={true}>
+        <FormControl style={{minWidth: 240}}>
+
+          <Field
+            name={dataType}
+            component={Select}
+            placeholder={placeholder}
+          >
+            {list.map(element => (
+              <MenuItem value={element._id} key={element._id}>{element.name}</MenuItem>
+            ))}
+          </Field>
+        </FormControl>
+      </Grid>
+    </Grid>
+  );
+
+};
+
+/*
+export const SelectInputContainer = props => {
+
+  const { dataType, label, list } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">
@@ -76,8 +102,7 @@ export const SelectInputContainer = props => {
           <Field
             name={dataType}
             component={renderSelectField}
-            onChange={console.log(value)}
-            value={value}
+            onChange={console.log(props)}
           >
             <MenuItem value={null}>
               <em>None</em>
@@ -94,6 +119,10 @@ export const SelectInputContainer = props => {
 };
 
 
+
+
+
+ */
 
 /*
 

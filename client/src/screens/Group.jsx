@@ -9,7 +9,7 @@ import GroupContainer from '../components/Group/GroupContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Group = props => {
-  const { classes, history } = props;
+  const { classes, history, dispatch } = props;
 
   return (
     <main className={classes.contentSingle}>
@@ -18,8 +18,8 @@ const Group = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      <p style={{color: 'red'}}>{props.errorMessage}</p>
-      <GroupContainer history={history}/>
+      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
+      <GroupContainer history={history} dispatch={dispatch}/>
     </main>
   );
 };
@@ -32,8 +32,9 @@ Group.propTypes = {
 function mapStateToProps(state) {
   return {
     groups: state.groups,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success,
+    errorMessage: state.groups.error,
+    successMessage: state.groups.success,
+    messageConfirmed: state.groups.confirmed
   };
 }
 

@@ -4,7 +4,6 @@ import { changeUserStatus } from '../../actions/users';
 
 export const actionCheckBox = (row, classes, dispatch, history) => {
 
-
   return (
     <Checkbox
       style={{ height: '16px' }}

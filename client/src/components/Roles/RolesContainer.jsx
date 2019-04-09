@@ -56,10 +56,10 @@ const RolesContainer = props => {
 
   //Triggers notification if there are any messages in props
   function displayNotifications() {
-    if (props.errorMessage) {
+    if (props.errorMessage && !props.messageConfirmed) {
       return displayNotification(props.errorMessage, false);
     }
-    if (props.successMessage) {
+    if (props.successMessage && !props.messageConfirmed) {
       return displayNotification(props.successMessage, true);
     }
   }
@@ -67,6 +67,7 @@ const RolesContainer = props => {
   //Returns notification container
   const displayNotification = (message, success) => (
     <AlertSnackbar
+      dispatch={dispatch}
       message={message}
       afterConfirm={() => {
         dispatch(getRoles(currPage, currLimit, history));
@@ -145,7 +146,8 @@ RolesContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.roles.error,
-    successMessage: state.roles.success
+    successMessage: state.roles.success,
+    messageConfirmed: state.roles.confirmed
   };
 }
 

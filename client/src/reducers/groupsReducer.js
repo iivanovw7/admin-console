@@ -7,7 +7,8 @@ const initialState = {
   },
   group: {},
   error: null,
-  success: null
+  success: null,
+  confirmed: false,
 };
 
 function displayStatus(status) {
@@ -20,8 +21,8 @@ export default function (state = initialState, action) {
     case types.FETCH_GROUPS: {
       return {
         ...state,
-        list: action.payload.data,
         group: {},
+        list: action.payload.data,
         error: null,
         success: null
       };
@@ -39,7 +40,12 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.UPDATE_GROUP: {
@@ -47,7 +53,12 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(
+          action.payload.data.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.DELETE_GROUP: {
@@ -55,7 +66,12 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: message(action.payload.data[1].removedGroup.name, action, 'en')
+        success: message(
+          action.payload.data[1].removedGroup.name,
+          action,
+          'en'
+        ),
+        confirmed: false,
       };
     }
     case types.CHANGE_GROUP_STATUS: {
@@ -63,7 +79,13 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: message(action.payload.data.name, action, 'en', displayStatus(action.payload.data.status)),
+        success: message(
+          action.payload.data.name,
+          action,
+          'en',
+          displayStatus(action.payload.data.status)
+        ),
+        confirmed: false,
       };
     }
     case types.ERROR: {
@@ -73,8 +95,13 @@ export default function (state = initialState, action) {
           page: 1
         },
         group: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
     }
     case types.FETCH_ERROR: {
@@ -84,9 +111,20 @@ export default function (state = initialState, action) {
           page: 1
         },
         group: {},
-        error: message(null, action, 'en'),
-        success: null
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
+        confirmed: false,
       };
+    }
+    case types.CONFIRM_NOTIFICATION: {
+      return {
+        ...state,
+        confirmed: true,
+      }
     }
     default:
       return {

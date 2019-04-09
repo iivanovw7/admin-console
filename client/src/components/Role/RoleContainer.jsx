@@ -12,7 +12,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const RoleContainer = props => {
 
-  const { classes, history, handleSubmit } = props;
+  const { classes, history, handleSubmit, dispatch } = props;
   const role = props.roles.role;
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const RoleContainer = props => {
       description: role.description || '',
       active: role.active || false,
       isPublic: role.isPublic || false,
-      isEditable: role.isEditable || false,
+      isEditable: role.isEditable || false
     });
   }, [role]);
 
@@ -33,6 +33,7 @@ const RoleContainer = props => {
 
   const showAlert = (message, success) => (
     <AlertSnackbar
+      dispatch={dispatch}
       message={message}
       afterConfirm={() => {
         history.push(`/roles`);
@@ -48,15 +49,15 @@ const RoleContainer = props => {
         <TextInputContainer dataType={'name'} type={'text'} rows={1}/>
         <TextInputContainer dataType={'code'} type={'text'} rows={1}/>
         <TextInputContainer dataType={'description'} type={'text'} rows={4}/>
-        <CheckboxContainer name={'isPublic'} label={'Role is public'} value={''}/>
-        <CheckboxContainer name={'isEditable'} label={'Role is editable'} value={''}/>
+        <CheckboxContainer name={'isPublic'} label={'Public'} value={''}/>
+        <CheckboxContainer name={'isEditable'} label={'Editable'} value={''}/>
         <CheckboxContainer name={'active'} label={'Active'} value={''}/>
         {
-          props.errorMessage ?
+          props.errorMessage && !props.messageConfirmed ?
             showAlert(props.errorMessage, false) : ''
         }
         {
-          props.successMessage ?
+          props.successMessage && !props.messageConfirmed ?
             showAlert(props.successMessage, true) : ''
         }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
@@ -92,6 +93,7 @@ function mapStateToProps(state) {
   return {
     errorMessage: state.roles.error,
     successMessage: state.roles.success,
+    messageConfirmed: state.roles.confirmed,
     roles: state.roles
   };
 }

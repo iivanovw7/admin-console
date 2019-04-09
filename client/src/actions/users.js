@@ -7,8 +7,6 @@ export const getUsers = (page, limit, history) => {
 
   return async dispatch => {
 
-    console.log(page, limit)
-
     await axios({
       method: 'get',
       url: `${URL.PRIVATE_API}/users`,
@@ -72,14 +70,14 @@ export const getSingleUser = (id, history) => {
 
 export const updateUser = (formValues, id) => {
 
-  const { name, code, description, active, isPublic, isEditable } = formValues;
+  const { name, code, role, description, active, isPublic, isEditable } = formValues;
 
   return async dispatch => {
     await axios({
       method: 'put',
       url: `${URL.PRIVATE_API}/users/${id}`,
       data: {
-        name, code, description, active, isPublic, isEditable
+        name, code, role, description, active, isPublic, isEditable
       },
       withCredentials: true
     })

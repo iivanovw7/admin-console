@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Wrapper } from '../components/UI/ThemeProperties';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getSingleRole } from '../actions/roles';
 import RoleContainer from '../components/Role/RoleContainer';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Role = props => {
-  const { classes, history } = props;
+  const { classes, history, dispatch } = props;
 
   return (
     <main className={classes.contentSingle}>
@@ -18,8 +18,8 @@ const Role = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      <p style={{color: 'red'}}>{props.errorMessage}</p>
-      <RoleContainer history={history}/>
+      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
+      <RoleContainer history={history} dispatch={dispatch}/>
     </main>
   );
 };
@@ -32,8 +32,9 @@ Role.propTypes = {
 function mapStateToProps(state) {
   return {
     roles: state.roles,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success,
+    errorMessage: state.roles.error,
+    successMessage: state.roles.success,
+    messageConfirmed: state.roles.confirmed
   };
 }
 

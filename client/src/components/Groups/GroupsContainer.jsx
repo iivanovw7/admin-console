@@ -56,10 +56,10 @@ const GroupsContainer = props => {
 
   //Triggers notification if there are any messages in props
   function displayNotifications() {
-    if (props.errorMessage) {
+    if (props.errorMessage && !props.messageConfirmed) {
       return displayNotification(props.errorMessage, false);
     }
-    if (props.successMessage) {
+    if (props.successMessage && !props.messageConfirmed) {
       return displayNotification(props.successMessage, true);
     }
   }
@@ -67,6 +67,7 @@ const GroupsContainer = props => {
   //Returns notification container
   const displayNotification = (message, success) => (
     <AlertSnackbar
+      dispatch={dispatch}
       message={message}
       afterConfirm={() => {
         dispatch(getGroups(currPage, currLimit, history));
@@ -145,7 +146,8 @@ GroupsContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.groups.error,
-    successMessage: state.groups.success
+    successMessage: state.groups.success,
+    messageConfirmed: state.groups.confirmed
   };
 }
 
