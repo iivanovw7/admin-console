@@ -8,6 +8,7 @@ export const PageSelector = props => {
   const { classes, data, handlePage } = props;
   const page = data.list.page || 1;
   const pages = data.list.pages || 10;
+  const total = data.list.results || 0;
 
   const pagesNavigation = (title, value) => {
     return (
@@ -16,27 +17,31 @@ export const PageSelector = props => {
         aria-label={title}
         color="primary"
         disabled={
-          (page === 1 && title === 'Back')
-          ||
+          (page === 1 && title === 'Back') ||
           (page === pages && title === 'Next')
         }
         onClick={() => {
           handlePage(value);
         }}
       >
-        {(title === 'Next') ?
-          (<NavigateNext/>) : (<NavigateBefore/>)}
+        {
+          title === 'Next' ?
+          <NavigateNext/> : <NavigateBefore/>
+        }
       </IconButton>
     );
   };
 
   return (
     <div className={classes.formRoot}>
+      <Typography className={classes.pageSelectorTitle}>
+        Results: {total}
+      </Typography>
       <div style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
         {pagesNavigation('Back', page - 1)}
       </div>
-      <Typography style={{ alignItems: 'center', display: 'flex', margin: '10px' }}>
-        <strong>Page {page} of {pages}</strong>
+      <Typography className={classes.pageSelectorTitle}>
+        <strong>{page} of {pages}</strong>
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center', margin: '5px' }}>
         {pagesNavigation('Next', page + 1)}

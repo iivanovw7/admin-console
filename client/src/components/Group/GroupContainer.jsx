@@ -25,21 +25,19 @@ const GroupContainer = props => {
   }, [group]);
 
   const submit = formValues => {
-    return (!group._id) ?
-      (props.addNewGroup(formValues)) : (props.updateGroup(formValues, group._id));
+    return !group._id ?
+      props.addNewGroup(formValues) : props.updateGroup(formValues, group._id);
   };
 
-  const showAlert = (message, success) => {
-    return (
-      <AlertSnackbar
-        message={message}
-        afterConfirm={() => {
-          history.push(`/groups`);
-        }}
-        success={success}
-      />
-    );
-  };
+  const showAlert = (message, success) => (
+    <AlertSnackbar
+      message={message}
+      afterConfirm={() => {
+        history.push(`/groups`);
+      }}
+      success={success}
+    />
+  );
 
   return (
     <Paper className={classes.root}>
@@ -50,12 +48,12 @@ const GroupContainer = props => {
         <CheckboxContainer name={'permissions'} label={'Available for permissions'} value={''}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {
-          (props.errorMessage) ?
-            (showAlert(props.errorMessage, false)) : ('')
+          props.errorMessage ?
+            showAlert(props.errorMessage, false) : ''
         }
         {
-          (props.successMessage) ?
-            (showAlert(props.successMessage, true)) : ('')
+          props.successMessage ?
+            showAlert(props.successMessage, true) : ''
         }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button

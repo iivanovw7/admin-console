@@ -58,11 +58,10 @@ export const getSingleRole = (id, history) => {
       })
       .catch(error => {
         console.log(error);
-        Cookies.remove('LoggedUserObject');
         dispatch({
-          type: types.UNAUTHENTICATED
+          type: types.FETCH_ERROR
         });
-        history.push('/');
+        history.push('/roles');
       });
   };
 
@@ -157,54 +156,29 @@ export const updateRole = (formValues, id) => {
 
 };
 
-export const changeRoleStatus = id => {
+export const changeRoleStatus = (id, status) => {
 
   return async dispatch => {
     await axios({
-      method: 'get',
+      method: 'put',
       url: `${URL.PRIVATE_API}/roles/${id}`,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
+      data: {
+        active: status
       },
       withCredentials: true
     })
-      .then(async response => {
-
-        await axios({
-          method: 'put',
-          url: `${URL.PRIVATE_API}/roles/${id}`,
-          data: {
-            name: response.data.name,
-            code: response.data.code,
-            description: response.data.description,
-            active: !response.data.active || false,
-            isPublic: response.data.isPublic || false,
-            isEditable: response.data.isEditable || false
-          },
-          withCredentials: true
-        })
-          .then(response => {
-            dispatch({
-              type: types.CHANGE_ROLE_STATUS,
-              payload: response
-            });
-          })
-          .catch(error => {
-            console.log(error);
-            dispatch({
-              type: types.ERROR
-            });
-          });
+      .then(response => {
+        dispatch({
+          type: types.CHANGE_ROLE_STATUS,
+          payload: response
+        });
       })
-
       .catch(error => {
         console.log(error);
         dispatch({
           type: types.ERROR
         });
       });
-
 
   };
 

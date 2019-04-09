@@ -11,6 +11,7 @@ export const renderTextField = ({
                                   rows = 1,
                                   rowsMax = 1,
                                   variant,
+                                  disabled,
                                   meta: { touched, error, warning },
                                   ...custom
                                 }) => {
@@ -23,11 +24,12 @@ export const renderTextField = ({
       error={!!error && touched}
       helperText={error && touched ? error : ' '}
       variant={variant}
-      multiline
+      multiline={rows > 1}
       rows={rows}
       rowsMax={rows}
       fullWidth
       required
+      disabled={disabled}
       {...input}
       {...custom}
     />

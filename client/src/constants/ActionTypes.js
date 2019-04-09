@@ -28,3 +28,9 @@ export const UPDATE_ROLE = 'UPDATE_ROLE';
 export const ADD_ROLE = 'ADD_ROLE';
 export const DELETE_ROLE = 'DELETE_ROLE';
 export const CHANGE_ROLE_STATUS = 'CHANGE_ROLE_STATUS';
+
+//USERS
+export const FETCH_USERS = 'FETCH_USERS';
+export const FETCH_USER = 'FETCH_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const CHANGE_USER_STATUS = 'CHANGE_USER_STATUS';

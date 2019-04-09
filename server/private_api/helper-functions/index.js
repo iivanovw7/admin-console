@@ -37,7 +37,7 @@ export function setQueryLimit(months = 11) {
 export function addHistory(req, res, params, changes) {
 
   const newHistory = new History({
-    actionAuthor: req.headers.user,
+    actionAuthor: req.user._id,
     actionTargetModel: params.targetModel,
     actionTarget: req.params.id,
     actionType: params.actionType,

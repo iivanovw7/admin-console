@@ -19,7 +19,6 @@ export const LoginField = props => {
           rows={1}
           rowsMax={1}
           variant={'standard'}
-
         />
       </Grid>
     </Grid>

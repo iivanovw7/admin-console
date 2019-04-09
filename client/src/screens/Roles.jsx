@@ -12,11 +12,11 @@ import Spinner from '../components/UI/Spinner';
 
 const Roles = props => {
   const { classes, history } = props;
-  const limit = 8; //default limit of elements for current page
+  const limit = 7; //default limit of elements for current page
 
   //current page number
   const [currentPage, setCurrentPage] = useState(props.roles.list.page);
-  const list = props.roles.list.output; //list of elements fetched
+  const roles = props.roles.list.output; //list of elements fetched
 
   useEffect(() => {
     props.dispatch(getRoles(currentPage, limit, history));
@@ -29,17 +29,16 @@ const Roles = props => {
   return (
     <main className={classes.contentList}>
       <div>
-        <Paper className={classes.controlsContainer}>
+        <Paper className={classes.titleContainer}>
           <div className={classes.selectorsContainer}>
             <h2>Roles</h2>
           </div>
           <AddNewButton history={history} element={'roles'}/>
         </Paper>
-        {(!list) ? (<Spinner />) : (<RolesContainer dispatch={props.dispatch}/>)}
+        {!roles ? <Spinner /> : <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={props.dispatch}/>}
       </div>
-      <br/>
-      <Paper className={classes.controlsContainer}>
-        <div/>
+      <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
+        <p style={{color: 'red'}}>{props.errorMessage}</p>
         <PageSelector classes={classes} data={props.roles} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -52,7 +51,11 @@ Roles.propTypes = {
 };
 
 function mapStateToProps(state) {
-  return { roles: state.roles };
+  return {
+    roles: state.roles,
+    errorMessage: state.branches.error,
+    successMessage: state.branches.success,
+  };
 }
 
 export default connect(mapStateToProps, { getRoles })(withStyles(Wrapper, { withTheme: true })(withRouter(Roles)));

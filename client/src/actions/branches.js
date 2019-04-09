@@ -118,11 +118,10 @@ export const getSingleBranch = (id, history) => {
       })
       .catch(error => {
         console.log(error);
-        Cookies.remove('LoggedUserObject');
         dispatch({
-          type: types.UNAUTHENTICATED
+          type: types.FETCH_ERROR
         });
-        history.push('/');
+        history.push('/branches');
       });
   };
 

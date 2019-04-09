@@ -60,7 +60,7 @@ export const NavigationStyles = theme => ({
   toolbar: theme.mixins.toolbar,
   toolbarUserName: {
     [theme.breakpoints.down('xs')]: {
-      display: 'none'
+      //display: 'none'
     }
   },
   drawerPaper: {
@@ -70,29 +70,20 @@ export const NavigationStyles = theme => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 3
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
-    },
-    marginRight: theme.spacing.unit * 2,
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
-      width: 'auto'
-    }
-  },
-  searchIcon: {
-    width: theme.spacing.unit * 9,
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
+  searchRoot: {
+    marginTop: theme.spacing.unit * 3,
+    padding: '4px 6px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    width: '100%',
+  },
+  divider: {
+    width: 1,
+    height: 28,
+    margin: 4,
+  },
+  searchIcon: {
+    paddingLeft: theme.spacing.unit * 2,
   },
   inputRoot: {
     color: 'inherit',
@@ -158,7 +149,9 @@ export const Wrapper = theme => ({
   toolbar: theme.mixins.toolbar,
   contentSingle: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    paddingTop: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing.unit * 3,
+    paddingRight: theme.spacing.unit * 3,
     marginTop: '64px',
     display: 'flex',
     flexDirection: 'column',
@@ -167,7 +160,9 @@ export const Wrapper = theme => ({
   },
   contentList: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    paddingTop: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing.unit * 3,
+    paddingRight: theme.spacing.unit * 3,
     marginTop: '64px',
     display: 'flex',
     flexDirection: 'column',
@@ -188,11 +183,19 @@ export const Wrapper = theme => ({
       alignItems: 'center'
     }
   },
+  pageSelectorTitle: {
+    alignItems: 'center',
+    display: 'flex',
+    margin: '10px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
   fromLimitSelector: {
     display: 'flex',
     flexWrap: 'wrap',
     [theme.breakpoints.down('sm')]: {
-      display: 'none'
+      //display: 'none'
     }
   },
   formControl: {
@@ -200,13 +203,21 @@ export const Wrapper = theme => ({
     minWidth: 120,
     maxWidth: 300
   },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+    paddingLeft: 10,
+    justifyContent: 'space-between'
+  },
   controlsContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingRight: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    justifyContent: 'space-between'
   },
   selectorsContainer: {
     display: 'flex',
@@ -342,7 +353,36 @@ export const Container = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
+  },
+  userRowClass: {
+    height: '100%'
+  },
+  userNameCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '300px'
+  },
+  userEmailCell: {
+    width: '300px',
+    padding: 5,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
+  userStatusCell: {
+    padding: 5,
+    width: '100px',
+  },
+  userControlCell: {
+    paddingRight: 5,
+    paddingLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '100px',
   }
+
 });
 
 export const Notification = theme => ({

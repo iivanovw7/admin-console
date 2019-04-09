@@ -18,7 +18,7 @@ const DrawerContainer = props => {
         <Drawer
           container={classes.container}
           variant="temporary"
-          anchor={(theme.direction === 'rtl') ? ('right') : ('left')}
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{

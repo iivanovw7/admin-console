@@ -1,7 +1,6 @@
 import { CssBaseline, withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
@@ -26,13 +25,7 @@ export default function (ComposedComponent) {
     }, []);
 
     return (
-
       <div className={classes.root}>
-        <Helmet>
-          <meta charSet="utf-8"/>
-          <title>Admin console - Messages</title>
-          <link rel="canonical" href=""/>
-        </Helmet>
         <CssBaseline/>
         <AppBarContainer
           handleDrawerToggle={handleDrawerToggle}
@@ -46,9 +39,7 @@ export default function (ComposedComponent) {
         />
         <ComposedComponent {...props} />
       </div>
-
     );
-
   };
 
   protectedContent.propTypes = {

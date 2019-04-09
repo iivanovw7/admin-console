@@ -5,7 +5,7 @@ const initialState = {
   list: {
     page: 1
   },
-  role: {},
+  user: null,
   error: null,
   success: null
 };
@@ -17,53 +17,37 @@ function displayStatus(status) {
 export default function (state = initialState, action) {
 
   switch (action.type) {
-    case types.FETCH_ROLES: {
+    case types.FETCH_USERS: {
       return {
         ...state,
         list: action.payload.data,
-        role: {},
+        user: null,
         error: null,
         success: null
       };
     }
-    case types.FETCH_ROLE: {
+    case types.FETCH_USER: {
       return {
         ...state,
-        role: action.payload.data,
+        user: action.payload.data,
         error: null,
         success: null
       };
     }
-    case types.ADD_ROLE: {
+    case types.UPDATE_USER: {
       return {
         ...state,
-        role: {},
+        user: null,
         error: null,
-        success: message(action.payload.data.name, action, 'en')
+        success: message(action.payload.data.name + ' ' + action.payload.data.surname, action, 'en')
       };
     }
-    case types.UPDATE_ROLE: {
+    case types.CHANGE_USER_STATUS: {
       return {
         ...state,
-        role: {},
+        user: null,
         error: null,
-        success: message(action.payload.data.name, action, 'en')
-      };
-    }
-    case types.DELETE_ROLE: {
-      return {
-        ...state,
-        role: {},
-        error: null,
-        success: message(action.payload.data[1].removedRole.name, action, 'en')
-      };
-    }
-    case types.CHANGE_ROLE_STATUS: {
-      return {
-        ...state,
-        role: {},
-        error: null,
-        success: message(action.payload.data.newRole.name, action, 'en', displayStatus(action.payload.data.newRole.active)),
+        success: message(action.payload.data.name + ' ' + action.payload.data.surname, action, 'en', displayStatus(action.payload.data.active))
       };
     }
     case types.ERROR: {
@@ -72,7 +56,7 @@ export default function (state = initialState, action) {
         list: {
           page: 1
         },
-        role: {},
+        user: null,
         error: message(null, action, 'en'),
         success: null
       };
@@ -83,7 +67,7 @@ export default function (state = initialState, action) {
         list: {
           page: 1
         },
-        role: {},
+        user: null,
         error: message(null, action, 'en'),
         success: null
       };

@@ -13,11 +13,11 @@ import { actionButton } from './RolesActionButton';
 import { deleteButton } from './RolesDeleteButton';
 
 const RolesContainer = props => {
-  const { classes, history, dispatch } = props;
+  const { classes, history, dispatch, roles, page, limit } = props;
   const [confDialog, dialogState] = useState(false);
   const [roleToDelete, setToDelete] = useState(null);
-  const currPage = props.roles.list.page || 1;
-  const currLimit = props.roles.list.limit || 8;
+  const currPage = page || 1;
+  const currLimit = limit || 8;
 
   useEffect(() => {
     dialogState(false);
@@ -25,7 +25,7 @@ const RolesContainer = props => {
   }, []);
 
   function displayStatus(status) {
-    return (status) ? ('Active') : ('Disabled');
+    return status ? 'Active' : 'Disabled';
   }
 
   function handleRoleClick(id) {
@@ -54,7 +54,7 @@ const RolesContainer = props => {
     );
   }
 
-  //Triggers notification if any there any messages in props
+  //Triggers notification if there are any messages in props
   function displayNotifications() {
     if (props.errorMessage) {
       return displayNotification(props.errorMessage, false);
@@ -65,27 +65,25 @@ const RolesContainer = props => {
   }
 
   //Returns notification container
-  const displayNotification = (message, success) => {
-    return (
-      <AlertSnackbar
-        message={message}
-        afterConfirm={() => {
-          dispatch(getRoles(currPage, currLimit, history));
-        }}
-        success={success}
-      />
-    );
-  };
+  const displayNotification = (message, success) => (
+    <AlertSnackbar
+      message={message}
+      afterConfirm={() => {
+        dispatch(getRoles(currPage, currLimit, history));
+      }}
+      success={success}
+    />
+  );
 
-  //function return control buttons according to current state of element
+  //Function returns control buttons according to current elements state
   function showActionButton(row) {
     if (row.active) {
-      return actionButton('Disable', 'secondary', row, classes, dispatch, history);
+      return actionButton('Disable', 'secondary', row, classes, dispatch);
     }
     return actionButton('Activate', 'primary', row, classes, dispatch);
   }
 
-  //returns delete button with parameters
+  //Function returns delete button with parameters
   function showDeleteButton(row) {
     return deleteButton(row, classes, handleDeleteAction);
   }
@@ -106,7 +104,7 @@ const RolesContainer = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.roles.list.output.map(row => (
+          {roles.map(row => (
             <TableRow key={row._id} className={classes.groupRowClass}>
               <TableCell component="th" scope="row" className={classes.groupNameCell}>
                 <Link
@@ -146,7 +144,6 @@ RolesContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    roles: state.roles,
     errorMessage: state.roles.error,
     successMessage: state.roles.success
   };
@@ -155,6 +152,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   getSingleRole,
   deleteRole,
-  changeRoleStatus,
-  getRoles
+  changeRoleStatus
 })(withStyles(Container)(withRouter(RolesContainer)));

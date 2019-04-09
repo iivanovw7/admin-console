@@ -1,17 +1,17 @@
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Paper, Table, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Container } from '../UI/ThemeProperties';
-import { getSingleBranch } from '../../actions/branches';
 import { withRouter } from 'react-router-dom';
+import { getSingleBranch } from '../../actions/branches';
+import { Container } from '../UI/ThemeProperties';
 
 const BranchesContainer = props => {
-  const { classes, history, dispatch } = props;
+  const { classes, history, dispatch, branches } = props;
 
   function displayStatus(status) {
-    return (status) ? ('Active') : ('Disabled');
+    return status ? 'Active' : 'Disabled';
   }
 
   function handleBranchClick(id) {
@@ -38,15 +38,24 @@ const BranchesContainer = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.branches.list.output.map(row => (
-            <TableRow key={row._id}
-                      onClick={() => {
-                        handleBranchClick(row._id);
-                      }} className={classes.branchRowClass}>
-              <TableCell component="th" scope="row" className={classes.branchNameCell}>
+          {branches.map(row => (
+            <TableRow
+              key={row._id}
+              onClick={() => {
+                handleBranchClick(row._id);
+              }}
+              className={classes.branchRowClass}
+            >
+              <TableCell
+                component="th"
+                scope="row"
+                className={classes.branchNameCell}
+              >
                 {row.name}
               </TableCell>
-              <TableCell className={classes.branchAddressCell} align="center">{row.address}</TableCell>
+              <TableCell className={classes.branchAddressCell} align="center">
+                {row.address}
+              </TableCell>
               <TableCell className={classes.branchEmployeesCell} align="center">xxx</TableCell>
               <TableCell className={classes.tableCell} align="center">
                 <strong>
@@ -65,8 +74,4 @@ BranchesContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-  return { branches: state.branches };
-}
-
-export default connect(mapStateToProps, { getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
+export default connect(null, { getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));

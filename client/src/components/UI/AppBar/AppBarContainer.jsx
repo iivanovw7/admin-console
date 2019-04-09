@@ -1,8 +1,7 @@
-import { AppBar, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,6 +9,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { logoutUser } from '../../../actions/auth';
 import { NavigationStyles } from '../ThemeProperties';
+
 
 const AppBarContainer = props => {
 
@@ -26,18 +26,7 @@ const AppBarContainer = props => {
         >
           <MenuIcon/>
         </IconButton>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon/>
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput
-            }}
-          />
-        </div>
+        <div/>
         <Typography className={classes.toolbarUserName} variant="h6" color="inherit" noWrap>
           {Cookies.get('username')}
           &nbsp;

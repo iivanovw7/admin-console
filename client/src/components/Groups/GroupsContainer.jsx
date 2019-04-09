@@ -13,11 +13,11 @@ import { actionButton } from './GroupsActionButton';
 import { deleteButton } from './GroupsDeleteButton';
 
 const GroupsContainer = props => {
-  const { classes, history, dispatch } = props;
+  const { classes, history, dispatch, groups, page, limit } = props;
   const [confDialog, dialogState] = useState(false);
   const [groupToDelete, setToDelete] = useState(null);
-  const currPage = props.groups.list.page || 1;
-  const currLimit = props.groups.list.limit || 8;
+  const currPage = page || 1;
+  const currLimit = limit || 8;
 
   useEffect(() => {
     dialogState(false);
@@ -25,7 +25,7 @@ const GroupsContainer = props => {
   }, []);
 
   function displayStatus(status) {
-    return (status) ? ('Active') : ('Disabled');
+    return status ? 'Active' : 'Disabled';
   }
 
   function handleGroupClick(id) {
@@ -54,7 +54,7 @@ const GroupsContainer = props => {
     );
   }
 
-  //Triggers notification if any there any messages in props
+  //Triggers notification if there are any messages in props
   function displayNotifications() {
     if (props.errorMessage) {
       return displayNotification(props.errorMessage, false);
@@ -65,27 +65,25 @@ const GroupsContainer = props => {
   }
 
   //Returns notification container
-  const displayNotification = (message, success) => {
-    return (
-      <AlertSnackbar
-        message={message}
-        afterConfirm={() => {
-          dispatch(getGroups(currPage, currLimit, history));
-        }}
-        success={success}
-      />
-    );
-  };
+  const displayNotification = (message, success) => (
+    <AlertSnackbar
+      message={message}
+      afterConfirm={() => {
+        dispatch(getGroups(currPage, currLimit, history));
+      }}
+      success={success}
+    />
+  );
 
-  //function return control buttons according to current state of element
+  //Function returns control buttons according to current elements state
   function showActionButton(row) {
     if (row.status) {
-      return actionButton('Disable', 'secondary', row, classes, dispatch, history);
+      return actionButton('Disable', 'secondary', row, classes, dispatch);
     }
-    return actionButton('Activate', 'primary', row, classes, dispatch, history);
+    return actionButton('Activate', 'primary', row, classes, dispatch);
   }
 
-  //returns delete button with parameters
+  //Function returns delete button with parameters
   function showDeleteButton(row) {
     return deleteButton(row, classes, handleDeleteAction);
   }
@@ -106,7 +104,7 @@ const GroupsContainer = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.groups.list.output.map(row => (
+          {groups.map(row => (
             <TableRow key={row._id} className={classes.groupRowClass}>
               <TableCell component="th" scope="row" className={classes.groupNameCell}>
                 <Link
@@ -146,7 +144,6 @@ GroupsContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    groups: state.groups,
     errorMessage: state.groups.error,
     successMessage: state.groups.success
   };
@@ -155,6 +152,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   getSingleGroup,
   deleteGroup,
-  changeGroupStatus,
-  getGroups
+  changeGroupStatus
 })(withStyles(Container)(withRouter(GroupsContainer)));

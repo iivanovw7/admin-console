@@ -3,12 +3,15 @@ import * as types from '../constants/ActionTypes';
 import * as URL from '../constants/APIurl';
 import axios from 'axios';
 
-export const getGroups = (page, limit, history) => {
+export const getUsers = (page, limit, history) => {
 
   return async dispatch => {
+
+    console.log(page, limit)
+
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/groups`,
+      url: `${URL.PRIVATE_API}/users`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -21,7 +24,7 @@ export const getGroups = (page, limit, history) => {
     })
       .then(response => {
         dispatch({
-          type: types.FETCH_GROUPS,
+          type: types.FETCH_USERS,
           payload: response
         });
       })
@@ -37,12 +40,12 @@ export const getGroups = (page, limit, history) => {
 
 };
 
-export const getSingleGroup = (id, history) => {
+export const getSingleUser = (id, history) => {
 
   return async dispatch => {
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/groups/${id}`,
+      url: `${URL.PRIVATE_API}/users/${id}`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -50,9 +53,9 @@ export const getSingleGroup = (id, history) => {
       withCredentials: true
     })
       .then(response => {
-        history.push(`/groups/${id}`);
+        history.push(`/users/${id}`);
         dispatch({
-          type: types.FETCH_GROUP,
+          type: types.FETCH_USER,
           payload: response
         });
       })
@@ -61,87 +64,28 @@ export const getSingleGroup = (id, history) => {
         dispatch({
           type: types.FETCH_ERROR
         });
-        history.push('/groups');
+        history.push('/users');
       });
   };
 
 };
 
-export const addNewGroup = formValues => {
+export const updateUser = (formValues, id) => {
 
-  const { name, description, permissions, status } = formValues;
-
-  return async dispatch => {
-    await axios({
-      method: 'post',
-      url: `${URL.PRIVATE_API}/groups`,
-      data: {
-        name, description, permissions, status
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.ADD_GROUP,
-          payload: response
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.ERROR
-        });
-      });
-
-  };
-
-};
-
-export const deleteGroup = id => {
-
-  return async dispatch => {
-    await axios({
-      method: 'delete',
-      url: `${URL.PRIVATE_API}/groups/${id}`,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.DELETE_GROUP,
-          payload: response
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.ERROR
-        });
-      });
-  };
-
-};
-
-
-export const updateGroup = (formValues, id) => {
-
-  const { name, description, permissions, status } = formValues;
+  const { name, code, description, active, isPublic, isEditable } = formValues;
 
   return async dispatch => {
     await axios({
       method: 'put',
-      url: `${URL.PRIVATE_API}/groups/${id}`,
+      url: `${URL.PRIVATE_API}/users/${id}`,
       data: {
-        name, description, permissions, status
+        name, code, description, active, isPublic, isEditable
       },
       withCredentials: true
     })
       .then(response => {
         dispatch({
-          type: types.UPDATE_GROUP,
+          type: types.UPDATE_USER,
           payload: response
         });
       })
@@ -156,12 +100,12 @@ export const updateGroup = (formValues, id) => {
 
 };
 
-export const changeGroupStatus = (id, status) => {
+export const changeUserStatus = (id, status) => {
 
   return async dispatch => {
     await axios({
       method: 'put',
-      url: `${URL.PRIVATE_API}/groups/${id}`,
+      url: `${URL.PRIVATE_API}/users/${id}`,
       data: {
         status: status
       },
@@ -169,16 +113,19 @@ export const changeGroupStatus = (id, status) => {
     })
       .then(response => {
         dispatch({
-          type: types.CHANGE_GROUP_STATUS,
+          type: types.CHANGE_USER_STATUS,
           payload: response
         });
+
       })
+
       .catch(error => {
         console.log(error);
         dispatch({
           type: types.ERROR
         });
       });
-  };
-};
 
+  };
+
+};

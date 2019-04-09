@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import { formLocalizedNotification as message }  from '../localization/notifications';
 
 const initialState = {
   list: {
@@ -6,6 +7,7 @@ const initialState = {
   },
   branch: {},
   error: null,
+  fetchError: null,
   success: null
 };
 
@@ -24,7 +26,6 @@ export default function (state = initialState, action) {
     case types.FETCH_BRANCH: {
       return {
         ...state,
-        list: {},
         branch: action.payload.data,
         error: null,
         success: null
@@ -33,36 +34,38 @@ export default function (state = initialState, action) {
     case types.ADD_BRANCH: {
       return {
         ...state,
-        list: {},
         branch: {},
         error: null,
-        success: `New Branch "${action.payload.data.name}" created!`
+        success: message(action.payload.data.name, action, 'en')
       };
     }
     case types.UPDATE_BRANCH: {
       return {
         ...state,
-        list: {},
         branch: {},
         error: null,
-        success: `Branch "${action.payload.data.name}" successfully modified!`
+        success: message(action.payload.data.name, action, 'en')
       };
     }
     case types.FETCH_ERROR: {
       return {
         ...state,
-        list: {},
+        list: {
+          page: 1
+        },
         branch: {},
-        error: 'Error while getting data!',
+        error: message(null, action, 'en'),
         success: null
       };
     }
     case types.ERROR: {
       return {
         ...state,
-        list: {},
+        list: {
+          page: 1
+        },
         branch: {},
-        error: 'Error!',
+        error: message(null, action, 'en'),
         success: null
       };
     }

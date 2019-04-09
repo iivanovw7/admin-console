@@ -123,12 +123,7 @@ const updateGroup = async (req, res) => {
     res.sendStatus(httpStatus.NOT_FOUND);
   } else {
 
-    const data = {
-      name: req.body.name,
-      status: req.body.status,
-      permissions: req.body.permissions,
-      description: req.body.description
-    };
+    const data = req.body;
 
     const updatedGroup = await
       Group.findOneAndUpdate(

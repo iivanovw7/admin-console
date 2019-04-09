@@ -3,7 +3,7 @@ import React from 'react';
 import { changeGroupStatus } from '../../actions/groups';
 import { debounce } from '../UI/Forms/debounce';
 
-export const actionButton = (text, type, row, classes, dispatch, history) => {
+export const actionButton = (text, type, row, classes, dispatch) => {
 
   return (
     <Button
@@ -12,7 +12,7 @@ export const actionButton = (text, type, row, classes, dispatch, history) => {
       className={classes.button}
       onClick={
         debounce(() => {
-          dispatch(changeGroupStatus(row._id, history));
+          dispatch(changeGroupStatus(row._id, !row.status));
         }, 500)
       }
     >

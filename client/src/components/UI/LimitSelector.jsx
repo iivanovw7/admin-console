@@ -1,5 +1,5 @@
+import { FormControl, InputLabel, Select } from '@material-ui/core';
 import React from 'react';
-import { InputLabel, FormControl, Select } from '@material-ui/core/InputLabel';
 
 export const LimitSelector = props => {
 

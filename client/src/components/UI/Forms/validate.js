@@ -129,3 +129,11 @@ export const validateRole = values => {
   return errors;
 };
 
+export const validateUser = values => {
+
+  const errors = {};
+
+
+  return errors;
+};
+

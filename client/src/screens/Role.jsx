@@ -7,20 +7,19 @@ import { withStyles } from '@material-ui/core/styles';
 import { Wrapper } from '../components/UI/ThemeProperties';
 import { getSingleRole } from '../actions/roles';
 import RoleContainer from '../components/Role/RoleContainer';
-import Spinner from '../components/UI/Spinner';
 
 const Role = props => {
   const { classes, history } = props;
-  const role = props.roles.role;
 
   return (
     <main className={classes.contentSingle}>
-      <Paper className={classes.controlsContainer}>
+      <Paper className={classes.titleContainer}>
         <div className={classes.selectorsContainer}>
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      {(!role) ? (<Spinner />) : (<RoleContainer history={history}/>)}
+      <p style={{color: 'red'}}>{props.errorMessage}</p>
+      <RoleContainer history={history}/>
     </main>
   );
 };
@@ -32,7 +31,9 @@ Role.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    roles: state.roles
+    roles: state.roles,
+    errorMessage: state.branches.error,
+    successMessage: state.branches.success,
   };
 }
 

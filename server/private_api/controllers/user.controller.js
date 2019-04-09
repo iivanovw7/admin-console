@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import Group from '../../models/Group';
+import Branch from '../../models/Branch';
 import Role from '../../models/Role';
 import User from '../../models/User';
 import History from '../../models/History';
@@ -14,7 +15,7 @@ const getUser = async (req, res) => {
 
   const user = await User.findOne({ _id: req.params.id })
                          .populate({ path: 'role', model: Role })
-                         .populate({ path: 'group', model: Group });
+
 
   if (user) {
     res.json(user);
@@ -209,13 +210,7 @@ const searchUsers = async (req, res) => {
  */
 const updateUser = async (req, res) => {
 
-  const data = {
-    group: req.body.group,
-    branch: req.body.branch,
-    role: req.body.role,
-    status: req.body.status
-  };
-
+  const data = req.body;
   const user = await User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
 
   if (user) {

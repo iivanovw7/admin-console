@@ -1,12 +1,13 @@
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Helmet } from 'react-helmet';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import routes from './routes';
-import Store from './store/index';
-import * as serviceWorker from './serviceWorker';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import { themeProperties } from './components/UI/ThemeProperties';
+import routes from './routes';
+import * as serviceWorker from './serviceWorker';
+import Store from './store/index';
 import './styles/main.sass';
 
 const store = Store();
@@ -15,11 +16,16 @@ const mountPoint = document.getElementById('root');
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <MuiThemeProvider theme={themeProperties}>
-        {routes}
-      </MuiThemeProvider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Helmet>
+          <meta charSet="utf-8"/>
+          <title>Admin console</title>
+          <link rel="canonical" href=""/>
+        </Helmet>
+        <MuiThemeProvider theme={themeProperties}>
+          {routes}
+        </MuiThemeProvider>
+      </BrowserRouter>
   </Provider>
   , mountPoint);
 

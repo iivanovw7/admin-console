@@ -1,6 +1,6 @@
-import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 
 export const renderCheckbox = ({ id, input, meta: { touched, error, warning } }) => {
@@ -11,7 +11,10 @@ export const renderCheckbox = ({ id, input, meta: { touched, error, warning } })
       checked={input.value}
       onChange={input.onChange}
       disabled={false}
-      color={(!!error) ? ('secondary') : ('primary')}
+      color={
+        !!error ?
+          'secondary' : 'primary'
+      }
     />
   );
 };

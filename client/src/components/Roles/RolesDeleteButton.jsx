@@ -18,8 +18,8 @@ export const deleteButton = (row, classes, handleDeleteAction) => {
       color={'secondary'}
       className={classes.button}
       size={'small'}
-      variant={'outlined'}
-      disabled={(blockedRoles.includes(row.code)) ? (true) : (false)}
+      variant={'contained'}
+      disabled={blockedRoles.includes(row.code)}
       onClick={
         debounce(() => {
           handleDeleteAction(row._id);

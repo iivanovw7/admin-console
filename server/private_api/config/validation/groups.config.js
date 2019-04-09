@@ -24,12 +24,13 @@ export const updateGroup = {
   params: {
     id: Joi.objectId().required()
   },
-  body: {
-    name: Joi.string().min(3).max(30).required(),
-    description: Joi.string().min(3).max(500).required(),
-    status: Joi.bool().required(),
-    permissions: Joi.bool().required()
-  }
+  body: Joi.object().keys({
+    name: Joi.string().min(3).max(30),
+    description: Joi.string().min(3).max(500),
+    status: Joi.bool(),
+    permissions: Joi.bool()
+  }).xor('name', 'description', 'status', 'permissions')
+
 };
 // DELETE /api/groups/:id
 export const removeGroup = {

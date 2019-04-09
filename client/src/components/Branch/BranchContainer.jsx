@@ -29,21 +29,19 @@ const BranchContainer = props => {
   }, [branch]);
 
   const submit = formValues => {
-    return (!branch._id) ?
-      (props.addNewBranch(formValues)) : (props.updateBranch(formValues, branch._id));
+    return !branch._id ?
+      props.addNewBranch(formValues) : props.updateBranch(formValues, branch._id);
   };
 
-  const showAlert = (message, success) => {
-    return (
-      <AlertSnackbar
-        message={message}
-        afterConfirm={() => {
-          history.push(`/branches`);
-        }}
-        success={success}
-      />
-    );
-  };
+  const showAlert = (message, success) => (
+    <AlertSnackbar
+      message={message}
+      afterConfirm={() => {
+        history.push(`/branches`);
+      }}
+      success={success}
+    />
+  );
 
   return (
     <Paper className={classes.root}>
@@ -57,16 +55,17 @@ const BranchContainer = props => {
         <TextInputContainer dataType={'information'} type={'text'} rows={4}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {
-          (props.errorMessage) ?
-            (showAlert(props.errorMessage, false)) : ('')
+          props.errorMessage ?
+            showAlert(props.errorMessage, false) : ''
         }
         {
-          (props.successMessage) ?
-            (showAlert(props.successMessage, true)) : ('')
+          props.successMessage ?
+            showAlert(props.successMessage, true) : ''
         }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
-            variant="contained" color="primary"
+            variant="contained"
+            color="primary"
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/branches`);
@@ -77,7 +76,6 @@ const BranchContainer = props => {
             variant="contained"
             color="primary"
             type="submit"
-
             style={{ textTransform: 'none', margin: 5 }}>
             SAVE
           </Button>

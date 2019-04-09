@@ -12,7 +12,7 @@ const DrawerNavigation = props => {
 
   const items = [
     { title: 'Statistics', icon: 'timeline', link: '/statistics' },
-    { title: 'Staff', icon: 'star', link: '/staff' },
+    { title: 'Staff', icon: 'star', link: '/users' },
     { title: 'Roles', icon: 'people', link: '/roles' },
     { title: 'Messages', icon: 'chat', link: '/messages' },
     { title: 'Tickets', icon: 'live_help', link: '/tickets' },

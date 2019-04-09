@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import { formLocalizedNotification as message }  from '../localization/notifications';
 
 const initialState = {
   list: {
@@ -10,7 +11,7 @@ const initialState = {
 };
 
 function displayStatus(status) {
-  return (status) ? ('Active') : ('Disabled');
+  return status ? 'Active' : 'Disabled';
 }
 
 export default function (state = initialState, action) {
@@ -28,7 +29,6 @@ export default function (state = initialState, action) {
     case types.FETCH_GROUP: {
       return {
         ...state,
-        list: {},
         group: action.payload.data,
         error: null,
         success: null
@@ -37,19 +37,17 @@ export default function (state = initialState, action) {
     case types.ADD_GROUP: {
       return {
         ...state,
-        list: {},
         group: {},
         error: null,
-        success: `New Group "${action.payload.data.name}" created!`
+        success: message(action.payload.data.name, action, 'en')
       };
     }
     case types.UPDATE_GROUP: {
       return {
         ...state,
-        list: {},
         group: {},
         error: null,
-        success: `Group "${action.payload.data.name}" successfully modified!`
+        success: message(action.payload.data.name, action, 'en')
       };
     }
     case types.DELETE_GROUP: {
@@ -57,7 +55,7 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: `Group "${action.payload.data[1].removedGroup.name}" successfully removed!`
+        success: message(action.payload.data[1].removedGroup.name, action, 'en')
       };
     }
     case types.CHANGE_GROUP_STATUS: {
@@ -65,23 +63,28 @@ export default function (state = initialState, action) {
         ...state,
         group: {},
         error: null,
-        success: `Group "${action.payload.data.name}" status changed to "${displayStatus(action.payload.data.status)}"!`
+        success: message(action.payload.data.name, action, 'en', displayStatus(action.payload.data.status)),
       };
     }
     case types.ERROR: {
       return {
         ...state,
+        list: {
+          page: 1
+        },
         group: {},
-        error: 'Error!',
+        error: message(null, action, 'en'),
         success: null
       };
     }
     case types.FETCH_ERROR: {
       return {
         ...state,
-        list: {},
+        list: {
+          page: 1
+        },
         group: {},
-        error: 'Error while getting data!',
+        error: message(null, action, 'en'),
         success: null
       };
     }

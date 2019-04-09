@@ -1,10 +1,9 @@
+import { withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
-import { withStyles } from '@material-ui/core';
-import { LoginFormStyles } from '../components/UI/ThemeProperties';
 import { withRouter } from 'react-router-dom';
+import { LoginFormStyles } from '../components/UI/ThemeProperties';
 
 export default function (ComposedComponent) {
 
@@ -19,16 +18,9 @@ export default function (ComposedComponent) {
     }, []);
 
     return (
-
       <div className={classes.loginWrapper}>
-        <Helmet>
-          <meta charSet="utf-8"/>
-          <title>Admin console</title>
-          <link rel="canonical" href=""/>
-        </Helmet>
         <ComposedComponent {...props} />
       </div>
-
     );
 
   };
@@ -39,7 +31,9 @@ export default function (ComposedComponent) {
   };
 
   function mapStateToProps(state) {
-    return { authenticated: state.auth.user.authenticated };
+    return {
+      authenticated: state.auth.user.authenticated
+    };
   }
 
   return connect(mapStateToProps)(withStyles(LoginFormStyles, { withTheme: true })(withRouter(loginLayout)));

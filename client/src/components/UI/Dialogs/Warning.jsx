@@ -14,7 +14,9 @@ const Warning = props => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{mainText}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {mainText}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {message}

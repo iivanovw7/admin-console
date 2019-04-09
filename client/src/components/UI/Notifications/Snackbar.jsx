@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Snackbar, IconButton } from '@material-ui/core';
-import { Notification } from '../ThemeProperties';
-import ErrorIcon from '@material-ui/icons/Error';
-import CloseIcon from '@material-ui/icons/Close';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { IconButton, Snackbar } from '@material-ui/core';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { withStyles } from '@material-ui/core/styles';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Notification } from '../ThemeProperties';
+
 
 const AlertSnackbar = props => {
 
@@ -15,7 +16,7 @@ const AlertSnackbar = props => {
 
   const variantIcon = {
     success: CheckCircleIcon,
-    error: ErrorIcon,
+    error: ErrorIcon
   };
 
   const Icon = ((success) ? (variantIcon.success) : (variantIcon.error));
@@ -60,11 +61,18 @@ const AlertSnackbar = props => {
       }}
     >
       <SnackbarContent
-        className={(success) ? (classes.success) : (classes.error)}
+        className={
+          success ?
+            classes.success : classes.error
+        }
         aria-describedby="client-snackbar"
         message={
           <span id="client-snackbar" className={classes.message}>
-          <Icon className={(success) ? (classes.success) : (classes.error)} />
+          <Icon className={
+            success ?
+              classes.success : classes.error
+          }
+          />
             &nbsp; &nbsp; {message}
         </span>
         }
@@ -76,8 +84,8 @@ const AlertSnackbar = props => {
             className={classes.close}
             onClick={handleClose}
           >
-            <CloseIcon className={classes.icon} />
-          </IconButton>,
+            <CloseIcon className={classes.icon}/>
+          </IconButton>
         ]}
       />
     </Snackbar>

@@ -1,9 +1,9 @@
 import { withStyles } from '@material-ui/core';
-import React from 'react';
-import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Buttons } from './ThemeProperties';
 
 const AddButton = props => {
@@ -16,16 +16,23 @@ const AddButton = props => {
 
   return (
     <div className={classes.formRoot}>
-      <Button size="small" className={classes.mobile}
-              onClick={() => {
-                handleClick();
-              }}>
+      <Button
+        size="small"
+        className={classes.mobile}
+        onClick={() => {
+          handleClick();
+        }}
+      >
         <strong>Create</strong>
       </Button>
-      <Fab color="primary" size="small" aria-label="Add" className={classes.desktop}
-           onClick={() => {
-             handleClick();
-           }}>
+      <Fab
+        color="primary"
+        size="small"
+        aria-label="Add"
+        className={classes.desktop}
+        onClick={() => {
+          handleClick();
+        }}>
         <AddIcon/>
       </Fab>
     </div>

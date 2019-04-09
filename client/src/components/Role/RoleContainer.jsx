@@ -27,21 +27,19 @@ const RoleContainer = props => {
   }, [role]);
 
   const submit = formValues => {
-    return (!role._id) ?
-      (props.addNewRole(formValues)) : (props.updateRole(formValues, role._id));
+    return !role._id ?
+      props.addNewRole(formValues) : props.updateRole(formValues, role._id);
   };
 
-  const showAlert = (message, success) => {
-    return (
-      <AlertSnackbar
-        message={message}
-        afterConfirm={() => {
-          history.push(`/roles`);
-        }}
-        success={success}
-      />
-    );
-  };
+  const showAlert = (message, success) => (
+    <AlertSnackbar
+      message={message}
+      afterConfirm={() => {
+        history.push(`/roles`);
+      }}
+      success={success}
+    />
+  );
 
   return (
     <Paper className={classes.root}>
@@ -54,12 +52,12 @@ const RoleContainer = props => {
         <CheckboxContainer name={'isEditable'} label={'Role is editable'} value={''}/>
         <CheckboxContainer name={'active'} label={'Active'} value={''}/>
         {
-          (props.errorMessage) ?
-            (showAlert(props.errorMessage, false)) : ('')
+          props.errorMessage ?
+            showAlert(props.errorMessage, false) : ''
         }
         {
-          (props.successMessage) ?
-            (showAlert(props.successMessage, true)) : ('')
+          props.successMessage ?
+            showAlert(props.successMessage, true) : ''
         }
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
