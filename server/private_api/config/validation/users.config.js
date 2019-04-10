@@ -32,7 +32,7 @@ export const updateUser = {
     role: Joi.objectId().min(3).max(50),
     group: Joi.objectId().min(3).max(50),
     status: Joi.boolean()
-  }).xor('role', 'status', 'group', 'branch')
+  }).or('role', 'status', 'group', 'branch')
 };
 
 // GET /api/users/listRoles

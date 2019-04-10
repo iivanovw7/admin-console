@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getBranches } from '../actions/branches';
+import { getBranches } from '../actions';
 import BranchesContainer from '../components/Branches/BranchesContainer';
 import AddNewButton from '../components/UI/AddButton';
 import { PageSelector } from '../components/UI/PageSelector';
-import { Wrapper } from '../components/UI/ThemeProperties';
 import Spinner from '../components/UI/Spinner';
-import RolesContainer from './Roles';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Branches = props => {
   const { classes, history, dispatch } = props;
@@ -22,7 +21,7 @@ const Branches = props => {
 
   useEffect(() => {
     props.dispatch(getBranches(currentPage, limit, history));
-  }, [currentPage]);
+  }, [currentPage, limit]);
 
   function handlePage(newPage) {
     setCurrentPage(newPage);
@@ -37,10 +36,15 @@ const Branches = props => {
           </div>
           <AddNewButton history={history} element={'branches'}/>
         </Paper>
-        {!branches ? <Spinner /> : <BranchesContainer branches={branches} page={currentPage} limit={limit} dispatch={dispatch}/>}
+        {
+          !branches || branches.length > limit ?
+            <Spinner/> : <BranchesContainer branches={branches} page={currentPage} limit={limit}
+                                            dispatch={dispatch}/>
+        }
       </div>
-      <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
-        <p style={{color: 'red'}}>{props.errorMessage}</p>
+      <Paper className={classes.controlsContainer}
+             style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <p style={{ color: 'red' }}>{props.errorMessage}</p>
         <PageSelector classes={classes} data={props.branches} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -56,7 +60,7 @@ function mapStateToProps(state) {
   return {
     branches: state.branches,
     errorMessage: state.branches.error,
-    successMessage: state.branches.success,
+    successMessage: state.branches.success
   };
 }
 

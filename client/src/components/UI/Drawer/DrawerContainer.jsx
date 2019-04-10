@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, Hidden } from '@material-ui/core';
+import { Drawer, Hidden, Button } from '@material-ui/core';
 import DrawerNavigation from './DrawerNavigation';
 import { withStyles } from '@material-ui/core/styles';
 import { NavigationStyles } from '../ThemeProperties';
-import { logoutUser } from '../../../actions/auth';
+import { logoutUser } from '../../../actions';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 
 const DrawerContainer = props => {
 

@@ -1,6 +1,6 @@
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react';
-import { changeUserStatus } from '../../actions/users';
+import { changeUserStatus } from '../../actions';
 
 export const actionCheckBox = (row, classes, dispatch, history) => {
 

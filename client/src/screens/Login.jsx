@@ -1,10 +1,10 @@
-import React from 'react';
-import { Paper, withStyles, Grid, Button } from '@material-ui/core';
-import PropTypes from 'prop-types';
+import { Button, Grid, Paper, withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { reduxForm } from 'redux-form';
-import { loginUser } from '../actions/auth';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
+import { reduxForm } from 'redux-form';
+import { loginUser } from '../actions';
 import { LoginField } from '../components/Login/LoginField';
 import { errorMessage } from '../components/UI/Forms/ErrorMessage';
 import { validateLogin } from '../components/UI/Forms/validate';

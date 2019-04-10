@@ -4,31 +4,30 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { getRoles } from '../../actions/roles';
-import { updateUser } from '../../actions/users';
+import { getBranches, getGroups, getRoles, updateUser } from '../../actions';
+import { validateUser } from '../UI/Forms/validate';
+import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
+import { Container } from '../UI/ThemeProperties';
 import {
   CheckboxContainer,
   SelectInputContainer,
   TextInputContainer
 } from '../UI/Forms/InputContainers';
-import { validateUser } from '../UI/Forms/validate';
-import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
-import { Container } from '../UI/ThemeProperties';
 
 const UserContainer = props => {
-  const { classes, history, handleSubmit, user, roles, dispatch } = props;
+  const { classes, history, handleSubmit, user, roles, branches, groups, dispatch } = props;
 
   useEffect(() => {
     props.initialize({
       name: user.name || '',
       surname: user.surname || '',
       email: user.email || '',
-      group: user.group || null,
-      branch: user.branch || null,
+      group: user.group ? user.group._id : 'Group',
+      branch: user.branch ? user.branch._id : 'Branch',
       role: user.role ? user.role._id : 'Role',
       status: user.status || false
     });
-  }, [user, roles]);
+  }, [user, roles, branches, groups]);
 
   const submit = formValues => {
     return props.updateUser(formValues, user._id);
@@ -49,14 +48,23 @@ const UserContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1} disabled={true}/>
-        <TextInputContainer dataType={'surname'} type={'text'} rows={1} disabled={true}/>
-        <TextInputContainer dataType={'email'} type={'text'} rows={1} disabled={true}/>
+        <TextInputContainer dataType={'name'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
+        <TextInputContainer dataType={'surname'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
+        <TextInputContainer dataType={'email'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
+        {
+          !groups ?
+            <p>loading...</p> :
+            <SelectInputContainer dataType={'group'} list={groups} valueField={'_id'} label={'Group'}/>
+        }
+        {
+          !branches ?
+            <p>Loading...</p> :
+            <SelectInputContainer dataType={'branch'} list={branches} valueField={'_id'} label={'Branch'}/>
+        }
         {
           !roles ?
             <p>Loading...</p> :
-            <SelectInputContainer dataType={'role'} list={roles} label={'Role'}
-                                  Placeholder={'Role'}/>
+            <SelectInputContainer dataType={'role'} list={roles} valueField={'_id'} label={'Role'}/>
         }
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {
@@ -73,7 +81,8 @@ const UserContainer = props => {
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/users`);
-            }}>
+            }}
+          >
             CANCEL
           </Button>
           <Button
@@ -82,7 +91,8 @@ const UserContainer = props => {
             type="submit"
             style={
               { textTransform: 'none', margin: 5 }
-            }>
+            }
+          >
             SAVE
           </Button>
         </Grid>
@@ -112,5 +122,7 @@ const reduxFromGroup = reduxForm({
 
 export default connect(mapStateToProps, {
   updateUser,
-  getRoles
+  getRoles,
+  getGroups,
+  getBranches
 })(withStyles(Container)(reduxFromGroup));

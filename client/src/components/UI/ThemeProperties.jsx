@@ -1,7 +1,4 @@
-import amber from '@material-ui/core/colors/amber';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import red from '@material-ui/core/colors/red';
+import { amber, blue, green, red } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
@@ -381,7 +378,55 @@ export const Container = theme => ({
     paddingTop: 5,
     paddingBottom: 5,
     width: '100px',
-  }
+  },
+
+  ticketsRowClass: {
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.black, 0.1),
+      cursor: 'pointer'
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: '48px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '100%'
+    }
+  },
+  ticketsNameCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+
+    [theme.breakpoints.up('sm')]: {
+      width: '30%'
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+
+  },
+  ticketsSubjectCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '30%',
+    [theme.breakpoints.down('sm')]: {
+      width: '60%'
+    }
+  },
+  ticketsDateCell: {
+    paddingRight: 5,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: '20%',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  },
 
 });
 

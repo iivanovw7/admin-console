@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleGroup } from '../actions/groups';
+import { getSingleGroup } from '../actions';
 import GroupContainer from '../components/Group/GroupContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 

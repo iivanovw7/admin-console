@@ -1,5 +1,4 @@
-import { Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { Typography, IconButton } from '@material-ui/core';
 import { NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React from 'react';
 
@@ -7,7 +6,7 @@ export const PageSelector = props => {
 
   const { classes, data, handlePage } = props;
   const page = data.list.page || 1;
-  const pages = data.list.pages || 10;
+  const pages = data.list.pages || 1;
   const total = data.list.results || 0;
 
   const pagesNavigation = (title, value) => {

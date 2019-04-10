@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { debounce } from '../UI/Forms/debounce';
+import { debounce } from "debounce";
 
 export const deleteButton = (row, classes, handleDeleteAction) => {
 

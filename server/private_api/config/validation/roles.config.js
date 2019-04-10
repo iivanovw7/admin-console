@@ -33,7 +33,7 @@ export const updateRole = {
     active: Joi.bool(),
     isPublic: Joi.bool(),
     isEditable: Joi.bool()
-  }).xor('description', 'active', 'isPublic', 'isEditable')
+  }).or('description', 'active', 'isPublic', 'isEditable')
 };
 // POST /api/roles/
 export const addRole = {

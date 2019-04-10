@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getRoles } from '../actions/roles';
+import { getRoles } from '../actions';
 import RolesContainer from '../components/Roles/RolesContainer';
 import AddNewButton from '../components/UI/AddButton';
 import { PageSelector } from '../components/UI/PageSelector';
-import { Wrapper } from '../components/UI/ThemeProperties';
 import Spinner from '../components/UI/Spinner';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Roles = props => {
   const { classes, history, dispatch } = props;
@@ -35,10 +35,12 @@ const Roles = props => {
           </div>
           <AddNewButton history={history} element={'roles'}/>
         </Paper>
-        {!roles ? <Spinner /> : <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={dispatch}/>}
+        {!roles ? <Spinner/> :
+          <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={dispatch}/>}
       </div>
-      <Paper className={classes.controlsContainer} style={{marginTop: '24px', marginBottom: '24px'}}>
-        <p style={{color: 'red'}}>{props.errorMessage}</p>
+      <Paper className={classes.controlsContainer}
+             style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <p style={{ color: 'red' }}>{props.errorMessage}</p>
         <PageSelector classes={classes} data={props.roles} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -54,7 +56,7 @@ function mapStateToProps(state) {
   return {
     roles: state.roles,
     errorMessage: state.branches.error,
-    successMessage: state.branches.success,
+    successMessage: state.branches.success
   };
 }
 

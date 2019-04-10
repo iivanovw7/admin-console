@@ -1,6 +1,5 @@
-import { withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
+import { withStyles } from '@material-ui/core/styles';
+import { Button, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PropTypes from 'prop-types';
 import React from 'react';

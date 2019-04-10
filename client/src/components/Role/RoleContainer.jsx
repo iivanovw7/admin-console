@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { addNewRole, updateRole } from '../../actions/roles';
+import { addNewRole, updateRole } from '../../actions';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import { validateRole } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
@@ -46,9 +46,9 @@ const RoleContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1}/>
-        <TextInputContainer dataType={'code'} type={'text'} rows={1}/>
-        <TextInputContainer dataType={'description'} type={'text'} rows={4}/>
+        <TextInputContainer dataType={'name'} required={true} type={'text'} rows={1}/>
+        <TextInputContainer dataType={'code'} required={true} type={'text'} rows={1}/>
+        <TextInputContainer dataType={'description'} required={true} type={'text'} rows={4} rowsMax={12}/>
         <CheckboxContainer name={'isPublic'} label={'Public'} value={''}/>
         <CheckboxContainer name={'isEditable'} label={'Editable'} value={''}/>
         <CheckboxContainer name={'active'} label={'Active'} value={''}/>

@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { changeRoleStatus } from '../../actions/roles';
-import { debounce } from '../UI/Forms/debounce';
+import { changeRoleStatus } from '../../actions';
+import { debounce } from "debounce";
 
 export const actionButton = (text, type, row, classes, dispatch) => {
 

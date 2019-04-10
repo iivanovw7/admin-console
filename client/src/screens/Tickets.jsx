@@ -1,39 +1,90 @@
-import React from 'react';
+import { Paper, withStyles } from '@material-ui/core';
+import { debounce } from 'debounce';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getTickets, searchTickets } from '../actions';
+import { LimitSelector } from '../components/UI/LimitSelector';
+import { PageSelector } from '../components/UI/PageSelector';
+import SearchBar from '../components/UI/SearchBar';
+import Spinner from '../components/UI/Spinner';
+import { Wrapper } from '../components/UI/ThemeProperties';
+import TicketsContainer from '../components/Tickets/TicketsContainer';
 
 const Tickets = props => {
 
-  const { classes } = props;
+  const { classes, history, dispatch } = props;
+  const limits = [10, 20, 30, 50, 60];
+
+  //current page number
+  const [limit, setLimit] = useState(limits[0]);
+  const [searchTerm, setSearchTerm] = useState(props.tickets.list.search ? props.tickets.list.search : '');
+  const [currentPage, setCurrentPage] = useState(props.tickets.list.page);
+  const tickets = props.tickets.list.output; //list of elements fetched
+
+  useEffect(() => {
+    searchTerm.length > 2 ?
+      dispatch(searchTickets(currentPage, limit, searchTerm, history)) :
+      dispatch(getTickets(currentPage, limit, history));
+  }, [currentPage, limit, searchTerm]);
+
+  function handlePage(newPage) {
+    setCurrentPage(newPage);
+  }
+
+  const handleLimit = event => {
+    setLimit(event.target.value);
+  };
+
+  const ticketsSearch = debounce((value) => {
+    setCurrentPage(1);
+    setSearchTerm(value);
+  }, 50);
+
+  function handleNewSearch(value) {
+    ticketsSearch(value);
+  }
 
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar}/>
-      <h2>Tickets</h2>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-        elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-        hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-        velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-        Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-        viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      </Typography>
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-        facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-        tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-        consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus
-        sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-        In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-        et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique
-      </Typography>
+    <main className={classes.contentList}>
+      <div>
+        <Paper className={classes.titleContainer}>
+          <div className={classes.selectorsContainer}>
+            <h2>Reports</h2>
+          </div>
+        </Paper>
+        <SearchBar
+          value={searchTerm}
+          tooltip={'Search by Ticket author`s Name or Subject'}
+          onSearchTermChange={handleNewSearch}
+        />
+        {!tickets ? <Spinner/> :
+          <TicketsContainer tickets={tickets} page={currentPage} limit={limit} search={searchTerm}
+                          dispatch={dispatch}/>}
+      </div>
+      <Paper className={classes.controlsContainer}
+             style={{ marginTop: '24px', marginBottom: '24px' }}>
+        <LimitSelector classes={classes} limit={limit} limits={limits} handleLimit={handleLimit}/>
+        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+        <PageSelector classes={classes} data={props.tickets} handlePage={handlePage}/>
+      </Paper>
     </main>
   );
 };
 
 Tickets.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
-export default Tickets;
+function mapStateToProps(state) {
+  return {
+    tickets: state.tickets,
+    errorMessage: state.tickets.error,
+    successMessage: state.tickets.success
+  };
+}
+
+export default connect(mapStateToProps, { getTickets })(withStyles(Wrapper, { withTheme: true })(withRouter(Tickets)));
+

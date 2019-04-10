@@ -11,6 +11,7 @@ import Messages from './screens/Messages';
 import Role from './screens/Role';
 import Roles from './screens/Roles';
 import Statistics from './screens/Statistics';
+import Ticket from './screens/Ticket';
 import Tickets from './screens/Tickets';
 import User from './screens/User';
 import Users from './screens/Users';
@@ -29,6 +30,7 @@ export default (
     <Route path={'/users/new'} component={protectedContent(User)}/>
     <Route path={'/users'} component={protectedContent(Users)}/>
     <Route path={'/messages'} component={protectedContent(Messages)}/>
+    <Route path={'/tickets/:id'} component={protectedContent(Ticket)}/>
     <Route path={'/tickets'} component={protectedContent(Tickets)}/>
     <Route path={'/roles/:id'} component={protectedContent(Role)}/>
     <Route path={'/roles/new'} component={protectedContent(Role)}/>

@@ -2,6 +2,9 @@ import * as types from '../constants/ActionTypes';
 
 export function formLocalizedNotification(name, action, locale, newState) {
 
+  const actionString = action.type.split('_')[0];
+  const modelName = strings[locale][action.type.split('_')[1].toLocaleLowerCase()];
+
     switch (action.type) {
       case types.ERROR: {
         return `${strings[locale].error}`;
@@ -12,44 +15,27 @@ export function formLocalizedNotification(name, action, locale, newState) {
       case types.AUTHENTICATION_ERROR: {
         return `${strings[locale].authError}`;
       }
-      case types.UPDATE_BRANCH: {
-        return `${name} ${strings[locale].updateSuccess}`;
-      }
-      case types.UPDATE_GROUP: {
-        return `${name} ${strings[locale].updateSuccess}`;
-      }
-      case types.UPDATE_ROLE: {
-        return `${name} ${strings[locale].updateSuccess}`;
-      }
-      case types.UPDATE_USER: {
-        return `${name} ${strings[locale].updateSuccess}`;
-      }
-      case types.ADD_BRANCH: {
-        return `${name} ${strings[locale].addSuccess}`;
-      }
-      case types.ADD_GROUP: {
-        return `${name} ${strings[locale].addSuccess}`;
-      }
-      case types.ADD_ROLE: {
-        return `${name} ${strings[locale].addSuccess}`;
-      }
-      case types.CHANGE_GROUP_STATUS: {
-        return `${name} ${strings[locale].changeStatus} "${newState}"!`;
-      }
-      case types.CHANGE_ROLE_STATUS: {
-        return `${name} ${strings[locale].changeStatus} "${newState}"!`;
-      }
-      case types.CHANGE_USER_STATUS: {
-        return `${name} ${strings[locale].changeStatus} "${newState}"!`;
-      }
-      case types.DELETE_GROUP: {
-        return `${name} ${strings[locale].deleted}`;
-      }
-      case types.DELETE_ROLE: {
-        return `${name} ${strings[locale].deleted}`;
-      }
       default:
-        return '';
+        if (actionString === 'CHANGE' && action.type.split('_')[2] === 'STATUS') {
+          return (
+            `${modelName} "${name}" ${strings[locale].changeStatus} "${newState}"!`
+          );
+        }
+        if (actionString === 'DELETE') {
+          return (
+            `${modelName} "${name}" ${strings[locale].deleted}`
+          );
+        }
+        if (actionString === 'ADD') {
+          return (
+            `${modelName} "${name}" ${strings[locale].addSuccess}`
+          );
+        }
+        if (actionString === 'UPDATE') {
+          return (
+            `${modelName} "${name}" ${strings[locale].updateSuccess}`
+          );
+        }
     }
 }
 
@@ -58,12 +44,17 @@ let strings = {
     error: 'Error!',
     fetchError: 'Error while getting data!',
     authError: 'Authentication error!',
+    user: 'User',
+    ticket: 'Ticket',
+    role: 'Role',
+    branch: 'Branch',
+    group: 'Group',
+    message: 'Message',
     addSuccess: 'created!',
     updateSuccess: 'successfully modified!',
     changeStatus: 'status changed to',
-    deleted: 'successfully removed!'
+    deleted: 'successfully removed!',
   }
-
 };
 
 

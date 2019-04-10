@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleUser, getUsers } from '../../actions/users';
+import {
+  getBranches,
+  getGroups,
+  getRoles,
+  getSingleUser,
+  getUsers,
+  searchUsers
+} from '../../actions/index';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 import { actionCheckBox } from './UsersActionCheckBox';
 
 const UsersContainer = props => {
-  const { classes, history, dispatch, users, limit, page } = props;
+  const { classes, history, dispatch, users, limit, page, search } = props;
   const currPage = page || 1;
   const currLimit = limit || 8;
 
@@ -20,6 +27,9 @@ const UsersContainer = props => {
 
   function handleUserClick(id) {
     dispatch(getSingleUser(id, history));
+    dispatch(getRoles(1, 100, history));
+    dispatch(getGroups(1, 100, history));
+    dispatch(getBranches(1, 100, history));
   }
 
   //Triggers notification if there are any messages in props
@@ -34,11 +44,14 @@ const UsersContainer = props => {
 
   //Returns notification container
   const displayNotification = (message, success) => (
+
     <AlertSnackbar
       dispatch={dispatch}
       message={message}
       afterConfirm={() => {
-        dispatch(getUsers(currPage, currLimit, history));
+        search ?
+          dispatch(searchUsers(currPage, currLimit, search, history)) :
+          dispatch(getUsers(currPage, currLimit, history));
       }}
       success={success}
     />

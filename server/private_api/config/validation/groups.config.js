@@ -29,7 +29,7 @@ export const updateGroup = {
     description: Joi.string().min(3).max(500),
     status: Joi.bool(),
     permissions: Joi.bool()
-  }).xor('name', 'description', 'status', 'permissions')
+  }).or('name', 'description', 'status', 'permissions')
 
 };
 // DELETE /api/groups/:id

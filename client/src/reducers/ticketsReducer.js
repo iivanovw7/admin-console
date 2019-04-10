@@ -6,20 +6,17 @@ const initialState = {
     page: 1,
     search: null,
   },
-  user: null,
+  ticket: null,
   error: null,
   success: null,
   confirmed: false,
 };
 
-function displayStatus(status) {
-  return status ? 'Active' : 'Disabled';
-}
 
 export default function (state = initialState, action) {
 
   switch (action.type) {
-    case types.FETCH_USERS: {
+    case types.FETCH_TICKETS: {
       return {
         ...state,
         list: action.payload.data,
@@ -27,7 +24,7 @@ export default function (state = initialState, action) {
         success: null
       };
     }
-    case types.SEARCH_USERS: {
+    case types.SEARCH_TICKETS: {
       return {
         ...state,
         list: action.payload.data,
@@ -35,36 +32,23 @@ export default function (state = initialState, action) {
         success: null
       };
     }
-    case types.FETCH_USER: {
+    case types.FETCH_TICKET: {
       return {
         ...state,
-        user: action.payload.data,
+        ticket: action.payload.data,
         error: null,
         success: null
       };
     }
-    case types.UPDATE_USER: {
+    case types.UPDATE_TICKET: {
       return {
         ...state,
-        user: {},
+        ticket: {},
         error: null,
         success: message(
-          action.payload.data.name + ' ' + action.payload.data.surname,
+          action.payload.data.subject,
           action,
           'en'
-        ),
-        confirmed: false,
-      };
-    }
-    case types.CHANGE_USER_STATUS: {
-      return {
-        ...state,
-        error: null,
-        success: message(
-          action.payload.data.name + ' ' + action.payload.data.surname,
-          action,
-          'en',
-          displayStatus(action.payload.data.active)
         ),
         confirmed: false,
       };
@@ -76,7 +60,7 @@ export default function (state = initialState, action) {
           page: 1,
           search: null,
         },
-        user: null,
+        ticket: null,
         error: message(
           null,
           action,
@@ -93,7 +77,7 @@ export default function (state = initialState, action) {
           page: 1,
           search: null,
         },
-        user: null,
+        ticket: null,
         error: message(
           null,
           action,

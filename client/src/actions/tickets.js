@@ -3,13 +3,13 @@ import * as types from '../constants/ActionTypes';
 import * as URL from '../constants/APIurl';
 import axios from 'axios';
 
-export const getUsers = (page, limit, history) => {
+export const getTickets = (page, limit, history) => {
 
   return async dispatch => {
 
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users`,
+      url: `${URL.PRIVATE_API}/tickets`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -22,7 +22,7 @@ export const getUsers = (page, limit, history) => {
     })
       .then(response => {
         dispatch({
-          type: types.FETCH_USERS,
+          type: types.FETCH_TICKETS,
           payload: response
         });
       })
@@ -38,13 +38,13 @@ export const getUsers = (page, limit, history) => {
 
 };
 
-export const searchUsers = (page, limit, query, history) => {
+export const searchTickets = (page, limit, query, history) => {
 
   return async dispatch => {
 
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users/search`,
+      url: `${URL.PRIVATE_API}/tickets/search`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,7 +58,7 @@ export const searchUsers = (page, limit, query, history) => {
     })
       .then(response => {
         dispatch({
-          type: types.SEARCH_USERS,
+          type: types.SEARCH_TICKETS,
           payload: response
         });
       })
@@ -74,12 +74,12 @@ export const searchUsers = (page, limit, query, history) => {
 
 };
 
-export const getSingleUser = (id, history) => {
+export const getSingleTicket = (id, history) => {
 
   return async dispatch => {
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users/${id}`,
+      url: `${URL.PRIVATE_API}/tickets/${id}`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -87,9 +87,9 @@ export const getSingleUser = (id, history) => {
       withCredentials: true
     })
       .then(response => {
-        history.push(`/users/${id}`);
+        history.push(`/tickets/${id}`);
         dispatch({
-          type: types.FETCH_USER,
+          type: types.FETCH_TICKET,
           payload: response
         });
       })
@@ -98,28 +98,28 @@ export const getSingleUser = (id, history) => {
         dispatch({
           type: types.FETCH_ERROR
         });
-        history.push('/users');
+        history.push('/tickets');
       });
   };
 
 };
 
-export const updateUser = (formValues, id) => {
+export const updateTicket = (formValues, id) => {
 
-  const { name, code, role, status, group, branch, description, active, isPublic, isEditable } = formValues;
+  const { note, status } = formValues;
 
   return async dispatch => {
     await axios({
       method: 'put',
-      url: `${URL.PRIVATE_API}/users/${id}`,
+      url: `${URL.PRIVATE_API}/tickets/${id}`,
       data: {
-        name, code, role, group, branch, status, description, active, isPublic, isEditable
+        note, status
       },
       withCredentials: true
     })
       .then(response => {
         dispatch({
-          type: types.UPDATE_USER,
+          type: types.UPDATE_TICKET,
           payload: response
         });
       })
@@ -133,34 +133,3 @@ export const updateUser = (formValues, id) => {
   };
 
 };
-
-export const changeUserStatus = (id, status) => {
-
-  return async dispatch => {
-    await axios({
-      method: 'put',
-      url: `${URL.PRIVATE_API}/users/${id}`,
-      data: {
-        status: status
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.CHANGE_USER_STATUS,
-          payload: response
-        });
-
-      })
-
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.ERROR
-        });
-      });
-
-  };
-
-};
-

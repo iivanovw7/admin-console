@@ -1,5 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import { AppBar, IconButton, Toolbar, Typography, Icon } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Cookies from 'js-cookie';
@@ -7,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { logoutUser } from '../../../actions/auth';
+import { logoutUser } from '../../../actions';
 import { NavigationStyles } from '../ThemeProperties';
 
 

@@ -35,12 +35,12 @@ export const CheckboxContainer = props => {
 CheckboxContainer.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.string
+  disabled: PropTypes.bool
 };
 
 export const TextInputContainer = props => {
 
-  const { dataType, rows, type, normalize, disabled } = props;
+  const { dataType, rows, rowsMax, type, required, normalize, disabled } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">
@@ -53,8 +53,9 @@ export const TextInputContainer = props => {
           id={dataType}
           normalize={normalize}
           rows={rows}
-          rowsMax={rows}
+          rowsMax={rowsMax}
           disabled={disabled}
+          required={required}
           variant={'outlined'}
         />
       </Grid>
@@ -63,91 +64,40 @@ export const TextInputContainer = props => {
 
 };
 
-
-export const SelectInputContainer = props => {
-
-  const { dataType, label, list, placeholder, value } = props;
-
-  return (
-    <Grid container spacing={16} alignItems="flex-end">
-      <Grid item md={true} sm={true} xs={true}>
-        <FormControl style={{minWidth: 240}}>
-
-          <Field
-            name={dataType}
-            component={Select}
-            placeholder={placeholder}
-          >
-            {list.map(element => (
-              <MenuItem value={element._id} key={element._id}>{element.name}</MenuItem>
-            ))}
-          </Field>
-        </FormControl>
-      </Grid>
-    </Grid>
-  );
-
-};
-
-/*
-export const SelectInputContainer = props => {
-
-  const { dataType, label, list } = props;
-
-  return (
-    <Grid container spacing={16} alignItems="flex-end">
-      <Grid item md={true} sm={true} xs={true}>
-        <FormControl style={{minWidth: 240}}>
-          <InputLabel>{label}</InputLabel>
-          <Field
-            name={dataType}
-            component={renderSelectField}
-            onChange={console.log(props)}
-          >
-            <MenuItem value={null}>
-              <em>None</em>
-            </MenuItem>
-            {list.map(element => (
-              <MenuItem value={element._id} key={element._id}>{element.name}</MenuItem>
-            ))}
-          </Field>
-        </FormControl>
-      </Grid>
-    </Grid>
-  );
-
-};
-
-
-
-
-
- */
-
-/*
-
- {list.map(element => {
-              return (
-                <MenuItem value={10}>{element}</MenuItem>
-              );
-            })}
-
-<div>
-        <Field
-          name="favoriteColor"
-          component={renderSelectField}
-          label="Favorite Color"
-        >
-          <MenuItem value="ff0000" primaryText="Red" />
-          <MenuItem value="00ff00" primaryText="Green" />
-          <MenuItem value="0000ff" primaryText="Blue" />
-        </Field>
-      </div>
-
- */
-
 TextInputContainer.propTypes = {
   dataType: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.string
+  disabled: PropTypes.bool
 };
+
+
+export const SelectInputContainer = props => {
+
+  const { dataType, list, label, valueField } = props;
+
+  return (
+    <Grid container spacing={16} alignItems="flex-end">
+      <Grid item md={true} sm={true} xs={true}>
+        <FormControl style={{width: '100%'}}>
+          <InputLabel>{label}</InputLabel>
+          <Field
+            name={dataType}
+            component={Select}
+          >
+            {list.map(element => (
+              <MenuItem value={element[valueField]} key={element._id}>{element.name}</MenuItem>
+            ))}
+          </Field>
+        </FormControl>
+      </Grid>
+    </Grid>
+  );
+
+};
+
+SelectInputContainer.propTypes = {
+  dataType: PropTypes.string,
+  placeholder: PropTypes.string,
+  list: PropTypes.array
+};
+

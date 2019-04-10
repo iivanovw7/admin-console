@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { addNewGroup, updateGroup } from '../../actions/groups';
+import { addNewGroup, updateGroup } from '../../actions';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import { validateGroup } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
@@ -44,8 +44,8 @@ const GroupContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1}/>
-        <TextInputContainer dataType={'description'} type={'text'} rows={4}/>
+        <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
+        <TextInputContainer dataType={'description'} type={'text'} required={true} rows={4}/>
         <CheckboxContainer name={'permissions'} label={'Available for permissions'} value={''}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {

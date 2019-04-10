@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleBranch } from '../actions/branches';
+import { getSingleBranch } from '../actions';
 import BranchContainer from '../components/Branch/BranchContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 

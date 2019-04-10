@@ -4,18 +4,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleBranch } from '../../actions';
+import { getSingleTicket } from '../../actions';
 import { Container } from '../UI/ThemeProperties';
+import moment from 'moment';
 
-const BranchesContainer = props => {
-  const { classes, history, dispatch, branches } = props;
+const TicketsContainer = props => {
+  const { classes, history, dispatch, tickets } = props;
 
-  function displayStatus(status) {
-    return status ? 'Active' : 'Disabled';
-  }
-
-  function handleBranchClick(id) {
-    dispatch(getSingleBranch(id, history));
+  function handleTicketClick(id) {
+    dispatch(getSingleTicket(id, history));
   }
 
   return (
@@ -23,14 +20,14 @@ const BranchesContainer = props => {
       <Table className={classes.tables}>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.branchNameCell}>
+            <TableCell className={classes.ticketsNameCell}>
               <h3>Name</h3>
             </TableCell>
-            <TableCell className={classes.branchAddressCell} align="center">
-              <h3>Address</h3>
+            <TableCell className={classes.ticketsSubjectCell} align="center">
+              <h3>Subject</h3>
             </TableCell>
-            <TableCell className={classes.branchEmployeesCell} align="center">
-              <h3>Employees</h3>
+            <TableCell className={classes.ticketsDateCell} align="center">
+              <h3>Date</h3>
             </TableCell>
             <TableCell className={classes.tableCell} align="center">
               <h3>Status</h3>
@@ -38,28 +35,30 @@ const BranchesContainer = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {branches.map(row => (
+          {tickets.map(row => (
             <TableRow
               key={row._id}
               onClick={() => {
-                handleBranchClick(row._id);
+                handleTicketClick(row._id);
               }}
               className={classes.branchRowClass}
             >
               <TableCell
                 component="th"
                 scope="row"
-                className={classes.branchNameCell}
+                className={classes.ticketsNameCell}
               >
-                {row.name}
+                {row.authorId.name + ' ' + row.authorId.surname}
               </TableCell>
-              <TableCell className={classes.branchAddressCell} align="center">
-                {row.address}
+              <TableCell className={classes.ticketsSubjectCell} align="center">
+                {row.subject}
               </TableCell>
-              <TableCell className={classes.branchEmployeesCell} align="center">xxx</TableCell>
+              <TableCell className={classes.ticketsDateCell} align="center">
+                {moment(row.created).format('HH:MM DD.MM.YYYY')}
+              </TableCell>
               <TableCell className={classes.tableCell} align="center">
                 <strong>
-                  {displayStatus(row.status)}
+                  {row.status}
                 </strong>
               </TableCell>
             </TableRow>
@@ -70,8 +69,8 @@ const BranchesContainer = props => {
   );
 };
 
-BranchesContainer.propTypes = {
+TicketsContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null, { getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
+export default connect(null, { getSingleTicket })(withStyles(Container)(withRouter(TicketsContainer)));

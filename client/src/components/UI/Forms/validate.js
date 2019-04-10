@@ -78,7 +78,7 @@ export const validateGroup = values => {
   if (!values.name) {
     errors.name = 'Field is required!';
   } else if (values.name.length < 3) {
-    errors.name = 'Must be 3 characters!';
+    errors.name = 'Must be at least 3 characters!';
   } else if (values.name.length > 40) {
     errors.name = 'Too many characters!';
   }
@@ -86,7 +86,7 @@ export const validateGroup = values => {
   if (!values.description) {
     errors.description = 'Field is required!';
   } else if (values.description.length < 3) {
-    errors.description = 'Must be 3 characters!';
+    errors.description = 'Must be at least 3 characters!';
   } else if (values.description.length > 499) {
     errors.description = 'Too many characters!';
   }
@@ -105,7 +105,7 @@ export const validateRole = values => {
   if (!values.name) {
     errors.name = 'Field is required!';
   } else if (values.name.length < 3) {
-    errors.name = 'Must be 3 characters!';
+    errors.name = 'Must be at least 3 characters!';
   } else if (values.name.length > 40) {
     errors.name = 'Too many characters!';
   }
@@ -113,7 +113,7 @@ export const validateRole = values => {
   if (!values.code) {
     errors.code = 'Field is required!';
   } else if (values.code.length < 3) {
-    errors.code = 'Must be 3 characters!';
+    errors.code = 'Must be at least 3 characters!';
   } else if (values.code.length > 40) {
     errors.code = 'Too many characters!';
   }
@@ -121,7 +121,7 @@ export const validateRole = values => {
   if (!values.description) {
     errors.description = 'Field is required!';
   } else if (values.description.length < 3) {
-    errors.description = 'Must be 3 characters!';
+    errors.description = 'Must be at least 3 characters!';
   } else if (values.description.length > 499) {
     errors.description = 'Too many characters!';
   }
@@ -132,8 +132,28 @@ export const validateRole = values => {
 export const validateUser = values => {
 
   const errors = {};
+  return errors;
+};
 
+export const validateTicket = values => {
+
+  const errors = {};
+
+  if (!values.note) {
+    errors.note = 'Field is required!';
+  } else if (values.note.length < 3) {
+    errors.note = 'Must be at least 3 characters!';
+  } else if (values.note.length > 499) {
+    errors.note = 'Too many characters!';
+  } else if (values.note === 'Ticket note...') {
+    errors.note = 'Field is required!';
+  }
+
+  if (!values.status) {
+    errors.note = 'Field is required!';
+  }
 
   return errors;
 };
+
 

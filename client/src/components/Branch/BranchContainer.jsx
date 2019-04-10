@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { addNewBranch, updateBranch } from '../../actions/branches';
+import { addNewBranch, updateBranch } from '../../actions';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import normalizePhone from '../UI/Forms/normalizer';
 import { validateBranch } from '../UI/Forms/validate';
@@ -48,12 +48,12 @@ const BranchContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1}/>
-        <TextInputContainer dataType={'email'} type={'email'} rows={1}/>
-        <TextInputContainer dataType={'phone'} type={'phone'} rows={1} normalize={normalizePhone}/>
-        <TextInputContainer dataType={'fax'} type={'fax'} rows={1} normalize={normalizePhone}/>
-        <TextInputContainer dataType={'address'} type={'text'} rows={4}/>
-        <TextInputContainer dataType={'information'} type={'text'} rows={4}/>
+        <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
+        <TextInputContainer dataType={'email'} type={'email'} required={true} rows={1}/>
+        <TextInputContainer dataType={'phone'} type={'phone'} required={true} rows={1} normalize={normalizePhone}/>
+        <TextInputContainer dataType={'fax'} type={'fax'} required={true} rows={1} normalize={normalizePhone}/>
+        <TextInputContainer dataType={'address'} required={true} type={'text'} rows={4}/>
+        <TextInputContainer dataType={'information'} required={true} type={'text'} rows={4}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {
           props.errorMessage && !props.messageConfirmed ?

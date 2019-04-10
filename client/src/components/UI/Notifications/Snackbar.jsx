@@ -1,5 +1,4 @@
-import { IconButton, Snackbar } from '@material-ui/core';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { IconButton, Snackbar, SnackbarContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
@@ -54,7 +53,7 @@ const AlertSnackbar = props => {
         horizontal: 'left'
       }}
       open={opened}
-      autoHideDuration={4000}
+      autoHideDuration={3000}
       onClose={() => {
         dispatch({
           type: types.CONFIRM_NOTIFICATION,
