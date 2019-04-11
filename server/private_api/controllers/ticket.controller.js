@@ -124,11 +124,8 @@ const searchTicket = async (req, res) => {
 
   const pages = Math.ceil(results / limit);
 
-  if (!output && results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
   res.json({
+    search,
     page,
     limit,
     pages,

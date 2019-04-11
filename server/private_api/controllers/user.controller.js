@@ -1,8 +1,9 @@
 import httpStatus from 'http-status';
 import Group from '../../models/Group';
+import Branch from '../../models/Branch';
+import History from '../../models/History';
 import Role from '../../models/Role';
 import User from '../../models/User';
-import History from '../../models/History';
 import { addHistory, setQueryLimit } from '../helper-functions';
 
 /**
@@ -14,7 +15,9 @@ const getUser = async (req, res) => {
 
   const user = await User.findOne({ _id: req.params.id })
                          .populate({ path: 'role', model: Role })
-                         .populate({ path: 'group', model: Group });
+                         .populate({ path: 'group', model: Group })
+                         .populate({ path: 'branch', model: Branch });
+
 
   if (user) {
     res.json(user);
@@ -51,10 +54,6 @@ const listUsers = async (req, res) => {
   const [output, results] = await Promise.all([findPromise, countPromise]);
 
   const pages = Math.ceil(results / limit);
-
-  if (!output && results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
 
   res.json({
     page,
@@ -93,10 +92,6 @@ const getUsersByGroup = async (req, res) => {
 
   const pages = Math.ceil(results / limit);
 
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
   res.json({
     page,
     limit,
@@ -133,10 +128,6 @@ const getUsersByBranch = async (req, res) => {
 
   const pages = Math.ceil(results / limit);
 
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
   res.json({
     page,
     limit,
@@ -159,33 +150,29 @@ const searchUsers = async (req, res) => {
   const page = req.query.page || 1;
   const limit = parseInt(req.query.limit, 10) || 20;
   const skipped = (page * limit) - limit;
+  const search = req.query.search;
 
   const query = {
     $or: [
-      { name: req.query.search },
-      { surname: req.query.search },
-      { email: req.query.search }
+      { name: { '$regex': search, '$options': 'i' } },
+      { surname: { '$regex': search, '$options': 'i' } },
+      { email: { '$regex': search, '$options': 'i' } }
     ]
   };
 
   const findPromise = User.find(query)
-                          .populate({ path: 'role', model: Role })
-                          .populate({ path: 'group', model: Group })
                           .sort({ surname: 'asc' })
                           .skip(skipped)
                           .limit(limit);
 
-  const countPromise = User.countDocuments();
+  const countPromise = User.find(query).countDocuments();
 
   const [output, results] = await Promise.all([findPromise, countPromise]);
 
   const pages = Math.ceil(results / limit);
 
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
   res.json({
+    search,
     page,
     limit,
     pages,
@@ -209,13 +196,7 @@ const searchUsers = async (req, res) => {
  */
 const updateUser = async (req, res) => {
 
-  const data = {
-    group: req.body.group,
-    branch: req.body.branch,
-    role: req.body.role,
-    status: req.body.status
-  };
-
+  const data = req.body;
   const user = await User.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
 
   if (user) {
@@ -257,10 +238,6 @@ const getUserHistory = async (req, res) => {
   const [output, results] = await Promise.all([findPromise, countPromise]);
 
   const pages = Math.ceil(results / limit);
-
-  if (results === 0) {
-    return res.sendStatus(httpStatus.NOT_FOUND);
-  }
 
   res.json({
     page,

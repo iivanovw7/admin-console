@@ -22,7 +22,7 @@ const usersCounter = async (limit, param) => {
   const activeQuery = { created: { $gt: limit }, status: true };
   const disabledQuery = { created: { $gt: limit }, status: false };
 
-  //if group or branch id passed - addRole it into query
+  //if group or branch is passed - addRole it into query
   if (param !== undefined) {
     if (ObjectId.isValid(param.branch)) {
       totalQuery['branch'] = activeQuery['branch'] = disabledQuery['branch'] = param.branch;

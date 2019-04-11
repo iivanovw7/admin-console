@@ -28,12 +28,12 @@ export const updateRole = {
   params: {
     id: Joi.objectId().required()
   },
-  body: {
-    description: Joi.string().min(3).max(500).required(),
-    active: Joi.bool().required(),
-    public: Joi.bool().required(),
-    editable: Joi.bool().required()
-  }
+  body: Joi.object().keys({
+    description: Joi.string().min(3).max(500),
+    active: Joi.bool(),
+    isPublic: Joi.bool(),
+    isEditable: Joi.bool()
+  }).or('description', 'active', 'isPublic', 'isEditable')
 };
 // POST /api/roles/
 export const addRole = {
@@ -42,8 +42,8 @@ export const addRole = {
     code: Joi.string().min(3).max(50).required(),
     description: Joi.string().min(3).max(500).required(),
     active: Joi.bool().required(),
-    public: Joi.bool(),
-    editable: Joi.bool()
+    isPublic: Joi.bool(),
+    isEditable: Joi.bool()
   }
 };
 

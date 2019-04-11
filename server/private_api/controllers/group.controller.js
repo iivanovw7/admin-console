@@ -123,12 +123,7 @@ const updateGroup = async (req, res) => {
     res.sendStatus(httpStatus.NOT_FOUND);
   } else {
 
-    const data = {
-      name: req.body.name,
-      status: req.body.status,
-      permissions: req.body.permission,
-      description: req.body.description
-    };
+    const data = req.body;
 
     const updatedGroup = await
       Group.findOneAndUpdate(
@@ -199,6 +194,8 @@ const removeGroup = async (req, res) => {
       } else {
         res.sendStatus(httpStatus.NOT_FOUND);
       }
+    } else {
+      res.sendStatus(httpStatus.BAD_REQUEST);
     }
   }
 };

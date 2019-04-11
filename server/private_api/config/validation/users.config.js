@@ -27,12 +27,12 @@ export const updateUser = {
   params: {
     id: Joi.objectId().required()
   },
-  body: {
-    group: Joi.objectId().required().min(3).max(50),
-    branch: Joi.objectId().required().min(3).max(50),
-    role: Joi.objectId().required().min(3).max(50),
-    status: Joi.boolean().required()
-  }
+  body: Joi.object().keys({
+    branch: Joi.objectId().min(3).max(50),
+    role: Joi.objectId().min(3).max(50),
+    group: Joi.objectId().min(3).max(50),
+    status: Joi.boolean()
+  }).or('role', 'status', 'group', 'branch')
 };
 
 // GET /api/users/listRoles

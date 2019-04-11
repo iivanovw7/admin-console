@@ -109,12 +109,14 @@ const updateRole = async (req, res) => {
 
   if (role) {
 
-    const data = {
-      description: req.body.description,
-      active: req.body.active ? true : ifArrayContains(role.code, mainRoles),
-      public: req.body.public,
-      editable: req.body.editable
-    };
+    const data = req.body;
+
+    if (typeof data.active !== 'undefined' || data.active !== null) {
+      if (data.active !== true) {
+        data.active = ifArrayContains(role.code, mainRoles)
+      }
+    }
+
 
     const updatedRole = await
       Role.findOneAndUpdate({ _id: req.params.id }, { $set: data }, { new: true });
@@ -152,8 +154,8 @@ const addRole = async (req, res) => {
       code: req.body.code,
       description: req.body.description,
       active: req.body.active,
-      public: req.body.public,
-      editable: req.body.editable
+      public: req.body.isPublic,
+      editable: req.body.isEditable
     });
 
     //Saving new object in to collection

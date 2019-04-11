@@ -1,6 +1,7 @@
 {
   "plugins": [
-    "@getify/proper-ternary"
+    "@getify/proper-ternary",
+    "import"
   ],
   "parserOptions": {
     "ecmaVersion": 6,
@@ -10,8 +11,6 @@
     }
   },
   "rules": {
-    "semi": "error",
-    "@getify/proper-ternary/nested": "error",
-    "@getify/proper-ternary/parens": "error"
+    "semi": "error"
   }
 }
