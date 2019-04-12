@@ -1,43 +1,69 @@
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Grid, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import TopInformationBar from '../components/Statistics/TopInformationBar';
+import ChartContainer from '../components/Statistics/TopInformationBar';
+import Spinner from '../components/UI/Spinner';
+import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Statistics = props => {
+  const { classes, history, dispatch, viewMode, viewGroup, viewBranch, stats } = props;
+  const viewPorts = ['users', 'permissions', 'tickets', 'groups', 'messages'];
 
-  const { classes } = props;
+  const renderInfoBar = () => (
+    <TopInformationBar viewMode={viewMode} viewGroup={viewGroup} viewBranch={viewBranch}/>
+  );
+
+  const renderViewPort = stats => (
+    <Grid style={{ marginTop: '24px' }} container spacing={24}>
+      {viewPorts.map(statsData => (
+        stats[statsData] ? renderViewPortChild(statsData) : <Spinner/>
+      ))}
+    </Grid>
+  );
+
+  const renderViewPortChild = statsData => (
+    <ChartContainer statsData={statsData} dispatch={dispatch} history={history}/>
+  );
 
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar}/>
-      <h2>Statistics</h2>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-        elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-        hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-        velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-        Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-        viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-      </Typography>
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-        facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-        tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-        consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus
-        sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-        In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-        et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique
-      </Typography>
+    <main className={classes.contentSingle}>
+      <Paper className={classes.titleContainer}>
+        <h2>Statistics</h2>
+        {!viewMode ? <CircularProgress style={{ margin: 12 }} size={24}/> : renderInfoBar()}
+      </Paper>
+      {!stats ? <Spinner/> : renderViewPort(stats)}
+      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
     </main>
   );
 };
 
 Statistics.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
-export default Statistics;
+function mapStateToProps(state) {
+  return {
+    viewMode: state.stats.viewMode,
+    viewBranch: state.stats.viewBranch,
+    viewGroup: state.stats.viewGroup,
+    stats: state.stats.results,
+    errorMessage: state.stats.error,
+    successMessage: state.stats.success,
+    messageConfirmed: state.stats.confirmed
+  };
+}
+
+export default connect(mapStateToProps, {})(withStyles(Wrapper, { withTheme: true })(withRouter(Statistics)));
+
+
 
 
 

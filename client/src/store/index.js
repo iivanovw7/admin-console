@@ -7,7 +7,7 @@ import reduxThunk from 'redux-thunk';
 /**
  * When we call this function we return a created store with our reducers, so this is the same
  * as calling `const store = createStore(reducer)`. We have extracted it to a separate file. This function
- * gets called in 'auth.js'. The second argument to 'createStore' is so we can use Redux DevTools
+ * gets called in 'authActions.js'. The second argument to 'createStore' is so we can use Redux DevTools
  * in our browser for easier debugging. Super cool!
  * @param {Object} initialState
  */

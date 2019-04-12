@@ -85,11 +85,11 @@ export const getSingleMessage = (id, history) => {
       withCredentials: true
     })
       .then(response => {
-        history.push(`/messages/${id}`);
         dispatch({
           type: types.FETCH_MESSAGE,
           payload: response
         });
+        history.push(`/messages/${id}`);
       })
       .catch(error => {
         console.log(error);

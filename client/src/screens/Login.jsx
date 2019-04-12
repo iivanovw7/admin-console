@@ -1,4 +1,5 @@
-import { Button, Grid, Paper, withStyles } from '@material-ui/core';
+import { Button, Grid, Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';

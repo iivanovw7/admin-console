@@ -8,7 +8,6 @@ import { getSingleBranch } from '../actions';
 import BranchContainer from '../components/Branch/BranchContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
-
 const Branch = props => {
   const { classes, history, dispatch } = props;
   const branch = props.branches.branch;

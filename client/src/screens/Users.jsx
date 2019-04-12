@@ -1,4 +1,5 @@
-import { Paper, withStyles } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { debounce } from 'debounce';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
