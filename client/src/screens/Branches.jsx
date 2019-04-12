@@ -27,6 +27,15 @@ const Branches = props => {
     setCurrentPage(newPage);
   }
 
+  const renderBranchesContainer = () => (
+    <BranchesContainer
+      branches={branches}
+      page={currentPage}
+      limit={limit}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentList}>
       <div>
@@ -36,15 +45,15 @@ const Branches = props => {
           </div>
           <AddNewButton history={history} element={'branches'}/>
         </Paper>
-        {
-          !branches || branches.length > limit ?
-            <Spinner/> : <BranchesContainer branches={branches} page={currentPage} limit={limit}
-                                            dispatch={dispatch}/>
-        }
+        {!branches || branches.length > limit ? <Spinner/> : renderBranchesContainer()}
       </div>
-      <Paper className={classes.controlsContainer}
-             style={{ marginTop: '24px', marginBottom: '24px' }}>
-        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+      <Paper
+        className={classes.controlsContainer}
+        style={{ marginTop: '24px', marginBottom: '24px' }}
+      >
+        <p style={{ color: 'red' }}>
+          {props.errorMessage && !props.messageConfirmed}
+        </p>
         <PageSelector classes={classes} data={props.branches} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -53,14 +62,18 @@ const Branches = props => {
 
 Branches.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     branches: state.branches,
     errorMessage: state.branches.error,
-    successMessage: state.branches.success
+    successMessage: state.branches.success,
+    messageConfirmed: state.branches.confirmed
   };
 }
 

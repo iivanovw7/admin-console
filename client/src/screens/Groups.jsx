@@ -26,6 +26,15 @@ const Groups = props => {
     setCurrentPage(newPage);
   }
 
+  const renderGroupsContainer = () => (
+    <GroupsContainer
+      groups={groups}
+      page={currentPage}
+      limit={limit}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentList}>
       <div>
@@ -35,12 +44,15 @@ const Groups = props => {
           </div>
           <AddNewButton history={history} element={'groups'}/>
         </Paper>
-        {!groups ? <Spinner/> :
-          <GroupsContainer groups={groups} page={currentPage} limit={limit} dispatch={dispatch}/>}
+        {!groups ? <Spinner/> : renderGroupsContainer()}
       </div>
-      <Paper className={classes.controlsContainer}
-             style={{ marginTop: '24px', marginBottom: '24px' }}>
-        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+      <Paper
+        className={classes.controlsContainer}
+        style={{ marginTop: '24px', marginBottom: '24px' }}
+      >
+        <p style={{ color: 'red' }}>
+          {props.errorMessage && !props.messageConfirmed}
+        </p>
         <PageSelector classes={classes} data={props.groups} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -49,14 +61,18 @@ const Groups = props => {
 
 Groups.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     groups: state.groups,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success
+    errorMessage: state.groups.error,
+    successMessage: state.groups.success,
+    messageConfirmed: state.groups.confirmed
   };
 }
 

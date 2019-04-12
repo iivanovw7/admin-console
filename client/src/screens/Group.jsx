@@ -10,6 +10,7 @@ import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Group = props => {
   const { classes, history, dispatch } = props;
+  const group = props.groups.group;
 
   return (
     <main className={classes.contentSingle}>
@@ -19,14 +20,17 @@ const Group = props => {
         </div>
       </Paper>
       <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
-      <GroupContainer history={history} dispatch={dispatch}/>
+      <GroupContainer group={group} history={history} dispatch={dispatch}/>
     </main>
   );
 };
 
 Group.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {

@@ -1,5 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import Link from '@material-ui/core/Link';
+import { Link, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -112,7 +111,7 @@ const GroupsContainer = props => {
                   component="button"
                   variant="body2"
                   onClick={() => {
-                    handleGroupClick(row._id, history);
+                    handleGroupClick(row._id);
                   }}
                 >
                   {row.name}
@@ -124,10 +123,10 @@ const GroupsContainer = props => {
                 </strong>
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
-               {showActionButton(row)}
+                {showActionButton(row)}
               </TableCell>
               <TableCell className={classes.groupDesktopCell} align="center">
-               {showDeleteButton(row)}
+                {showDeleteButton(row)}
               </TableCell>
             </TableRow>
           ))}

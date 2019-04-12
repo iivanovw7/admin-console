@@ -2,6 +2,8 @@ import passport from 'passport';
 import PassportLocal from 'passport-local';
 import Role from '../../models/Role';
 import User from '../../models/User';
+import Group from '../../models/Group';
+import Branch from '../../models/Branch';
 import { authRoles } from './constants.config';
 import { ifArrayContains } from '../helper-functions';
 
@@ -18,6 +20,8 @@ passport.use(new LocalStrategy(
 
     User.findOne({ email: email })
         .populate({ path: 'role', model: Role })
+        .populate({ path: 'group', model: Group })
+        .populate({ path: 'branch', model: Branch })
         .then(user => {
           if (!user || !ifArrayContains(user.role.code, authRoles)) {
             //console.log('Authentication error');

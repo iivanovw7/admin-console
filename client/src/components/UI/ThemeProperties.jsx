@@ -72,15 +72,15 @@ export const NavigationStyles = theme => ({
     padding: '4px 6px',
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
+    width: '100%'
   },
   divider: {
     width: 1,
     height: 28,
-    margin: 4,
+    margin: 4
   },
   searchIcon: {
-    paddingLeft: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit * 2
   },
   inputRoot: {
     color: 'inherit',
@@ -332,11 +332,10 @@ export const Container = theme => ({
     paddingLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-
+    minWidth: '120px',
     [theme.breakpoints.up('sm')]: {
       width: '10%'
     },
-
     [theme.breakpoints.down('sm')]: {
       width: '30%'
     }
@@ -347,6 +346,7 @@ export const Container = theme => ({
     paddingTop: 5,
     paddingBottom: 5,
     width: '10%',
+    minWidth: '120px',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
@@ -370,14 +370,14 @@ export const Container = theme => ({
   },
   userStatusCell: {
     padding: 5,
-    width: '100px',
+    minWidth: '100px'
   },
   userControlCell: {
     paddingRight: 5,
     paddingLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    width: '100px',
+    minWidth: '100px'
   },
 
   ticketsRowClass: {
@@ -426,7 +426,7 @@ export const Container = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
-  },
+  }
 
 });
 

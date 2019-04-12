@@ -3,55 +3,80 @@ import { formLocalizedNotification as message }  from '../localization/notificat
 
 const initialState = {
   list: {
-    page: 1
+    page: 1,
+    search: null,
   },
-  branch: {},
+  message: {},
   error: null,
-  fetchError: null,
   success: null,
   confirmed: false,
 };
 
+
 export default function (state = initialState, action) {
 
   switch (action.type) {
-    case types.FETCH_BRANCHES: {
+    case types.FETCH_MESSAGES: {
       return {
         ...state,
-        branch: {},
+        message: {},
         list: action.payload.data,
         error: null,
         success: null
       };
     }
-    case types.FETCH_BRANCH: {
+    case types.SEARCH_MESSAGES: {
       return {
         ...state,
-        branch: action.payload.data,
+        message: {},
+        list: action.payload.data,
         error: null,
         success: null
       };
     }
-    case types.ADD_BRANCH: {
+    case types.FETCH_MESSAGE: {
       return {
         ...state,
-        branch: {},
+        message: action.payload.data,
         error: null,
-        success: message(
-          action.payload.data.name,
+        success: null
+      };
+    }
+    case types.UNDONE_MESSAGE: {
+      return {
+        ...state,
+        message: {},
+        error: message(
+          null,
           action,
           'en'
         ),
+      };
+    }
+    case types.ERROR: {
+      return {
+        ...state,
+        list: {
+          page: 1,
+          search: null,
+        },
+        message: {},
+        error: message(
+          null,
+          action,
+          'en'
+        ),
+        success: null,
         confirmed: false,
       };
     }
-    case types.UPDATE_BRANCH: {
+    case types.ADD_MESSAGE: {
       return {
         ...state,
-        branch: {},
+        message: {},
         error: null,
         success: message(
-          action.payload.data.name,
+          action.payload.data.subject,
           action,
           'en'
         ),
@@ -62,25 +87,10 @@ export default function (state = initialState, action) {
       return {
         ...state,
         list: {
-          page: 1
+          page: 1,
+          search: null,
         },
-        branch: {},
-        error: message(
-          null,
-          action,
-          'en'
-        ),
-        success: null,
-        confirmed: false,
-      };
-    }
-    case types.ERROR: {
-      return {
-        ...state,
-        list: {
-          page: 1
-        },
-        branch: {},
+        message: {},
         error: message(
           null,
           action,

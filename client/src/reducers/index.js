@@ -6,6 +6,7 @@ import groupsReducer from './groupsReducer';
 import rolesReducer from './rolesReducer';
 import usersReducer from './usersReducer';
 import ticketsReducer from './ticketsReducer';
+import messagesReducer from './messagesReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   groups: groupsReducer,
   roles: rolesReducer,
   users: usersReducer,
-  tickets: ticketsReducer
+  tickets: ticketsReducer,
+  messages: messagesReducer
 });
 
 export default rootReducer;

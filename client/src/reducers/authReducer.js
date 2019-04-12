@@ -1,6 +1,5 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/actionTypes';
 import Cookies from 'js-cookie';
-import { formLocalizedNotification as message }  from '../localization/notifications';
 
 const initialState = {
   user: {

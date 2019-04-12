@@ -7,6 +7,7 @@ import Branches from './screens/Branches';
 import Group from './screens/Group';
 import Groups from './screens/Groups';
 import Login from './screens/Login';
+import Message from './screens/Message';
 import Messages from './screens/Messages';
 import Role from './screens/Role';
 import Roles from './screens/Roles';
@@ -29,6 +30,8 @@ export default (
     <Route path={'/users/:id'} component={protectedContent(User)}/>
     <Route path={'/users/new'} component={protectedContent(User)}/>
     <Route path={'/users'} component={protectedContent(Users)}/>
+    <Route path={'/messages/:id'} component={protectedContent(Message)}/>
+    <Route path={'/messages/new'} component={protectedContent(Message)}/>
     <Route path={'/messages'} component={protectedContent(Messages)}/>
     <Route path={'/tickets/:id'} component={protectedContent(Ticket)}/>
     <Route path={'/tickets'} component={protectedContent(Tickets)}/>

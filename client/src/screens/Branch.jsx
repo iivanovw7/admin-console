@@ -11,6 +11,7 @@ import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Branch = props => {
   const { classes, history, dispatch } = props;
+  const branch = props.branches.branch;
 
   return (
     <main className={classes.contentSingle}>
@@ -19,15 +20,20 @@ const Branch = props => {
           <h2>Create/Edit branch</h2>
         </div>
       </Paper>
-      <BranchContainer history={history} dispatch={dispatch}/>
-      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
+      <BranchContainer branch={branch} history={history} dispatch={dispatch}/>
+      <p style={{ color: 'red' }}>
+        {props.errorMessage && !props.messageConfirmed}
+      </p>
     </main>
   );
 };
 
 Branch.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {

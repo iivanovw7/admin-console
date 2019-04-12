@@ -31,11 +31,9 @@ export const getPageById = {
 
 // POST /api/messages/new
 export const sendMessage = {
-  query: {
-    branch: Joi.objectId(),
-    group: Joi.objectId()
-  },
   body: {
+    branchId: Joi.objectId(),
+    groupId: Joi.objectId(),
     subject: Joi.string().min(3).max(50).required(),
     message: Joi.string().min(3).max(500).required()
   }

@@ -12,8 +12,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const GroupContainer = props => {
 
-  const { classes, history, handleSubmit, dispatch } = props;
-  const group = props.groups.group;
+  const { classes, history, handleSubmit, dispatch, group } = props;
 
   useEffect(() => {
     props.initialize({
@@ -25,8 +24,7 @@ const GroupContainer = props => {
   }, [group]);
 
   const submit = formValues => {
-    return !group._id ?
-      props.addNewGroup(formValues) : props.updateGroup(formValues, group._id);
+    return !group._id ? props.addNewGroup(formValues) : props.updateGroup(formValues, group._id);
   };
 
   const showAlert = (message, success) => (
@@ -48,21 +46,20 @@ const GroupContainer = props => {
         <TextInputContainer dataType={'description'} type={'text'} required={true} rows={4}/>
         <CheckboxContainer name={'permissions'} label={'Available for permissions'} value={''}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
-        {
-          props.errorMessage && !props.messageConfirmed ?
-            showAlert(props.errorMessage, false) : ''
-        }
-        {
-          props.successMessage && !props.messageConfirmed ?
-            showAlert(props.successMessage, true) : ''
-        }
+        {props.errorMessage && !props.messageConfirmed && (
+          showAlert(props.errorMessage, false)
+        )}
+        {props.successMessage && !props.messageConfirmed && (
+          showAlert(props.successMessage, true)
+        )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
             variant="contained" color="primary"
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/groups`);
-            }}>
+            }}
+          >
             CANCEL
           </Button>
           <Button
@@ -71,7 +68,8 @@ const GroupContainer = props => {
             type="submit"
             style={
               { textTransform: 'none', margin: 5 }
-            }>
+            }
+          >
             SAVE
           </Button>
         </Grid>

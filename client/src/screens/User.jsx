@@ -1,9 +1,11 @@
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { getBranches, getGroups, getRoles } from '../actions';
 import Spinner from '../components/UI/Spinner';
 import { Wrapper } from '../components/UI/ThemeProperties';
 import UserContainer from '../components/User/UserContainer';
@@ -15,6 +17,23 @@ const User = props => {
   const groups = props.groups.list.output;
   const branches = props.branches.list.output;
 
+  useEffect(() => {
+    dispatch(getGroups(1, 100, history));
+    dispatch(getBranches(1, 100, history));
+    dispatch(getRoles(1, 100, history));
+  }, []);
+
+  const renderUserContainer = () => (
+    <UserContainer
+      user={user}
+      roles={roles}
+      groups={groups}
+      branches={branches}
+      history={history}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentSingle}>
       <Paper className={classes.titleContainer}>
@@ -22,18 +41,7 @@ const User = props => {
           <h2>Edit user</h2>
         </div>
       </Paper>
-      {
-        !user ?
-          <Spinner/> :
-          <UserContainer
-            user={user}
-            roles={roles}
-            groups={groups}
-            branches={branches}
-            history={history}
-            dispatch={dispatch}
-          />
-      }
+      {!user || !groups || !branches || !roles ? <Spinner/> : renderUserContainer()}
       <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
     </main>
   );
@@ -41,7 +49,10 @@ const User = props => {
 
 User.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {

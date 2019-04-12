@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Drawer, Hidden, Button } from '@material-ui/core';
-import DrawerNavigation from './DrawerNavigation';
+import { Button, Drawer, Hidden } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { NavigationStyles } from '../ThemeProperties';
-import { logoutUser } from '../../../actions';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
+import { logoutUser } from '../../../actions';
+import { NavigationStyles } from '../ThemeProperties';
+import DrawerNavigation from './DrawerNavigation';
 
 const DrawerContainer = props => {
 
@@ -69,4 +69,4 @@ DrawerContainer.propTypes = {
   mobileOpen: PropTypes.bool
 };
 
-export default connect(null, { logoutUser } )(withStyles(NavigationStyles, { withTheme: true })(DrawerContainer));
+export default connect(null, { logoutUser })(withStyles(NavigationStyles, { withTheme: true })(DrawerContainer));

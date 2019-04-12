@@ -54,7 +54,8 @@ async function collectMessages(req, res, params) {
                              .populate({ path: 'branchId', model: Branch })
                              .populate({ path: 'groupId', model: Group })
                              .skip(skipped)
-                             .limit(limit);
+                             .limit(limit)
+                             .sort({ created: '-1' });
 
   const countPromise = Message.countDocuments();
   const [output, results] = await Promise.all([findPromise, countPromise]);
@@ -174,8 +175,8 @@ const sendMessage = async (req, res) => {
     subject: req.body.subject,
     message: req.body.message,
     senderId: req.user._id,
-    branchId: checkSender(branchAccess) ? req.query.branch : null,
-    groupId: checkSender(groupAccess) ? req.query.group : null
+    branchId: checkSender(branchAccess) ? req.body.branchId : null,
+    groupId: checkSender(groupAccess) ? req.body.groupId : null
   };
 
   const newMessage = await new Message(message);

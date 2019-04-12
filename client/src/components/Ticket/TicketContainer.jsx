@@ -6,31 +6,24 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { updateTicket } from '../../actions';
+import { statuses } from '../../constants/ticketStatuses';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import { validateTicket } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
-import { statuses } from '../../constants/TicketStatuses';
 
 const TicketContainer = props => {
   const { classes, history, handleSubmit, ticket, dispatch } = props;
 
   useEffect(() => {
     props.initialize({
-      author: ticket.authorId ?
-        ticket.authorId.name + ' ' + ticket.authorId.surname : 'Author',
-      branch:
-        ticket.branchId ? ticket.branchId.name : 'No branch assigned!',
-      created:
-        moment(ticket.created).format('HH:MM DD.MM.YYYY'),
-      message:
-        ticket.message ? ticket.message : 'Message',
-      status:
-        ticket.status ? ticket.status : 'Opened',
-      closed:
-        ticket.closed ? moment(ticket.closed).format('HH:MM DD.MM.YYYY') : null,
-      note:
-        ticket.note ? ticket.note : 'Ticket note...',
+      author: ticket.authorId ? ticket.authorId.name + ' ' + ticket.authorId.surname : 'Author',
+      branch: ticket.branchId ? ticket.branchId.name : 'No branch assigned!',
+      created: moment(ticket.created).format('HH:MM DD.MM.YYYY'),
+      message: ticket.message ? ticket.message : 'Message',
+      status: ticket.status ? ticket.status : 'Opened',
+      closed: ticket.closed ? moment(ticket.closed).format('HH:MM DD.MM.YYYY') : null,
+      note: ticket.note ? ticket.note : 'Ticket note...'
     });
   }, [ticket]);
 
@@ -53,34 +46,78 @@ const TicketContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'author'} type={'text'} rows={1} rowsMax={1} disabled={true} required={false}/>
-        <TextInputContainer dataType={'branch'} type={'text'} rows={1} rowsMax={1} disabled={true} required={false}/>
-        <TextInputContainer dataType={'message'} type={'text'} rows={4} rowsMax={12} disabled={true} required={false}/>
-        <TextInputContainer dataType={'created'} type={'text'} rows={1} rowsMax={1} disabled={true} required={false}/>
-        <div style={{marginBottom: '20px', marginTop: '10px'}}>
-          <SelectInputContainer dataType={'status'} list={statuses} label={'Status'} valueField={'name'}/>
+        <TextInputContainer
+          dataType={'author'}
+          type={'text'}
+          rows={1}
+          rowsMax={1}
+          disabled={true}
+          required={false}
+        />
+        <TextInputContainer
+          dataType={'branch'}
+          type={'text'}
+          rows={1}
+          rowsMax={1}
+          disabled={true}
+          required={false}
+        />
+        <TextInputContainer
+          dataType={'message'}
+          type={'text'}
+          rows={4}
+          rowsMax={12}
+          disabled={true}
+          required={false}
+        />
+        <TextInputContainer
+          dataType={'created'}
+          type={'text'}
+          rows={1}
+          rowsMax={1}
+          disabled={true}
+          required={false}
+        />
+        <div style={{ marginBottom: '20px', marginTop: '10px' }}>
+          <SelectInputContainer
+            dataType={'status'}
+            list={statuses}
+            label={'Status'}
+            valueField={'name'}
+          />
         </div>
-        {
-          ticket.closed ?
-            <TextInputContainer dataType={'closed'} type={'text'} rows={1} rowsMax={1} disabled={true} required={false}/> :
-            ''
-        }
-        <TextInputContainer dataType={'note'} type={'text'} rows={4} rowsMax={12} disabled={false} required={true}/>
-        {
-          props.errorMessage && !props.messageConfirmed ?
-            showAlert(props.errorMessage, false) : ''
-        }
-        {
-          props.successMessage && !props.messageConfirmed ?
-            showAlert(props.successMessage, true) : ''
-        }
+        {ticket.closed && (
+          <TextInputContainer
+            dataType={'closed'}
+            type={'text'}
+            rows={1}
+            rowsMax={1}
+            disabled={true}
+            required={false}
+          />
+        )}
+        <TextInputContainer
+          dataType={'note'}
+          type={'text'}
+          rows={4}
+          rowsMax={12}
+          disabled={false}
+          required={true}
+        />
+        {props.errorMessage && !props.messageConfirmed && (
+          showAlert(props.errorMessage, false)
+        )}
+        {props.successMessage && !props.messageConfirmed && (
+          showAlert(props.successMessage, true)
+        )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
             variant="contained" color="primary"
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/tickets`);
-            }}>
+            }}
+          >
             CANCEL
           </Button>
           <Button
@@ -89,7 +126,8 @@ const TicketContainer = props => {
             type="submit"
             style={
               { textTransform: 'none', margin: 5 }
-            }>
+            }
+          >
             UPDATE
           </Button>
         </Grid>
@@ -118,5 +156,5 @@ const reduxFromGroup = reduxForm({
 })(TicketContainer);
 
 export default connect(mapStateToProps, {
-  updateTicket,
+  updateTicket
 })(withStyles(Container)(reduxFromGroup));

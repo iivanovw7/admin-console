@@ -5,9 +5,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import ErrorIcon from '@material-ui/icons/Error';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import * as types from '../../../constants/ActionTypes';
+import * as types from '../../../constants/actionTypes';
 import { Notification } from '../ThemeProperties';
-
 
 
 const AlertSnackbar = props => {
@@ -56,7 +55,7 @@ const AlertSnackbar = props => {
       autoHideDuration={3000}
       onClose={() => {
         dispatch({
-          type: types.CONFIRM_NOTIFICATION,
+          type: types.CONFIRM_NOTIFICATION
         });
         afterConfirm();
       }}

@@ -46,6 +46,16 @@ const Users = props => {
     usersSearch(value);
   }
 
+  const renderUsersContainer = () => (
+    <UsersContainer
+      users={users}
+      page={currentPage}
+      limit={limit}
+      search={searchTerm}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentList}>
       <div>
@@ -59,14 +69,16 @@ const Users = props => {
           tooltip={'Search by User`s Name, Surname or Email'}
           onSearchTermChange={handleNewSearch}
         />
-        {!users ? <Spinner/> :
-          <UsersContainer users={users} page={currentPage} limit={limit} search={searchTerm}
-                          dispatch={dispatch}/>}
+        {!users ? <Spinner/> : renderUsersContainer()}
       </div>
-      <Paper className={classes.controlsContainer}
-             style={{ marginTop: '24px', marginBottom: '24px' }}>
+      <Paper
+        className={classes.controlsContainer}
+        style={{ marginTop: '24px', marginBottom: '24px' }}
+      >
         <LimitSelector classes={classes} limit={limit} limits={limits} handleLimit={handleLimit}/>
-        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+        <p style={{ color: 'red' }}>
+          {props.errorMessage && !props.messageConfirmed}
+        </p>
         <PageSelector classes={classes} data={props.users} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -75,14 +87,18 @@ const Users = props => {
 
 Users.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     users: state.users,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success
+    errorMessage: state.users.error,
+    successMessage: state.users.success,
+    messageConfirmed: state.users.confirmed
   };
 }
 

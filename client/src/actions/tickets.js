@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
-import * as types from '../constants/ActionTypes';
-import * as URL from '../constants/APIurl';
+import * as types from '../constants/actionTypes';
+import * as URL from '../constants/api';
 import axios from 'axios';
 
 export const getTickets = (page, limit, history) => {
@@ -15,8 +15,8 @@ export const getTickets = (page, limit, history) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       params: {
-        page: page || 1,
-        limit: limit || 10
+        page: page,
+        limit: limit
       },
       withCredentials: true
     })
@@ -50,8 +50,8 @@ export const searchTickets = (page, limit, query, history) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       params: {
-        page: page || 1,
-        limit: limit || 10,
+        page: page,
+        limit: limit,
         search: query
       },
       withCredentials: true
@@ -106,14 +106,13 @@ export const getSingleTicket = (id, history) => {
 
 export const updateTicket = (formValues, id) => {
 
-  const { note, status } = formValues;
-
   return async dispatch => {
     await axios({
       method: 'put',
       url: `${URL.PRIVATE_API}/tickets/${id}`,
       data: {
-        note, status
+        note: formValues.note,
+        status: formValues.status
       },
       withCredentials: true
     })

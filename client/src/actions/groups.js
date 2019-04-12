@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
-import * as types from '../constants/ActionTypes';
-import * as URL from '../constants/APIurl';
+import * as types from '../constants/actionTypes';
+import * as URL from '../constants/api';
 import axios from 'axios';
 
 export const getGroups = (page, limit, history) => {
@@ -14,8 +14,8 @@ export const getGroups = (page, limit, history) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       params: {
-        page: page || 1,
-        limit: limit || 10
+        page: page,
+        limit: limit
       },
       withCredentials: true
     })
@@ -69,14 +69,15 @@ export const getSingleGroup = (id, history) => {
 
 export const addNewGroup = formValues => {
 
-  const { name, description, permissions, status } = formValues;
-
   return async dispatch => {
     await axios({
       method: 'post',
       url: `${URL.PRIVATE_API}/groups`,
       data: {
-        name, description, permissions, status
+        name: formValues.name,
+        description: formValues.description,
+        permissions: formValues.permissions,
+        status: formValues.status
       },
       withCredentials: true
     })
@@ -128,14 +129,15 @@ export const deleteGroup = id => {
 
 export const updateGroup = (formValues, id) => {
 
-  const { name, description, permissions, status } = formValues;
-
   return async dispatch => {
     await axios({
       method: 'put',
       url: `${URL.PRIVATE_API}/groups/${id}`,
       data: {
-        name, description, permissions, status
+        name: formValues.name,
+        description: formValues.description,
+        permissions: formValues.permissions,
+        status: formValues.status
       },
       withCredentials: true
     })

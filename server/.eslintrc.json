@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "@getify/proper-ternary"
+
   ],
   "parserOptions": {
     "ecmaVersion": 6,
