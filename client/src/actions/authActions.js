@@ -5,7 +5,8 @@ import axios from 'axios';
 
 export const loginUser = ({ email, password }, history) => {
 
-  //TODO consider new way of authenticating user for shorter period of time, may be use reducer
+  //TODO
+  // consider new way of authenticating user for shorter period of time, may be use reducer
   // instead of cookies to store data and add special route to check authenticated users after
   // page got rendered
   const inOneWeek = new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7));

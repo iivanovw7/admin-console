@@ -153,7 +153,13 @@ export const Wrapper = theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: '100%'
+    height: '100%',
+    width: '100%'
+  },
+  [theme.breakpoints.down('sm')]: {
+    contentSingle: {
+      paddingBottom: theme.spacing.unit * 3,
+    }
   },
   contentList: {
     flexGrow: 1,
@@ -242,6 +248,42 @@ export const Container = theme => ({
     display: 'flex',
     justifyContent: 'center',
     overflow: 'hidden'
+  },
+  [theme.breakpoints.down('sm')]: {
+    mobile: {
+      display: 'flex'
+    },
+    reportBtnContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    desktop: {
+      display: 'none'
+    }
+  },
+  [theme.breakpoints.up('sm')]: {
+    mobile: {
+      display: 'none'
+    },
+    desktop: {
+      display: 'flex'
+    },
+    reportBtnContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+    },
+  },
+  fromLimitSelector: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      //display: 'none'
+    }
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 60,
+    maxWidth: 300
   },
   tables: {
     minWidth: 200,

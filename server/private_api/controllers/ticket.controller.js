@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
+import Branch from '../../models/Branch';
 import Ticket from '../../models/Ticket';
 import User from '../../models/User';
-import Branch from '../../models/Branch';
 import { defaultStatuses } from '../config/constants.config';
 import { ifArrayContains } from '../helper-functions';
 

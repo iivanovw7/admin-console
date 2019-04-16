@@ -10,13 +10,18 @@ import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 import { DestinationSwitch, ifArrayContains } from './DestinationSwitch';
 import { fullAccess, branchAccess } from '../../constants/messagesAccess';
-import { sendMessage } from '../../actions';
+import { sendMessage, logoutUser } from '../../actions';
 
 const CreateMessageContainer = props => {
 
   const { classes, history, handleSubmit, message, user, dispatch } = props;
 
   const preselectDestination = () => {
+    if (!user.role.code) {
+      return (
+        dispatch(logoutUser(history))
+      );
+    }
     if (ifArrayContains(user.role.code, branchAccess)) {
       return 'Branch';
     }
@@ -40,7 +45,6 @@ const CreateMessageContainer = props => {
   }, [message]);
 
   const submit = formValues => {
-    console.log(formValues, destination.toLocaleLowerCase());
     dispatch(sendMessage(formValues, destination.toLocaleLowerCase()));
   };
 
@@ -149,4 +153,4 @@ const reduxFromGroup = reduxForm({
   fields: ['subject', 'message', 'sender', 'branch', 'group']
 })(CreateMessageContainer);
 
-export default connect(mapStateToProps, {})(withStyles(Container)(reduxFromGroup));
+export default connect(mapStateToProps, {logoutUser, sendMessage})(withStyles(Container)(reduxFromGroup));

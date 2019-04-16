@@ -20,27 +20,18 @@ const Branch = props => {
         </div>
       </Paper>
       <BranchContainer branch={branch} history={history} dispatch={dispatch}/>
-      <p style={{ color: 'red' }}>
-        {props.errorMessage && !props.messageConfirmed}
-      </p>
     </main>
   );
 };
 
 Branch.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    branches: state.branches,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success,
-    messageConfirmed: state.branches.confirmed
+    branches: state.branches
   };
 }
 

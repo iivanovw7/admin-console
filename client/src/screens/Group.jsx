@@ -19,7 +19,6 @@ const Group = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
       <GroupContainer group={group} history={history} dispatch={dispatch}/>
     </main>
   );
@@ -27,18 +26,12 @@ const Group = props => {
 
 Group.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    groups: state.groups,
-    errorMessage: state.groups.error,
-    successMessage: state.groups.success,
-    messageConfirmed: state.groups.confirmed
+    groups: state.groups
   };
 }
 

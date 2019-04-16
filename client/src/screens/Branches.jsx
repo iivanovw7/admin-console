@@ -51,9 +51,7 @@ const Branches = props => {
         className={classes.controlsContainer}
         style={{ marginTop: '24px', marginBottom: '24px' }}
       >
-        <p style={{ color: 'red' }}>
-          {props.errorMessage && !props.messageConfirmed}
-        </p>
+        <div/>
         <PageSelector classes={classes} data={props.branches} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -62,18 +60,12 @@ const Branches = props => {
 
 Branches.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    branches: state.branches,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success,
-    messageConfirmed: state.branches.confirmed
+    branches: state.branches
   };
 }
 

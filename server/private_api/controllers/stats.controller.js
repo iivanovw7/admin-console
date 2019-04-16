@@ -34,13 +34,13 @@ const usersCounter = async (limit, param) => {
   }
 
   const totalPromise = User.countDocuments(totalQuery);
-  const openedPromise = User.countDocuments(activeQuery);
-  const progressPromise = User.countDocuments(disabledQuery);
+  const activePromise = User.countDocuments(activeQuery);
+  const disabledPromise = User.countDocuments(disabledQuery);
 
   const [total, active, disabled] = await Promise.all([
     totalPromise,
-    openedPromise,
-    progressPromise
+    activePromise,
+    disabledPromise
   ]);
 
   return {
@@ -93,9 +93,24 @@ const ticketsCounter = async (limit, param) => {
     //final search queries object
     const queries = {};
 
-    Object.entries(defaultStatusModels).forEach(entry => {
 
-      //creating base search query
+    queries.total = {
+      created: { $gt: limit }
+    };
+
+    if (params) {
+      if (params.branchId) {
+        queries.total.branchId = params.branchId;
+      }
+      if (params.authorId) {
+        queries.total.authorId = params.authorId;
+      }
+    }
+
+    for (const prop of Object.keys(defaultStatusModels)) {
+
+      const value = defaultStatusModels[prop];
+
       const query = {
         created: { $gt: limit }
       };
@@ -110,11 +125,13 @@ const ticketsCounter = async (limit, param) => {
         }
       }
 
-      //addRole current field in query
-      queries[entry[0]] = query;
-    });
+      query.status = value;
 
-    const totalPromise = Ticket.countDocuments({});
+      queries[prop] = query;
+
+    }
+
+    const totalPromise = Ticket.countDocuments(queries.total);
     const openedPromise = Ticket.countDocuments(queries.open);
     const progressPromise = Ticket.countDocuments(queries.progress);
     const closedPromise = Ticket.countDocuments(queries.closed);
@@ -188,6 +205,7 @@ async function getStatistics(req, res, next) {
     case 'ADMIN' || 'SUPPORT': {
       res.json([
         { view_mode: role },
+        { months: req.query.months },
         await next(limit)
       ]);
       break;
@@ -204,6 +222,7 @@ async function getStatistics(req, res, next) {
         res.json([
           { view_mode: role },
           { branch_name: branch.name },
+          { months: req.query.months },
           await next(limit, { branch: branch._id })
         ]);
 
@@ -225,6 +244,7 @@ async function getStatistics(req, res, next) {
         res.json([
           { view_mode: role },
           { group_name: group.name },
+          { months: req.query.months },
           await next(limit, { group: group._id })
         ]);
 

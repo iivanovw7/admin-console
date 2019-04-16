@@ -1,6 +1,5 @@
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -42,17 +41,13 @@ const User = props => {
         </div>
       </Paper>
       {!user || !groups || !branches || !roles ? <Spinner/> : renderUserContainer()}
-      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
     </main>
   );
 };
 
 User.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -60,10 +55,7 @@ function mapStateToProps(state) {
     users: state.users,
     roles: state.roles,
     branches: state.branches,
-    groups: state.groups,
-    errorMessage: state.users.error,
-    successMessage: state.users.success,
-    messageConfirmed: state.roles.confirmed
+    groups: state.groups
   };
 }
 

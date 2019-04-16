@@ -573,8 +573,8 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .post('/api/messages/new')
       .set('cookie', cookie)
-      .send({ branch: testBranch._id })
-      .send({ group: testGroup._id })
+      .send({ branchId: testBranch._id })
+      .send({ groupId: testGroup._id })
       .send({ subject: 'NEW' })
       .send({ message: 'Message' })
       .then((response) => {
@@ -653,7 +653,6 @@ describe('Verifying MESSAGES routes.', () => {
       .query({ page: 1 })
       .query({ limit: 10 })
       .then((response) => {
-        console.log(response)
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('NEW');
         expect(response.body.output[0].message).toMatch('Message');
