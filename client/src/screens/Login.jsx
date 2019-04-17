@@ -29,13 +29,26 @@ const Login = props => {
         <LoginField dataType={'password'}/>
         <Grid container alignItems="center" justify="space-between">
           <Grid item>
-            <Button disableFocusRipple disableRipple style={{ textTransform: 'none' }}
-                    variant="text" color="primary">Forgot password ?</Button>
+            <Button
+              disableFocusRipple
+              disableRipple
+              style={{ textTransform: 'none' }}
+              variant="text"
+              color="primary"
+            >
+              Forgot password ?
+            </Button>
           </Grid>
         </Grid>
         <Grid container justify="flex-start" style={{ marginTop: '10px' }}>
-          <Button variant="outlined" color="primary" type="submit"
-                  style={{ textTransform: 'none' }}>SIGN IN</Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            type="submit"
+            style={{ textTransform: 'none' }}
+          >
+            SIGN IN
+          </Button>
           {errorMessage(props)}
         </Grid>
       </form>

@@ -26,6 +26,15 @@ const Roles = props => {
     setCurrentPage(newPage);
   }
 
+  const renderRolesContainer = () => (
+    <RolesContainer
+      roles={roles}
+      page={currentPage}
+      limit={limit}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentList}>
       <div>
@@ -35,12 +44,15 @@ const Roles = props => {
           </div>
           <AddNewButton history={history} element={'roles'}/>
         </Paper>
-        {!roles ? <Spinner/> :
-          <RolesContainer roles={roles} page={currentPage} limit={limit} dispatch={dispatch}/>}
+        {!roles ? <Spinner/> : renderRolesContainer()}
       </div>
-      <Paper className={classes.controlsContainer}
-             style={{ marginTop: '24px', marginBottom: '24px' }}>
-        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+      <Paper
+        className={classes.controlsContainer}
+        style={{ marginTop: '24px', marginBottom: '24px' }}
+      >
+        <p style={{ color: 'red' }}>
+          {props.errorMessage && !props.messageConfirmed}
+        </p>
         <PageSelector classes={classes} data={props.roles} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -49,14 +61,18 @@ const Roles = props => {
 
 Roles.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     roles: state.roles,
-    errorMessage: state.branches.error,
-    successMessage: state.branches.success
+    errorMessage: state.roles.error,
+    successMessage: state.roles.success,
+    messageConfirmed: state.roles.confirmed
   };
 }
 

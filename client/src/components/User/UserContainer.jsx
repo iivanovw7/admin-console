@@ -5,14 +5,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { getBranches, getGroups, getRoles, updateUser } from '../../actions';
-import { validateUser } from '../UI/Forms/validate';
-import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
-import { Container } from '../UI/ThemeProperties';
 import {
   CheckboxContainer,
   SelectInputContainer,
   TextInputContainer
 } from '../UI/Forms/InputContainers';
+import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
+import { Container } from '../UI/ThemeProperties';
 
 const UserContainer = props => {
   const { classes, history, handleSubmit, user, roles, branches, groups, dispatch } = props;
@@ -49,32 +48,49 @@ const UserContainer = props => {
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
         <TextInputContainer dataType={'name'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        <TextInputContainer dataType={'surname'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
+        <TextInputContainer
+          dataType={'surname'}
+          type={'text'}
+          rows={1}
+          rowsMax={1}
+          disabled={true}
+        />
         <TextInputContainer dataType={'email'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        {
-          !groups ?
-            <p>loading...</p> :
-            <SelectInputContainer dataType={'group'} list={groups} valueField={'_id'} label={'Group'}/>
-        }
-        {
-          !branches ?
-            <p>Loading...</p> :
-            <SelectInputContainer dataType={'branch'} list={branches} valueField={'_id'} label={'Branch'}/>
-        }
-        {
-          !roles ?
-            <p>Loading...</p> :
-            <SelectInputContainer dataType={'role'} list={roles} valueField={'_id'} label={'Role'}/>
-        }
-        <CheckboxContainer name={'status'} label={'Active'} value={''}/>
-        {
-          props.errorMessage && !props.messageConfirmed ?
-            showAlert(props.errorMessage, false) : ''
-        }
-        {
-          props.successMessage && !props.messageConfirmed ?
-            showAlert(props.successMessage, true) : ''
-        }
+        {groups && (
+          <SelectInputContainer
+            dataType={'group'}
+            list={groups}
+            valueField={'_id'}
+            label={'Group'}
+          />
+        )}
+        {branches && (
+          <SelectInputContainer
+            dataType={'branch'}
+            list={branches}
+            valueField={'_id'}
+            label={'Branch'}
+          />
+        )}
+        {roles && (
+          <SelectInputContainer
+            dataType={'role'}
+            list={roles}
+            valueField={'_id'}
+            label={'Role'}
+          />
+        )}
+        <CheckboxContainer
+          name={'status'}
+          label={'Active'}
+          value={''}
+        />
+        {props.errorMessage && !props.messageConfirmed && (
+          showAlert(props.errorMessage, false)
+        )}
+        {props.successMessage && !props.messageConfirmed && (
+          showAlert(props.successMessage, true)
+        )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
             variant="contained" color="primary"
@@ -115,7 +131,6 @@ function mapStateToProps(state) {
 }
 
 const reduxFromGroup = reduxForm({
-  validate: validateUser,
   form: 'user',
   fields: ['group', 'branch', 'role', 'status']
 })(UserContainer);

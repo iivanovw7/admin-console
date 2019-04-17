@@ -309,10 +309,9 @@ describe('Verifying USER routes.', () => {
     request(app)
       .get(`/api/users/search`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('search', 'HELPER_TEST_USER_NAME')
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ search: 'HELPER_TEST_USER_NAME' })
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].name).toMatch('HELPER_TEST_USER_NAME');
@@ -356,9 +355,9 @@ describe('Verifying USER routes.', () => {
       .get(`/api/users/history/${testUser._id}`)
       .set('cookie', cookie)
       .set('user', testUser._id)
-      .set('months', 12)
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ months: 12 })
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].actionAuthor).toMatch(testUser._id.toString());
@@ -371,9 +370,8 @@ describe('Verifying USER routes.', () => {
     request(app)
       .get(`/api/users/branch/${testBranch._id}`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0]._id).toMatch(testUser._id.toString());
@@ -386,9 +384,9 @@ describe('Verifying USER routes.', () => {
     request(app)
       .get(`/api/users/group/${testGroup._id}`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ months: 12 })
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0]._id).toMatch(testUser._id.toString());
@@ -456,10 +454,9 @@ describe('Verifying TICKET routes.', () => {
     request(app)
       .get(`/api/tickets/search`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('search', 'Subject')
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ search: 'Subject' })
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('Subject');
@@ -576,9 +573,8 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .post('/api/messages/new')
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('branch', testBranch._id)
-      .set('group', testGroup._id)
+      .send({ branch: testBranch._id })
+      .send({ group: testGroup._id })
       .send({ subject: 'NEW' })
       .send({ message: 'Message' })
       .then((response) => {
@@ -595,7 +591,6 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .get(`/api/messages/${newMessageId}`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.subject).toMatch('NEW');
@@ -625,10 +620,9 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .get(`/api/messages/search`)
       .set('cookie', cookie)
-      .set('user', testUser._id)
-      .set('search', 'NEW')
-      .set('page', 1)
-      .set('limit', 10)
+      .query({ search: 'NEW' })
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('NEW');
@@ -641,9 +635,8 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .get(`/api/messages/group/${testGroup._id}`)
       .set('cookie', cookie)
-      .set('page', 1)
-      .set('limit', 10)
-      .set('user', testUser._id)
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('NEW');
@@ -657,10 +650,10 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .get(`/api/messages/branch/${testBranch._id}`)
       .set('cookie', cookie)
-      .set('page', 1)
-      .set('limit', 10)
-      .set('user', testUser._id)
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
+        console.log(response)
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('NEW');
         expect(response.body.output[0].message).toMatch('Message');
@@ -673,9 +666,8 @@ describe('Verifying MESSAGES routes.', () => {
     request(app)
       .get(`/api/messages/user/${testUser._id}`)
       .set('cookie', cookie)
-      .set('page', 1)
-      .set('limit', 10)
-      .set('user', testUser._id)
+      .query({ page: 1 })
+      .query({ limit: 10 })
       .then((response) => {
         expect(response).not.toBeNull();
         expect(response.body.output[0].subject).toMatch('NEW');

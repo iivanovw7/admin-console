@@ -3,13 +3,13 @@ import * as types from '../constants/actionTypes';
 import * as URL from '../constants/api';
 import axios from 'axios';
 
-export const getUsers = (page, limit, history) => {
+export const getMessages = (page, limit, history) => {
 
   return async dispatch => {
 
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users`,
+      url: `${URL.PRIVATE_API}/messages`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -22,7 +22,7 @@ export const getUsers = (page, limit, history) => {
     })
       .then(response => {
         dispatch({
-          type: types.FETCH_USERS,
+          type: types.FETCH_MESSAGES,
           payload: response
         });
       })
@@ -35,16 +35,15 @@ export const getUsers = (page, limit, history) => {
         history.push('/');
       });
   };
-
 };
 
-export const searchUsers = (page, limit, query, history) => {
+export const searchMessages = (page, limit, query, history) => {
 
   return async dispatch => {
 
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users/search`,
+      url: `${URL.PRIVATE_API}/messages/search`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,7 +57,7 @@ export const searchUsers = (page, limit, query, history) => {
     })
       .then(response => {
         dispatch({
-          type: types.SEARCH_USERS,
+          type: types.SEARCH_MESSAGES,
           payload: response
         });
       })
@@ -71,15 +70,14 @@ export const searchUsers = (page, limit, query, history) => {
         history.push('/');
       });
   };
-
 };
 
-export const getSingleUser = (id, history, redirect) => {
+export const getSingleMessage = (id, history) => {
 
   return async dispatch => {
     await axios({
       method: 'get',
-      url: `${URL.PRIVATE_API}/users/${id}`,
+      url: `${URL.PRIVATE_API}/messages/${id}`,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -87,11 +85,9 @@ export const getSingleUser = (id, history, redirect) => {
       withCredentials: true
     })
       .then(response => {
-        if(redirect) {
-          history.push(`/users/${id}`);
-        }
+        history.push(`/messages/${id}`);
         dispatch({
-          type: types.FETCH_USER,
+          type: types.FETCH_MESSAGE,
           payload: response
         });
       })
@@ -100,35 +96,29 @@ export const getSingleUser = (id, history, redirect) => {
         dispatch({
           type: types.FETCH_ERROR
         });
-        history.push('/users');
+        history.push('/messages');
       });
   };
-
 };
 
-export const updateUser = (formValues, id) => {
+
+export const sendMessage = (formValues, destination) => {
 
   return async dispatch => {
     await axios({
-      method: 'put',
-      url: `${URL.PRIVATE_API}/users/${id}`,
+      method: 'post',
+      url: `${URL.PRIVATE_API}/messages/new`,
       data: {
-        name: formValues.name,
-        code: formValues.code,
-        role: formValues.role,
-        group: formValues.group,
-        branch: formValues.branch,
-        status: formValues.status,
-        description: formValues.description,
-        active: formValues.active,
-        isPublic: formValues.isPublic,
-        isEditable: formValues.isEditable
+        subject: formValues.subject,
+        message: formValues.message,
+        senderId: formValues.sender,
+        [`${destination}Id`]: formValues[destination],
       },
       withCredentials: true
     })
       .then(response => {
         dispatch({
-          type: types.UPDATE_USER,
+          type: types.ADD_MESSAGE,
           payload: response
         });
       })
@@ -140,36 +130,12 @@ export const updateUser = (formValues, id) => {
       });
 
   };
-
 };
 
-export const changeUserStatus = (id, status) => {
-
-  return async dispatch => {
-    await axios({
-      method: 'put',
-      url: `${URL.PRIVATE_API}/users/${id}`,
-      data: {
-        status: status
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.CHANGE_USER_STATUS,
-          payload: response
-        });
-
-      })
-
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.ERROR
-        });
-      });
-
-  };
-
+//TODO implement DELETE functionality in Private API during refactoring
+export const deleteMessage = () => {
+  return ({
+    type: types.UNDONE_MESSAGE
+  });
 };
 

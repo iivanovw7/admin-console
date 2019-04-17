@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography, Icon } from '@material-ui/core';
+import { AppBar, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Cookies from 'js-cookie';

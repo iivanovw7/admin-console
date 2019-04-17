@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "@getify/proper-ternary",
     "import"
   ],
   "parserOptions": {

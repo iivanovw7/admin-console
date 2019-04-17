@@ -1,6 +1,6 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/actionTypes';
 import Cookies from 'js-cookie';
-import * as URL from '../constants/APIurl';
+import * as URL from '../constants/api';
 import axios from 'axios';
 
 export const getBranches = (page, limit, history) => {
@@ -14,8 +14,8 @@ export const getBranches = (page, limit, history) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       params: {
-        page: page || 1,
-        limit: limit || 10
+        page: page,
+        limit: limit
       },
       withCredentials: true
     })
@@ -39,14 +39,18 @@ export const getBranches = (page, limit, history) => {
 
 export const addNewBranch = formValues => {
 
-  const { name, email, phone, fax, address, information, status } = formValues;
-
   return async dispatch => {
     await axios({
       method: 'post',
       url: `${URL.PRIVATE_API}/branches`,
       data: {
-        name, email, phone, fax, address, information, status
+        name: formValues.name,
+        email: formValues.email,
+        phone: formValues.phone,
+        fax: formValues.fax,
+        address: formValues.address,
+        information: formValues.information,
+        status: formValues.status
       },
       withCredentials: true
     })
@@ -70,14 +74,18 @@ export const addNewBranch = formValues => {
 
 export const updateBranch = (formValues, id) => {
 
-  const { name, email, phone, fax, address, information, status } = formValues;
-
   return async dispatch => {
     await axios({
       method: 'put',
       url: `${URL.PRIVATE_API}/branches/${id}`,
       data: {
-        name, email, phone, fax, address, information, status
+        name: formValues.name,
+        email: formValues.email,
+        phone: formValues.phone,
+        fax: formValues.fax,
+        address: formValues.address,
+        information: formValues.information,
+        status: formValues.status
       },
       withCredentials: true
     })

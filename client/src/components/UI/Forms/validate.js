@@ -129,12 +129,6 @@ export const validateRole = values => {
   return errors;
 };
 
-export const validateUser = values => {
-
-  const errors = {};
-  return errors;
-};
-
 export const validateTicket = values => {
 
   const errors = {};
@@ -151,6 +145,29 @@ export const validateTicket = values => {
 
   if (!values.status) {
     errors.note = 'Field is required!';
+  }
+
+  return errors;
+};
+
+export const validateMessage = values => {
+
+  const errors = {};
+
+  if (!values.subject) {
+    errors.subject = 'Field is required!';
+  } else if (values.subject.length < 3) {
+    errors.subject = 'Must be at least 3 characters!';
+  } else if (values.subject.length > 40) {
+    errors.subject = 'Too many characters!';
+  }
+
+  if (!values.message) {
+    errors.message = 'Field is required!';
+  } else if (values.message.length < 3) {
+    errors.message = 'Must be at least 3 characters!';
+  } else if (values.message.length > 499) {
+    errors.message = 'Too many characters!';
   }
 
   return errors;

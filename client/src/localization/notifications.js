@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/actionTypes';
 
 export function formLocalizedNotification(name, action, locale, newState) {
 
@@ -7,13 +7,19 @@ export function formLocalizedNotification(name, action, locale, newState) {
 
     switch (action.type) {
       case types.ERROR: {
-        return `${strings[locale].error}`;
+        return (
+          `${strings[locale].error}`
+        );
       }
       case types.FETCH_ERROR: {
-        return `${strings[locale].fetchError}`;
+        return (
+          `${strings[locale].fetchError}`
+        );
       }
       case types.AUTHENTICATION_ERROR: {
-        return `${strings[locale].authError}`;
+        return (
+          `${strings[locale].authError}`
+        );
       }
       default:
         if (actionString === 'CHANGE' && action.type.split('_')[2] === 'STATUS') {
@@ -36,6 +42,12 @@ export function formLocalizedNotification(name, action, locale, newState) {
             `${modelName} "${name}" ${strings[locale].updateSuccess}`
           );
         }
+        if (actionString === 'UNDONE') {
+          return (
+            `${strings[locale].undone}`
+          );
+        }
+        return '';
     }
 }
 
@@ -50,6 +62,7 @@ let strings = {
     branch: 'Branch',
     group: 'Group',
     message: 'Message',
+    undone: 'On this stage there is no such functionality...',
     addSuccess: 'created!',
     updateSuccess: 'successfully modified!',
     changeStatus: 'status changed to',

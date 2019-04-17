@@ -1,3 +1,8 @@
+//COMMON
+export const ERROR = 'ERROR';
+export const FETCH_ERROR = 'FETCH_ERROR';
+export const CONFIRM_NOTIFICATION = 'CONFIRM_NOTIFICATION';
+
 //AUTH
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -16,11 +21,6 @@ export const UPDATE_GROUP = 'UPDATE_GROUP';
 export const ADD_GROUP = 'ADD_GROUP';
 export const DELETE_GROUP = 'DELETE_GROUP';
 export const CHANGE_GROUP_STATUS = 'CHANGE_GROUP_STATUS';
-
-//COMMON
-export const ERROR = 'ERROR';
-export const FETCH_ERROR = 'FETCH_ERROR';
-export const CONFIRM_NOTIFICATION = 'CONFIRM_NOTIFICATION';
 
 //ROLES
 export const FETCH_ROLES = 'FETCH_ROLES';
@@ -42,3 +42,12 @@ export const FETCH_TICKETS = 'FETCH_TICKETS';
 export const FETCH_TICKET = 'FETCH_TICKET';
 export const SEARCH_TICKETS = 'SEARCH_TICKETS';
 export const UPDATE_TICKET = 'UPDATE_TICKET';
+
+//MESSAGES
+export const FETCH_MESSAGES = 'FETCH_MESSAGES';
+export const FETCH_MESSAGE = 'FETCH_MESSAGE';
+export const SEARCH_MESSAGES = 'SEARCH_MESSAGES';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+
+//TODO implement DELETE functionality in Private API during refactoring
+export const UNDONE_MESSAGE = 'UNDONE_MESSAGE';

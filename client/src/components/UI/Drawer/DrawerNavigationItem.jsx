@@ -1,5 +1,5 @@
+import { Icon, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React from 'react';
-import { ListItem, ListItemIcon, ListItemText, Icon } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 
 export const DrawerNavigationItem = props => {

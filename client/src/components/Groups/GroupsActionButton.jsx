@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
+import { debounce } from 'debounce';
 import React from 'react';
 import { changeGroupStatus } from '../../actions';
-import { debounce } from "debounce";
 
 export const actionButton = (text, type, row, classes, dispatch) => {
 

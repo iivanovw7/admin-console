@@ -12,8 +12,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const RoleContainer = props => {
 
-  const { classes, history, handleSubmit, dispatch } = props;
-  const role = props.roles.role;
+  const { classes, history, handleSubmit, dispatch, role } = props;
 
   useEffect(() => {
     props.initialize({
@@ -27,8 +26,7 @@ const RoleContainer = props => {
   }, [role]);
 
   const submit = formValues => {
-    return !role._id ?
-      props.addNewRole(formValues) : props.updateRole(formValues, role._id);
+    return !role._id ? props.addNewRole(formValues) : props.updateRole(formValues, role._id);
   };
 
   const showAlert = (message, success) => (
@@ -48,25 +46,30 @@ const RoleContainer = props => {
         <br/>
         <TextInputContainer dataType={'name'} required={true} type={'text'} rows={1}/>
         <TextInputContainer dataType={'code'} required={true} type={'text'} rows={1}/>
-        <TextInputContainer dataType={'description'} required={true} type={'text'} rows={4} rowsMax={12}/>
+        <TextInputContainer
+          dataType={'description'}
+          required={true}
+          type={'text'}
+          rows={4}
+          rowsMax={12}
+        />
         <CheckboxContainer name={'isPublic'} label={'Public'} value={''}/>
         <CheckboxContainer name={'isEditable'} label={'Editable'} value={''}/>
         <CheckboxContainer name={'active'} label={'Active'} value={''}/>
-        {
-          props.errorMessage && !props.messageConfirmed ?
-            showAlert(props.errorMessage, false) : ''
-        }
-        {
-          props.successMessage && !props.messageConfirmed ?
-            showAlert(props.successMessage, true) : ''
-        }
+        {props.errorMessage && !props.messageConfirmed && (
+          showAlert(props.errorMessage, false)
+        )}
+        {props.successMessage && !props.messageConfirmed && (
+          showAlert(props.successMessage, true)
+        )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
             variant="contained" color="primary"
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/roles`);
-            }}>
+            }}
+          >
             CANCEL
           </Button>
           <Button
@@ -75,7 +78,8 @@ const RoleContainer = props => {
             type="submit"
             style={
               { textTransform: 'none', margin: 5 }
-            }>
+            }
+          >
             SAVE
           </Button>
         </Grid>
@@ -94,7 +98,6 @@ function mapStateToProps(state) {
     errorMessage: state.roles.error,
     successMessage: state.roles.success,
     messageConfirmed: state.roles.confirmed,
-    roles: state.roles
   };
 }
 

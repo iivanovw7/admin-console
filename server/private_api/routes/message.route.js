@@ -4,7 +4,6 @@ import { catchErrors, checkAccess } from '../helper-functions';
 import * as paramValidation from '../config/validation/messages.config';
 import * as messages from '../controllers/message.controller';
 
-
 const router = express.Router();
 
 router.route('/')

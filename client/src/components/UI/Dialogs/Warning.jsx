@@ -1,6 +1,12 @@
-import React from 'react';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import React from 'react';
 
 const Warning = props => {
 
@@ -35,7 +41,6 @@ const Warning = props => {
   );
 
 };
-
 
 
 export default Warning;

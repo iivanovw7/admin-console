@@ -1,10 +1,10 @@
-import { Grid, MenuItem, FormControlLabel, InputLabel, FormControl } from '@material-ui/core';
+import { FormControl, FormControlLabel, Grid, InputLabel, MenuItem } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Field } from 'redux-form';
-import { renderTextField } from './TextField';
-import { renderCheckbox } from './Checkbox';
-import PropTypes from 'prop-types';
 import { Select } from 'redux-form-material-ui';
+import { renderCheckbox } from './Checkbox';
+import { renderTextField } from './TextField';
 
 export const CheckboxContainer = props => {
 
@@ -73,15 +73,16 @@ TextInputContainer.propTypes = {
 
 export const SelectInputContainer = props => {
 
-  const { dataType, list, label, valueField } = props;
+  const { dataType, list, label, valueField, disabled } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">
       <Grid item md={true} sm={true} xs={true}>
-        <FormControl style={{width: '100%'}}>
+        <FormControl style={{ width: '100%' }}>
           <InputLabel>{label}</InputLabel>
           <Field
             name={dataType}
+            disabled={disabled}
             component={Select}
           >
             {list.map(element => (

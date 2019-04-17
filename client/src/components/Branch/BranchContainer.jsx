@@ -13,8 +13,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const BranchContainer = props => {
 
-  const { classes, history, handleSubmit, dispatch } = props;
-  const branch = props.branches.branch;
+  const { classes, history, handleSubmit, dispatch, branch } = props;
 
   useEffect(() => {
     props.initialize({
@@ -29,8 +28,7 @@ const BranchContainer = props => {
   }, [branch]);
 
   const submit = formValues => {
-    return !branch._id ?
-      props.addNewBranch(formValues) : props.updateBranch(formValues, branch._id);
+    return !branch._id ? props.addNewBranch(formValues) : props.updateBranch(formValues, branch._id);
   };
 
   const showAlert = (message, success) => (
@@ -50,19 +48,29 @@ const BranchContainer = props => {
         <br/>
         <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
         <TextInputContainer dataType={'email'} type={'email'} required={true} rows={1}/>
-        <TextInputContainer dataType={'phone'} type={'phone'} required={true} rows={1} normalize={normalizePhone}/>
-        <TextInputContainer dataType={'fax'} type={'fax'} required={true} rows={1} normalize={normalizePhone}/>
+        <TextInputContainer
+          dataType={'phone'}
+          type={'phone'}
+          required={true}
+          rows={1}
+          normalize={normalizePhone}
+        />
+        <TextInputContainer
+          dataType={'fax'}
+          type={'fax'}
+          required={true}
+          rows={1}
+          normalize={normalizePhone}
+        />
         <TextInputContainer dataType={'address'} required={true} type={'text'} rows={4}/>
         <TextInputContainer dataType={'information'} required={true} type={'text'} rows={4}/>
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
-        {
-          props.errorMessage && !props.messageConfirmed ?
-            showAlert(props.errorMessage, false) : ''
-        }
-        {
-          props.successMessage && !props.messageConfirmed ?
-            showAlert(props.successMessage, true) : ''
-        }
+        {props.errorMessage && !props.messageConfirmed && (
+          showAlert(props.errorMessage, false)
+        )}
+        {props.successMessage && !props.messageConfirmed && (
+          showAlert(props.successMessage, true)
+        )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
           <Button
             variant="contained"
@@ -70,14 +78,16 @@ const BranchContainer = props => {
             style={{ textTransform: 'none', margin: 5 }}
             onClick={() => {
               history.push(`/branches`);
-            }}>
+            }}
+          >
             CANCEL
           </Button>
           <Button
             variant="contained"
             color="primary"
             type="submit"
-            style={{ textTransform: 'none', margin: 5 }}>
+            style={{ textTransform: 'none', margin: 5 }}
+          >
             SAVE
           </Button>
         </Grid>
@@ -96,7 +106,6 @@ function mapStateToProps(state) {
     errorMessage: state.branches.error,
     successMessage: state.branches.success,
     messageConfirmed: state.branches.confirmed,
-    branches: state.branches
   };
 }
 

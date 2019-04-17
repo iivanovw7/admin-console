@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getTickets, searchTickets } from '../actions';
+import TicketsContainer from '../components/Tickets/TicketsContainer';
 import { LimitSelector } from '../components/UI/LimitSelector';
 import { PageSelector } from '../components/UI/PageSelector';
 import SearchBar from '../components/UI/SearchBar';
 import Spinner from '../components/UI/Spinner';
 import { Wrapper } from '../components/UI/ThemeProperties';
-import TicketsContainer from '../components/Tickets/TicketsContainer';
 
 const Tickets = props => {
 
@@ -46,6 +46,16 @@ const Tickets = props => {
     ticketsSearch(value);
   }
 
+  const renderTicketsContainer = () => (
+    <TicketsContainer
+      tickets={tickets}
+      page={currentPage}
+      limit={limit}
+      search={searchTerm}
+      dispatch={dispatch}
+    />
+  );
+
   return (
     <main className={classes.contentList}>
       <div>
@@ -59,14 +69,16 @@ const Tickets = props => {
           tooltip={'Search by Ticket author`s Name or Subject'}
           onSearchTermChange={handleNewSearch}
         />
-        {!tickets ? <Spinner/> :
-          <TicketsContainer tickets={tickets} page={currentPage} limit={limit} search={searchTerm}
-                          dispatch={dispatch}/>}
+        {!tickets ? <Spinner/> : renderTicketsContainer()}
       </div>
-      <Paper className={classes.controlsContainer}
-             style={{ marginTop: '24px', marginBottom: '24px' }}>
+      <Paper
+        className={classes.controlsContainer}
+        style={{ marginTop: '24px', marginBottom: '24px' }}
+      >
         <LimitSelector classes={classes} limit={limit} limits={limits} handleLimit={handleLimit}/>
-        <p style={{ color: 'red' }}>{props.errorMessage}</p>
+        <p style={{ color: 'red' }}>
+          {props.errorMessage && !props.messageConfirmed}
+        </p>
         <PageSelector classes={classes} data={props.tickets} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -75,14 +87,18 @@ const Tickets = props => {
 
 Tickets.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     tickets: state.tickets,
     errorMessage: state.tickets.error,
-    successMessage: state.tickets.success
+    successMessage: state.tickets.success,
+    messageConfirmed: state.tickets.confirmed
   };
 }
 

@@ -10,6 +10,7 @@ import { Wrapper } from '../components/UI/ThemeProperties';
 
 const Role = props => {
   const { classes, history, dispatch } = props;
+  const role = props.roles.role;
 
   return (
     <main className={classes.contentSingle}>
@@ -18,15 +19,20 @@ const Role = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      <p style={{ color: 'red' }}>{props.errorMessage && !props.messageConfirmed}</p>
-      <RoleContainer history={history} dispatch={dispatch}/>
+      <p style={{ color: 'red' }}>
+        {props.errorMessage && !props.messageConfirmed}
+      </p>
+      <RoleContainer role={role} history={history} dispatch={dispatch}/>
     </main>
   );
 };
 
 Role.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  errorMessage: PropTypes.string,
+  successMessage: PropTypes.string,
+  messageConfirmed: PropTypes.bool
 };
 
 function mapStateToProps(state) {

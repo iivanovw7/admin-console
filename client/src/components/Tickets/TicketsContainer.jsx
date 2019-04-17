@@ -1,12 +1,12 @@
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getSingleTicket } from '../../actions';
 import { Container } from '../UI/ThemeProperties';
-import moment from 'moment';
 
 const TicketsContainer = props => {
   const { classes, history, dispatch, tickets } = props;

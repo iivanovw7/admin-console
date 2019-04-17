@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/actionTypes';
 import { formLocalizedNotification as message }  from '../localization/notifications';
 
 const initialState = {

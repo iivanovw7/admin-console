@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Divider, List, NoSsr } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React from 'react';
 import logo from '../../../logo.svg';
 import { NavigationStyles } from '../ThemeProperties';
 import { DrawerNavigationItem } from './DrawerNavigationItem';
-import { withStyles } from '@material-ui/core/styles';
 
 const DrawerNavigation = props => {
 
