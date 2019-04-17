@@ -33,7 +33,6 @@ const VerticalBars = props => {
     .call(d3.axisLeft(y))
     .call(g => g.select('.domain').remove());
 
-
   useEffect(() => {
 
     const header = props.connectFauxDOM('div', `${frameName}div`);

@@ -1,7 +1,7 @@
 import React from 'react';
 import HorizontalBars from '../components/Statistics/Chart/ChartModes/HorizontalBars';
-import VerticalBars from '../components/Statistics/Chart/ChartModes/VerticalBars';
 import PieChart from '../components/Statistics/Chart/ChartModes/PieChart';
+import VerticalBars from '../components/Statistics/Chart/ChartModes/VerticalBars';
 
 //returns selected component
 export const SwitchedComponent = props => {
@@ -55,18 +55,6 @@ export function formDataForCharts(data) {
   return array;
 
 }
-
-/*
-{
-  cols: [{ name: "A", key: 0 }, { name: "B", key: 1 }, { name: "C", key: 2 }],
-  data: [
-    [ "id",    "name", "value" ],
-    [    1, "sheetjs",    7262 ],
-    [    2, "js-xlsx",    6969 ]
-  ]
-}
-
- */
 
 //forms array of data needed to export in xlsx
 export function formDataForExcel(data) {

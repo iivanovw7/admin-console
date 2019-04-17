@@ -87,7 +87,6 @@ const PieChart = props => {
 
   }, [data]);
 
-
   props.animateFauxDOM(800);
   return (
     <div id={props.dataType}>
