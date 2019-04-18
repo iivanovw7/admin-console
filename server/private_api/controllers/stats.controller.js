@@ -220,8 +220,10 @@ async function getStatistics(req, res, next) {
       if (branch) {
 
         res.json([
-          { view_mode: role },
-          { branch_name: branch.name },
+          {
+            view_mode: role,
+            branch_name: branch.name
+          },
           { months: req.query.months },
           await next(limit, { branch: branch._id })
         ]);
@@ -242,8 +244,10 @@ async function getStatistics(req, res, next) {
       if (group) {
 
         res.json([
-          { view_mode: role },
-          { group_name: group.name },
+          {
+            view_mode: role,
+            group_name: group.name
+          },
           { months: req.query.months },
           await next(limit, { group: group._id })
         ]);
