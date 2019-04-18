@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getBranches } from '../actions';
 import BranchesContainer from '../components/Branches/BranchesContainer';
-import AddNewButton from '../components/UI/AddButton';
+import AddNewButton from '../components/UI/ButtonAddNew';
 import { PageSelector } from '../components/UI/PageSelector';
 import Spinner from '../components/UI/Spinner';
 import { Wrapper } from '../components/UI/ThemeProperties';

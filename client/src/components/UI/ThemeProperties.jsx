@@ -194,7 +194,7 @@ export const Wrapper = theme => ({
       display: 'none'
     }
   },
-  fromLimitSelector: {
+  formLimitSelector: {
     display: 'flex',
     flexWrap: 'wrap',
     [theme.breakpoints.down('sm')]: {

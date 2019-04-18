@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getGroups } from '../actions';
 import GroupsContainer from '../components/Groups/GroupsContainer';
-import AddNewButton from '../components/UI/AddButton';
+import AddNewButton from '../components/UI/ButtonAddNew';
 import { PageSelector } from '../components/UI/PageSelector';
 import Spinner from '../components/UI/Spinner';
 import { Wrapper } from '../components/UI/ThemeProperties';

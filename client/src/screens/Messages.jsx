@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getMessages, searchMessages } from '../actions';
 import MessagesContainer from '../components/Messages/MessagesContainer';
-import AddNewButton from '../components/UI/AddButton.jsx';
+import ButtonAddNew from '../components/UI/ButtonAddNew.jsx';
 import { Selector } from '../components/UI/Selector';
 import { PageSelector } from '../components/UI/PageSelector';
 import SearchBar from '../components/UI/SearchBar';
@@ -65,7 +65,7 @@ const Messages = props => {
           <div className={classes.selectorsContainer}>
             <h2>Messages</h2>
           </div>
-          <AddNewButton history={history} element={'messages'}/>
+          <ButtonAddNew history={history} element={'messages'}/>
         </Paper>
         <SearchBar
           value={searchTerm}

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Buttons } from './ThemeProperties';
 
-const AddButton = props => {
+const ButtonAddNew = props => {
 
   const { classes, history, element } = props;
 
@@ -39,8 +39,8 @@ const AddButton = props => {
 
 };
 
-AddButton.propTypes = {
+ButtonAddNew.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(Buttons, { withTheme: true })(AddButton);
+export default withStyles(Buttons, { withTheme: true })(ButtonAddNew);

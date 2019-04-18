@@ -21,9 +21,7 @@ describe('ExampleView', () => {
   });
 
   it('Should render with correct data', () => {
-    const el = shallow(
-      <Login {...fixture} />
-    );
+    const el = shallow(<Login {...fixture} />);
 
     expect(el.length).toEqual(1);
     //TODO fill with desired output

@@ -6,7 +6,7 @@ export const Selector = props => {
   const { classes, option, handleSelect, options, title, disabled } = props;
 
   return (
-    <div className={classes.fromLimitSelector}>
+    <div className={classes.formLimitSelector}>
       <FormControl className={classes.formControl}>
         <InputLabel>{title}</InputLabel>
         <Select
