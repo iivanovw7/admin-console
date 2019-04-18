@@ -107,7 +107,7 @@ export const updateGroup = (formValues, id) => {
 export const changeGroupStatus = (id, status) => {
 
   return async dispatch => {
-    await axios.put(`${URL.PRIVATE_API}/groups/${id}`, status, { withCredentials: true })
+    await axios.put(`${URL.PRIVATE_API}/groups/${id}`, { status }, { withCredentials: true })
                .then(response => {
                  dispatch({
                    type: types.CHANGE_GROUP_STATUS,

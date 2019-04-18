@@ -9,9 +9,7 @@ import { withRouter } from 'react-router-dom';
 import { logoutUser } from '../../../actions';
 import { NavigationStyles } from '../ThemeProperties';
 
-
 const AppBarContainer = props => {
-
   const { classes, handleDrawerToggle, history, dispatch } = props;
 
   return (

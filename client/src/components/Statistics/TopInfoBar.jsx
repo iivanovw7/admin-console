@@ -13,10 +13,10 @@ export const TopInfoBar = props => {
     <List style={{ paddingTop: 0, paddingBottom: 0, flexDirection: 'row', display: 'flex' }}>
       <TopInfoBarElement title={'View'} icon={'view_module'} view={viewMode} {...props}/>
       {viewGroup && (
-        <TopInfoBarElement title={'Group'} icon={'timeline'} view={viewGroup} {...props}/>
+        <TopInfoBarElement title={'Group'} icon={'business_center'} view={viewGroup} {...props}/>
       )}
       {viewBranch && (
-        <TopInfoBarElement title={'Branch'} icon={'timeline'} view={viewBranch} {...props}/>
+        <TopInfoBarElement title={'Branch'} icon={'location_city'} view={viewBranch} {...props}/>
       )}
     </List>
   );
