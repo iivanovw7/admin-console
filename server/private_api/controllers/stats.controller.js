@@ -92,8 +92,6 @@ const ticketsCounter = async (limit, param) => {
 
     //final search queries object
     const queries = {};
-
-
     queries.total = {
       created: { $gt: limit }
     };
@@ -110,7 +108,6 @@ const ticketsCounter = async (limit, param) => {
     for (const prop of Object.keys(defaultStatusModels)) {
 
       const value = defaultStatusModels[prop];
-
       const query = {
         created: { $gt: limit }
       };
@@ -126,7 +123,6 @@ const ticketsCounter = async (limit, param) => {
       }
 
       query.status = value;
-
       queries[prop] = query;
 
     }
