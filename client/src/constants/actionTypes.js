@@ -1,5 +1,5 @@
 //COMMON
-export const ERROR = 'ERROR';
+export const GENERAL_ERROR = 'GENERAL_ERROR';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const CONFIRM_NOTIFICATION = 'CONFIRM_NOTIFICATION';
 

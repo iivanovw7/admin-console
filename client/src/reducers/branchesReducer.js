@@ -74,7 +74,7 @@ export default function (state = initialState, action) {
         confirmed: false,
       };
     }
-    case types.ERROR: {
+    case types.GENERAL_ERROR: {
       return {
         ...state,
         list: {

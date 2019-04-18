@@ -154,7 +154,7 @@ export default function (state = initialState, action) {
         }
       };
     }
-    case types.ERROR: {
+    case types.GENERAL_ERROR: {
       return {
         ...state,
         message: {},

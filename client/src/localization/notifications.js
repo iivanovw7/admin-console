@@ -6,7 +6,7 @@ export function formLocalizedNotification(name, action, locale, newState) {
   const modelName = strings[locale][action.type.split('_')[1].toLocaleLowerCase()];
 
     switch (action.type) {
-      case types.ERROR: {
+      case types.GENERAL_ERROR: {
         return (
           `${strings[locale].error}`
         );

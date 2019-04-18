@@ -51,9 +51,11 @@ export default function (state = initialState, action) {
           action,
           'en'
         ),
+        success: null,
+        confirmed: false,
       };
     }
-    case types.ERROR: {
+    case types.GENERAL_ERROR: {
       return {
         ...state,
         list: {

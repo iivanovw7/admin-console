@@ -1,39 +1,30 @@
+import * as axios from 'axios';
 import Cookies from 'js-cookie';
 import * as types from '../constants/actionTypes';
 import * as URL from '../constants/api';
-import axios from 'axios';
 
 export const getMessages = (page, limit, history) => {
 
   return async dispatch => {
 
-    await axios({
-      method: 'get',
-      url: `${URL.PRIVATE_API}/messages`,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      params: {
-        page: page,
-        limit: limit
-      },
+    await axios.get(`${URL.PRIVATE_API}/messages`, {
+      params: { page, limit },
       withCredentials: true
     })
-      .then(response => {
-        dispatch({
-          type: types.FETCH_MESSAGES,
-          payload: response
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        Cookies.remove('LoggedUserObject');
-        dispatch({
-          type: types.UNAUTHENTICATED
-        });
-        history.push('/');
-      });
+               .then(response => {
+                 dispatch({
+                   type: types.FETCH_MESSAGES,
+                   payload: response
+                 });
+               })
+               .catch(error => {
+                 console.log(error);
+                 Cookies.remove('LoggedUserObject');
+                 dispatch({
+                   type: types.UNAUTHENTICATED
+                 });
+                 history.push('/');
+               });
   };
 };
 
@@ -41,93 +32,74 @@ export const searchMessages = (page, limit, query, history) => {
 
   return async dispatch => {
 
-    await axios({
-      method: 'get',
-      url: `${URL.PRIVATE_API}/messages/search`,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      params: {
-        page: page,
-        limit: limit,
-        search: query
-      },
+    await axios.get(`${URL.PRIVATE_API}/messages/search`, {
+      params: { page, limit, search: query },
       withCredentials: true
     })
-      .then(response => {
-        dispatch({
-          type: types.SEARCH_MESSAGES,
-          payload: response
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        Cookies.remove('LoggedUserObject');
-        dispatch({
-          type: types.UNAUTHENTICATED
-        });
-        history.push('/');
-      });
+               .then(response => {
+                 dispatch({
+                   type: types.SEARCH_MESSAGES,
+                   payload: response
+                 });
+               })
+               .catch(error => {
+                 console.log(error);
+                 Cookies.remove('LoggedUserObject');
+                 dispatch({
+                   type: types.UNAUTHENTICATED
+                 });
+                 history.push('/');
+               });
   };
 };
 
 export const getSingleMessage = (id, history) => {
 
   return async dispatch => {
-    await axios({
-      method: 'get',
-      url: `${URL.PRIVATE_API}/messages/${id}`,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.FETCH_MESSAGE,
-          payload: response
-        });
-        history.push(`/messages/${id}`);
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.FETCH_ERROR
-        });
-        history.push('/messages');
-      });
+    await axios.get(`${URL.PRIVATE_API}/messages/${id}`, { withCredentials: true })
+               .then(response => {
+                 dispatch({
+                   type: types.FETCH_MESSAGE,
+                   payload: response
+                 });
+                 history.push(`/messages/${id}`);
+               })
+               .catch(error => {
+                 console.log(error);
+                 dispatch({
+                   type: types.FETCH_ERROR
+                 });
+                 history.push('/messages');
+               });
   };
 };
 
 
 export const sendMessage = (formValues, destination) => {
-
   return async dispatch => {
-    await axios({
-      method: 'post',
-      url: `${URL.PRIVATE_API}/messages/new`,
-      data: {
+    await axios.post(`${URL.PRIVATE_API}/messages/new`,
+      {
         subject: formValues.subject,
         message: formValues.message,
         senderId: formValues.sender,
-        [`${destination}Id`]: formValues[destination],
+        [`${destination}Id`]: formValues[destination]
       },
-      withCredentials: true
-    })
-      .then(response => {
-        dispatch({
-          type: types.ADD_MESSAGE,
-          payload: response
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: types.ERROR
-        });
-      });
+      {
+        withCredentials: true
+      }
+    )
+               .then(response => {
+                 dispatch({
+                   type: types.ADD_MESSAGE,
+                   payload: response
+                 });
+               })
+               .catch(error => {
+                 console.log(error);
+                 dispatch({
+                   type: types.GENERAL_ERROR
+                 });
+               });
 
   };
 };
