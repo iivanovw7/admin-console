@@ -1,7 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
-import expect from 'expect';
 import { loginUser, logoutUser } from '../../actions';
 import * as types from '../../constants/actionTypes';
 import { createMemoryHistory } from 'history';
@@ -10,6 +9,11 @@ import userMock from './../../__mocks__/user.js';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const history = createMemoryHistory('/dashboard');
+
+let headers = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
 
 const setup = () => {
 
@@ -52,11 +56,6 @@ const setup = () => {
 
     it('Performs Login action', () => {
 
-      let headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      };
-
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -86,9 +85,35 @@ const setup = () => {
       });
     });
 
+    it('Login attempt with wrong password', () => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 403,
+          headers: headers,
+        });
+      });
+
+      const expectedActions = [
+        { type: types.AUTHENTICATION_ERROR },
+      ];
+
+      const store = mockStore({
+        user: {
+          authenticated: false,
+          loggedUserObject: undefined
+        },
+        error: null
+      });
+
+      return store.dispatch(loginUser({email: 'admin@company.org', password: 'password'}, history)).then(() => {
+        const storeActions = store.getActions();
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
   });
 
 };
-
 
 setup();
