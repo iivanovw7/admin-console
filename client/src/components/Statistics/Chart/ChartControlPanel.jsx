@@ -23,7 +23,6 @@ export const ChartControlPanel = props => {
 
     //gets empty iframe by id
     const pri = document.getElementById('ifmcontentstoprint').contentWindow;
-
     pri.document.open(); //opens iframe
     pri.document.write(content.innerHTML); //writes chart into iframe
     pri.document.close(); //closes iframe
