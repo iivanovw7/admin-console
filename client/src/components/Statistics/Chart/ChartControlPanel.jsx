@@ -16,15 +16,18 @@ export const ChartControlPanel = props => {
   const { classes, dataType, limit, limits, handleLimitSelect, handleTypeSelect, total, style, stats } = props;
   const [appendCsv, setCsvReport] = useState(false);
 
-  //find chart container by ID, then append content to iframe to focus and print
-  function printChartData() {
+  function sendChartToPrint() {
+
+    //gets component with chart by id
     const content = document.getElementById(dataType);
+
+    //gets empty iframe by id
     const pri = document.getElementById('ifmcontentstoprint').contentWindow;
-    pri.document.open();
-    pri.document.write(content.innerHTML);
-    pri.document.close();
-    pri.focus();
-    pri.print();
+    pri.document.open(); //opens iframe
+    pri.document.write(content.innerHTML); //writes chart into iframe
+    pri.document.close(); //closes iframe
+    pri.focus(); //send iframe to the front)
+    pri.print(); //triggers browser built-in print function
   }
 
   function exportToXlsx() {
@@ -112,7 +115,7 @@ export const ChartControlPanel = props => {
           image={pdfIcon}
           alt={'Create pdf report'}
           handleClick={() => {
-            printChartData();
+            sendChartToPrint();
           }}
         />
       </div>
