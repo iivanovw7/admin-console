@@ -35,8 +35,6 @@ export const ChartTypeSelector = props => {
 };
 
 ChartTypeSelector.propTypes = {
-  classes: PropTypes.object.isRequired,
-  dataType: PropTypes.string.isRequired,
   handleSelect: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired
 };
