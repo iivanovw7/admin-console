@@ -1,6 +1,5 @@
 import { List } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Buttons } from '../UI/ThemeProperties';
 import { TopInfoBarElement } from './TopInfoBarElement';
@@ -20,13 +19,6 @@ export const TopInfoBar = props => {
       )}
     </List>
   );
-};
-
-TopInfoBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  viewBranch: PropTypes.string,
-  viewGroup: PropTypes.string,
-  viewMode: PropTypes.string.isRequired
 };
 
 export default withStyles(Buttons, { withTheme: true })(TopInfoBar);
