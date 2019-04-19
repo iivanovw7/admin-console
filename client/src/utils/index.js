@@ -30,7 +30,6 @@ export const SwitchedComponent = props => {
     default:
       Output = (null); // to return nothing, use null
       break;
-
   }
   return Output;
 };
@@ -53,7 +52,6 @@ export function formDataForCharts(data) {
     }
   }
   return array;
-
 }
 
 //forms array of data needed to export in xlsx

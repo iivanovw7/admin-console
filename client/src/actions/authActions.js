@@ -32,7 +32,6 @@ export const loginUser = ({ email, password }, history) => {
                    type: types.AUTHENTICATION_ERROR
                  });
                });
-
   };
 };
 
@@ -50,7 +49,6 @@ export const logoutUser = history => {
                  history.push('/');
                })
                .catch(error => {
-                 console.log(error);
                  Cookies.remove('LoggedUserObject');
                  dispatch({
                    type: types.UNAUTHENTICATED

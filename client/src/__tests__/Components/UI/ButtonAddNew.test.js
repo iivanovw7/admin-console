@@ -3,8 +3,8 @@ import { createMount, createShallow } from '@material-ui/core/test-utils';
 import { createMemoryHistory } from 'history';
 import jest from 'jest-mock';
 import React from 'react';
-import ButtonAddNew from '../../../components/UI/ButtonAddNew.jsx';
-import { Buttons } from '../../../components/UI/ThemeProperties.jsx';
+import ButtonAddNew from '../../../components/UI/ButtonAddNew';
+import { Buttons } from '../../../components/UI/ThemeProperties';
 
 const setup = () => {
   let wrapper;

@@ -1,8 +1,8 @@
 import { withStyles } from '@material-ui/core/styles';
 import { createMount, createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
-import { Selector } from '../../../components/UI/Selector.jsx';
-import { Wrapper } from '../../../components/UI/ThemeProperties.jsx';
+import { Selector } from '../../../components/UI/Selector';
+import { Wrapper } from '../../../components/UI/ThemeProperties';
 import { storeFactory } from '../../../testUtils';
 import jest from 'jest-mock';
 

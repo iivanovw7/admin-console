@@ -7,20 +7,24 @@ import { routes } from './app-routes';
 import './config/passport.config.js';
 import cors from 'cors';
 
-const allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-  next();
-};
+const allowedOrigins = ['http://localhost:3000', 'http://localhost'];
 
 const app = express();
 app.use(cors({credentials: true, origin: true}));
-app.use(allowCrossDomain);
-
-app.use(allowCrossDomain);
+app.use(cors({
+  origin: function(origin, callback){
+    // allow requests with no origin
+    // (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = 'The CORS policy for this site does not ' +
+        'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
+//app.use(allowCrossDomain);
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(cookieParser());
