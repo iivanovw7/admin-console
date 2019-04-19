@@ -20,8 +20,6 @@ export const TimeLimitSelector = props => {
 };
 
 TimeLimitSelector.propTypes = {
-  classes: PropTypes.object.isRequired,
-  dataType: PropTypes.string.isRequired,
   handleLimit: PropTypes.func.isRequired,
   limits: PropTypes.array.isRequired
 };

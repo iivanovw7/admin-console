@@ -109,48 +109,12 @@ export default function (state = initialState, action) {
         }
       };
     }
-    case types.SET_GROUPS_CHARTS_STYLE: {
+    case types.SET_CHART_STYLE: {
       return {
         ...state,
-        groups: {
-          ...state.groups,
-          chartsStyle: action.payload
-        }
-      };
-    }
-    case types.SET_MESSAGES_CHARTS_STYLE: {
-      return {
-        ...state,
-        messages: {
-          ...state.messages,
-          chartsStyle: action.payload
-        }
-      };
-    }
-    case types.SET_PERMISSIONS_CHARTS_STYLE: {
-      return {
-        ...state,
-        permissions: {
-          ...state.permissions,
-          chartsStyle: action.payload
-        }
-      };
-    }
-    case types.SET_USERS_CHARTS_STYLE: {
-      return {
-        ...state,
-        users: {
-          ...state.users,
-          chartsStyle: action.payload
-        }
-      };
-    }
-    case types.SET_TICKETS_CHARTS_STYLE: {
-      return {
-        ...state,
-        tickets: {
-          ...state.tickets,
-          chartsStyle: action.payload
+        [action.category]: {
+          ...state[action.category],
+          chartStyle: action.payload
         }
       };
     }

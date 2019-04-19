@@ -9,21 +9,35 @@ import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../u
 import Spinner from '../../UI/Spinner';
 import { Container } from '../../UI/ThemeProperties';
 import { ChartControlPanel } from './ChartControlPanel';
+import { statsQueryTimeLimits } from '../../../constants/defaultLimits';
+import { debounce } from 'debounce';
 
 const ChartContainer = props => {
 
   const { history, dispatch, dataType, width } = props;
-  const limits = [6, 12, 24, 36, 48];
+
+  //List of options for time period selector
+  const limits = statsQueryTimeLimits;
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [chartType, setChartType] = useState(props.style);
+
+  //Time limit value for statistics query, units: months
   const [limit, setLimit] = useState(props.months || 12);
 
   //Getting current screen width for adaptive charts
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
+
+    function getNewScreenSize() {
+      debouncedResize(window.innerWidth);
+    }
+
+    const debouncedResize = debounce((value) => {
+      setScreenWidth(value);
+    }, 500);
+
+    window.addEventListener('resize', getNewScreenSize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', getNewScreenSize);
     };
   });
 
@@ -74,11 +88,8 @@ const ChartContainer = props => {
 };
 
 ChartContainer.propTypes = {
-  classes: PropTypes.object.isRequired,
-  dataType: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  style: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired
 };
 
