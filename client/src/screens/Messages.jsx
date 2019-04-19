@@ -1,4 +1,5 @@
-import { Paper, withStyles } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { debounce } from 'debounce';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -6,12 +7,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getMessages, searchMessages } from '../actions';
 import MessagesContainer from '../components/Messages/MessagesContainer';
-import { LimitSelector } from '../components/UI/LimitSelector';
+import AddNewButton from '../components/UI/AddButton.jsx';
+import { Selector } from '../components/UI/Selector';
 import { PageSelector } from '../components/UI/PageSelector';
 import SearchBar from '../components/UI/SearchBar';
 import Spinner from '../components/UI/Spinner';
 import { Wrapper } from '../components/UI/ThemeProperties';
-import AddNewButton from '../components/UI/AddButton.jsx';
 
 const Messages = props => {
 
@@ -77,10 +78,14 @@ const Messages = props => {
         className={classes.controlsContainer}
         style={{ marginTop: '24px', marginBottom: '24px' }}
       >
-        <LimitSelector classes={classes} limit={limit} limits={limits} handleLimit={handleLimit}/>
-        <p style={{ color: 'red' }}>
-          {props.errorMessage && !props.messageConfirmed}
-        </p>
+        <Selector
+          classes={classes}
+          title={'Results limit'}
+          option={limit}
+          options={limits}
+          disabled={false}
+          handleSelect={handleLimit}
+        />
         <PageSelector classes={classes} data={props.messages} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -89,18 +94,12 @@ const Messages = props => {
 
 Messages.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    messages: state.messages,
-    errorMessage: state.messages.error,
-    successMessage: state.messages.success,
-    messageConfirmed: state.messages.confirmed
+    messages: state.messages
   };
 }
 

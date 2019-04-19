@@ -1,4 +1,5 @@
-import { Paper, withStyles } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -50,9 +51,7 @@ const Groups = props => {
         className={classes.controlsContainer}
         style={{ marginTop: '24px', marginBottom: '24px' }}
       >
-        <p style={{ color: 'red' }}>
-          {props.errorMessage && !props.messageConfirmed}
-        </p>
+        <div/>
         <PageSelector classes={classes} data={props.groups} handlePage={handlePage}/>
       </Paper>
     </main>
@@ -61,18 +60,12 @@ const Groups = props => {
 
 Groups.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    groups: state.groups,
-    errorMessage: state.groups.error,
-    successMessage: state.groups.success,
-    messageConfirmed: state.groups.confirmed
+    groups: state.groups
   };
 }
 

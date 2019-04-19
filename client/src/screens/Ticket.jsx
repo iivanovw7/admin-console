@@ -29,27 +29,18 @@ const Ticket = props => {
         </div>
       </Paper>
       {!ticket ? <Spinner/> : renderTicketContainer()}
-      <p style={{ color: 'red' }}>
-        {props.errorMessage && !props.messageConfirmed}
-      </p>
     </main>
   );
 };
 
 Ticket.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    tickets: state.tickets,
-    errorMessage: state.tickets.error,
-    successMessage: state.tickets.success,
-    messageConfirmed: state.tickets.confirmed
+    tickets: state.tickets
   };
 }
 

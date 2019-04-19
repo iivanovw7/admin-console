@@ -19,9 +19,6 @@ const Role = props => {
           <h2>Create/Edit group</h2>
         </div>
       </Paper>
-      <p style={{ color: 'red' }}>
-        {props.errorMessage && !props.messageConfirmed}
-      </p>
       <RoleContainer role={role} history={history} dispatch={dispatch}/>
     </main>
   );
@@ -29,18 +26,12 @@ const Role = props => {
 
 Role.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    roles: state.roles,
-    errorMessage: state.roles.error,
-    successMessage: state.roles.success,
-    messageConfirmed: state.roles.confirmed
+    roles: state.roles
   };
 }
 

@@ -1,8 +1,8 @@
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Container } from '../UI/ThemeProperties';
 
 const ViewMessageContainer = props => {
@@ -12,9 +12,9 @@ const ViewMessageContainer = props => {
 
   return (
     <Paper className={classes.root}>
-      <div className={classes.branchPaper} >
+      <div className={classes.branchPaper}>
         <TextField
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           label='Sender'
           value={sender}
           margin='normal'
@@ -23,7 +23,7 @@ const ViewMessageContainer = props => {
         />
         {message.branchId && (
           <TextField
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             label='Branch'
             value={message.branchId.name}
             margin='normal'
@@ -33,7 +33,7 @@ const ViewMessageContainer = props => {
         )}
         {message.groupId && (
           <TextField
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             label='Group'
             value={message.groupId.name}
             margin='normal'
@@ -42,7 +42,7 @@ const ViewMessageContainer = props => {
           />
         )}
         <TextField
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           label='Created'
           value={created}
           margin='normal'
@@ -50,7 +50,7 @@ const ViewMessageContainer = props => {
           disabled={true}
         />
         <TextField
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           label='Message'
           value={message.message}
           margin='normal'

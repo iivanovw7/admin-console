@@ -1,10 +1,10 @@
 import httpStatus from 'http-status';
-import Role from '../../models/Role';
-import User from '../../models/User';
 import Branch from '../../models/Branch';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
-import { fullAccess, branchAccess, groupAccess } from '../config/constants.config';
+import Role from '../../models/Role';
+import User from '../../models/User';
+import { branchAccess, fullAccess, groupAccess } from '../config/constants.config';
 import { ifArrayContains } from '../helper-functions';
 
 /**
@@ -57,7 +57,7 @@ async function collectMessages(req, res, params) {
                              .limit(limit)
                              .sort({ created: '-1' });
 
-  const countPromise = Message.countDocuments();
+  const countPromise = Message.countDocuments(params);
   const [output, results] = await Promise.all([findPromise, countPromise]);
   const pages = Math.ceil(results / limit);
 
@@ -212,31 +212,36 @@ const searchMessages = async (req, res) => {
   const role = user.role.code;
 
   //querying tickets by subject
-  const idQuery = { $or: [{ name: search }, { surname: search }] };
+  const idQuery = {
+    $or: [{ name: { $regex: search, $options: 'i' } }, {
+      surname: {
+        $regex: search,
+        $options: 'i'
+      }
+    }]
+  };
 
   //getting ids of tickets authors
   const userIDs = await User.find(idQuery).distinct('_id');
 
   //querying tickets
   const messagesQuery = {
-    $and: [
-      {
-        $or: [
-          { subject: { $regex: search, $options: 'i' } },
-          { authorId: { $in: userIDs } }
-        ]
-      }
+    $or: [
+      { subject: { $regex: search, $options: 'i' } },
+      { senderId: { $in: userIDs } }
     ]
   };
 
+
+
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, branchAccess)) {
-    messagesQuery.$and.push({ branchId: user.branch });
+    messagesQuery['$and'] = [{branchId: user.branch}];
   }
 
   //if user has access limit applying additional parameters to a search query
   if (ifArrayContains(role, groupAccess)) {
-    messagesQuery.$and.push({ groupId: user.group });
+    messagesQuery['$and'] = [{groupId: user.group}];
   }
 
   const findPromise = await Message.find(messagesQuery)

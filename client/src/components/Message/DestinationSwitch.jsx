@@ -1,7 +1,7 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
-import { branchAccess, groupAccess } from '../../constants/messagesAccess';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { branchAccess, groupAccess } from '../../constants/messagesAccess';
 
 export function ifArrayContains(element, list) {
   for (const current of list) {
@@ -32,7 +32,7 @@ export const DestinationSwitch = props => {
           control={<Radio color='primary'/>}
           label={'Branch'}
           labelPlacement='end'
-          disabled={ifArrayContains(user.role.code,branchAccess)}
+          disabled={ifArrayContains(user.role.code, branchAccess)}
         />
         <FormControlLabel
           id={'Group'}
@@ -40,7 +40,7 @@ export const DestinationSwitch = props => {
           control={<Radio color='primary'/>}
           label={'Group'}
           labelPlacement='end'
-          disabled={ifArrayContains(user.role.code,groupAccess)}
+          disabled={ifArrayContains(user.role.code, groupAccess)}
         />
       </RadioGroup>
     </FormControl>

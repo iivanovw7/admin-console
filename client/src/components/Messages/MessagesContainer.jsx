@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleMessage, deleteMessage, getMessages } from '../../actions';
+import { deleteMessage, getMessages, getSingleMessage } from '../../actions';
 import { deleteButton } from '../Messages/MessagesDeleteButton';
-import AlertSnackbar from '../UI/Notifications/Snackbar';
 import Warning from '../UI/Dialogs/Warning';
+import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 
 const MessagesContainer = props => {

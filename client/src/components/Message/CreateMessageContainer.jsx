@@ -1,22 +1,27 @@
 import { Button, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import { logoutUser, sendMessage } from '../../actions';
+import { branchAccess, fullAccess } from '../../constants/messagesAccess';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import { validateMessage } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 import { DestinationSwitch, ifArrayContains } from './DestinationSwitch';
-import { fullAccess, branchAccess } from '../../constants/messagesAccess';
-import { sendMessage } from '../../actions';
 
 const CreateMessageContainer = props => {
 
   const { classes, history, handleSubmit, message, user, dispatch } = props;
 
   const preselectDestination = () => {
+    if (!user.role.code) {
+      return (
+        dispatch(logoutUser(history))
+      );
+    }
     if (ifArrayContains(user.role.code, branchAccess)) {
       return 'Branch';
     }
@@ -35,12 +40,11 @@ const CreateMessageContainer = props => {
       message: '',
       branch: user.branch ? user.branch._id : '',
       group: user.group ? user.group._id : '',
-      sender: user._id,
+      sender: user._id
     });
   }, [message]);
 
   const submit = formValues => {
-    console.log(formValues, destination.toLocaleLowerCase());
     dispatch(sendMessage(formValues, destination.toLocaleLowerCase()));
   };
 
@@ -149,4 +153,7 @@ const reduxFromGroup = reduxForm({
   fields: ['subject', 'message', 'sender', 'branch', 'group']
 })(CreateMessageContainer);
 
-export default connect(mapStateToProps, {})(withStyles(Container)(reduxFromGroup));
+export default connect(mapStateToProps, {
+  logoutUser,
+  sendMessage
+})(withStyles(Container)(reduxFromGroup));

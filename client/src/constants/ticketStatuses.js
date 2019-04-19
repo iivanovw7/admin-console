@@ -1,3 +1,5 @@
+
+//list of possible statuses for Tickets
 export const statuses = [
   {name: 'Opened', _id: 1},
   {name: 'In progress', _id: 2},

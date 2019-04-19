@@ -75,19 +75,13 @@ const Message = props => {
         {!user || !message ? <CircularProgress style={{margin: 24}} size={24}/> : displayTitle()}
       </Paper>
       {!user || !message || !groups || !branches ? <Spinner/> : displayContainer()}
-      <p style={{ color: 'red' }}>
-        {props.errorMessage && !props.messageConfirmed}
-      </p>
     </main>
   );
 };
 
 Message.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string,
-  successMessage: PropTypes.string,
-  messageConfirmed: PropTypes.bool
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -96,10 +90,7 @@ function mapStateToProps(state) {
     users: state.users,
     roles: state.roles,
     branches: state.branches,
-    groups: state.groups,
-    errorMessage: state.messages.error,
-    successMessage: state.messages.success,
-    messageConfirmed: state.messages.confirmed
+    groups: state.groups
   };
 }
 
