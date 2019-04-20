@@ -15,3 +15,8 @@ export const getTickets = {
   }
 };
 
+export const getBranch = {
+  query: {
+    branch: Joi.objectId().required()
+  }
+};

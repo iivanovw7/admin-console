@@ -28,6 +28,10 @@ router.route('/messages')
       // GET /api/stats/messages - Get messages stats
       .get(checkAccess, validate(paramValidation.getUsers), catchErrors(stats.messagesStats));
 
+router.route('/branch')
+      //GET //api/stats/branch - Get branch users quantity
+      .get(checkAccess, validate(paramValidation.getBranch), catchErrors(stats.branchStats));
+
 
 export { router as statsRoutes };
 

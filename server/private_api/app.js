@@ -12,14 +12,11 @@ const allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
   next();
 };
 
 const app = express();
 app.use(cors({credentials: true, origin: true}));
-app.use(allowCrossDomain);
-
 app.use(allowCrossDomain);
 
 // Takes the raw requests and turns them into usable properties on req.body
