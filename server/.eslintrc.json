@@ -1,7 +1,4 @@
 {
-  "plugins": [
-
-  ],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -10,8 +7,6 @@
     }
   },
   "rules": {
-    "@getify/proper-ternary/nested": "error",
-    "@getify/proper-ternary/parens": "error",
     "semi": "error"
   }
 }

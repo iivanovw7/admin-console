@@ -325,5 +325,20 @@ const ticketsStats = async (req, res) => {
 
 };
 
-export { usersStats, permissionsStats, ticketsStats, groupsStats, messagesStats };
+/**
+ * Gets number of users by branch id
+ * @param req.query.branch - branch id
+ * @returns {{total, active, disabled}}
+ */
+const branchStats = async (req, res) => {
+
+  const countUser = await User.countDocuments({branch: req.query.branch});
+  const activeUser = await User.countDocuments({ branch: req.query.branch, status: true });
+  const disabledUser = await User.countDocuments({ branch: req.query.branch, status: false });
+
+  res.json({ total: countUser, active: activeUser, disabled: disabledUser });
+
+};
+
+export { usersStats, permissionsStats, ticketsStats, groupsStats, messagesStats, branchStats };
 
