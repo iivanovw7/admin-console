@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
-import Ticket from '../../models/Ticket';
-import User from '../../models/User';
 import Group from '../../models/Group';
 import Message from '../../models/Message';
+import Ticket from '../../models/Ticket';
+import User from '../../models/User';
 import { defaultStatusModels } from '../config/constants.config';
-import { setQueryLimit, getUserRoleCode, getUserBranch, getUserGroup } from '../helper-functions';
+import { getUserBranch, getUserGroup, getUserRoleCode, setQueryLimit } from '../helper-functions';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -305,9 +305,15 @@ const groupsStats = async (req, res) => {
  */
 const permissionsStats = async (req, res) => {
 
-  const countPerm = await Group.countDocuments({});
-  const activePerm = await Group.countDocuments({ permissions: true });
-  const disabledPerm = await Group.countDocuments({ permissions: false });
+  const countPermPromise = Group.countDocuments({});
+  const activePermPromise = Group.countDocuments({ permissions: true });
+  const disabledPermPromise = Group.countDocuments({ permissions: false });
+
+  const [countPerm, activePerm, disabledPerm] = await Promise.all([
+    countPermPromise,
+    activePermPromise,
+    disabledPermPromise
+  ]);
 
   res.json({ total: countPerm, active: activePerm, disabled: disabledPerm });
 
@@ -332,9 +338,15 @@ const ticketsStats = async (req, res) => {
  */
 const branchStats = async (req, res) => {
 
-  const countUser = await User.countDocuments({branch: req.query.branch});
-  const activeUser = await User.countDocuments({ branch: req.query.branch, status: true });
-  const disabledUser = await User.countDocuments({ branch: req.query.branch, status: false });
+  const countUserPromise = User.countDocuments({ branch: req.query.branch });
+  const activeUserPromise = User.countDocuments({ branch: req.query.branch, status: true });
+  const disabledUserPromise = User.countDocuments({ branch: req.query.branch, status: false });
+
+  const [countUser, activeUser, disabledUser] = await Promise.all([
+    countUserPromise,
+    activeUserPromise,
+    disabledUserPromise
+  ]);
 
   res.json({ total: countUser, active: activeUser, disabled: disabledUser });
 
