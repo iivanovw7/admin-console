@@ -71,6 +71,7 @@ const setup = (initialState = {}) => {
       expect(wrapper.html()).not.toBe(null);
       expect(wrapper.length).toEqual(1);
       expect(wrapper.find('button[type="button"]').text()).toBe('CANCEL');
+      expect(wrapper.find('button[type="submit"]').text()).toBe('SAVE');
 
       //Comparing rendered fields to mock data
       expect(wrapper.find(BranchContainer).at(0).props(0).branch.address).toBe(mocks.BRANCH.address);
@@ -80,15 +81,11 @@ const setup = (initialState = {}) => {
       wrapper.find('input#email').simulate('click');
       wrapper.find('input#email').simulate('change', {target: { value: 'email@test.com'}});
       expect(wrapper.find('input#email').props().value).toBe('email@test.com');
-      //expect(wrapper.find('input#email').html().value).toBe('email@test.com');
 
       //Checking address input field
       wrapper.find('input#name').simulate('click');
       wrapper.find('input#name').simulate('change', {target: { value: 'Test name'}});
       expect(wrapper.find('input#name').props().value).toBe('Test name');
-
-      //check if CANCEL button was rendered
-      wrapper.find('button[type="submit"]').simulate('click');
 
       //checking submit event handling
       wrapper.find(BranchContainer).simulate('submit');
