@@ -17,7 +17,7 @@ export default function (state = initialState, action) {
         user: {
           ...state.user,
           authenticated: true,
-          loggedUserObject: action.user
+          loggedUserObject: action.payload.data
         },
         error: null
       };
@@ -28,7 +28,7 @@ export default function (state = initialState, action) {
         user: {
           ...state.user,
           authenticated: false,
-          loggedUserObject: false
+          loggedUserObject: null
         },
         error: null
       };

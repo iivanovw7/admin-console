@@ -14,6 +14,8 @@ const setup = (initialState = {}) => {
   let store = storeFactory(initialState);
 
   const Composition = withStyles(Wrapper, { withTheme: true })(PageSelector);
+
+  //Mocks of components props for testing
   const props = {
     data: {
       list: {
@@ -36,7 +38,7 @@ const setup = (initialState = {}) => {
 
   describe('Should render Pages Selector with styles, values, props and options', () => {
 
-    it('Should render nex and prev svg buttons', () => {
+    it('Should render next and prev svg buttons', () => {
       const mockFunc = jest.fn();
       wrapper = mount(<Composition {...props} handlePage={mockFunc()}/>);
       expect(wrapper.find('NavigateBeforeIcon').html()).not.toBe(undefined);
@@ -63,7 +65,6 @@ const setup = (initialState = {}) => {
       expect(mockFunc).toHaveBeenCalledTimes(4);
 
     });
-
 
   });
 

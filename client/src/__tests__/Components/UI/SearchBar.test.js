@@ -1,10 +1,10 @@
 import { withStyles } from '@material-ui/core';
 import { createMount, createShallow } from '@material-ui/core/test-utils';
+import jest from 'jest-mock';
 import React from 'react';
 import SearchBar from '../../../components/UI/SearchBar';
 import { NavigationStyles } from '../../../components/UI/ThemeProperties';
 import { storeFactory } from '../../../testUtils';
-import jest from 'jest-mock';
 
 const setup = (initialState = {}) => {
   let wrapper;

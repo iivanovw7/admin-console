@@ -20,8 +20,8 @@ const RoleContainer = props => {
       code: role.code || '',
       description: role.description || '',
       active: role.active || false,
-      isPublic: role.isPublic || false,
-      isEditable: role.isEditable || false
+      public: role.public || false,
+      editable: role.editable || false
     });
   }, [role]);
 
@@ -53,8 +53,8 @@ const RoleContainer = props => {
           rows={4}
           rowsMax={12}
         />
-        <CheckboxContainer name={'isPublic'} label={'Public'} value={''}/>
-        <CheckboxContainer name={'isEditable'} label={'Editable'} value={''}/>
+        <CheckboxContainer name={'public'} label={'Public'} value={''}/>
+        <CheckboxContainer name={'editable'} label={'Editable'} value={''}/>
         <CheckboxContainer name={'active'} label={'Active'} value={''}/>
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)
@@ -104,7 +104,7 @@ function mapStateToProps(state) {
 const reduxFromGroup = reduxForm({
   validate: validateRole,
   form: 'role',
-  fields: ['name', 'code', 'description', 'active', 'isPublic', 'isEditable']
+  fields: ['name', 'code', 'description', 'active', 'public', 'editable']
 })(RoleContainer);
 
 export default connect(mapStateToProps, {

@@ -4,10 +4,10 @@ import jest from 'jest-mock';
 import React from 'react';
 import { connect, Provider } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import { loginUser } from '../../actions';
 import { LoginFormStyles } from '../../components/UI/ThemeProperties';
 import Login from '../../screens/Login';
 import { storeFactory } from '../../testUtils';
-import { loginUser } from '../../actions';
 
 const setup = (initialState = {}) => {
   let wrapper;
@@ -16,6 +16,7 @@ const setup = (initialState = {}) => {
   let shallow;
   let store = storeFactory(initialState);
 
+  //Splitting HOC components
   const Form = reduxForm({ form: 'login', fields: ['email', 'password'] })(Login);
   const Composition = connect(null, { loginUser })(withStyles(LoginFormStyles, { withTheme: true })(Form));
   const props = {
@@ -33,7 +34,11 @@ const setup = (initialState = {}) => {
     mount.cleanUp();
   });
 
-  describe('ExampleView', () => {
+  /**
+   *  Renders login form with styles, imitates users actions:
+   *  click submit button and input fields
+   */
+  describe('Login screen', () => {
     it('Should render login form with fields and styles', () => {
       const mockFunc = jest.fn();
       wrapper = mount(

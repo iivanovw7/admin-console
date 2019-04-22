@@ -1,10 +1,10 @@
 import { withStyles } from '@material-ui/core/styles';
 import { createMount, createShallow } from '@material-ui/core/test-utils';
+import jest from 'jest-mock';
 import React from 'react';
 import { Selector } from '../../../components/UI/Selector';
 import { Wrapper } from '../../../components/UI/ThemeProperties';
 import { storeFactory } from '../../../testUtils';
-import jest from 'jest-mock';
 
 const setup = (initialState = {}) => {
   let wrapper;
@@ -73,7 +73,6 @@ const setup = (initialState = {}) => {
       expect(mockFunc).toHaveBeenCalledTimes(1);
       expect(mockFunc).toHaveBeenCalledWith(3);
       expect(mockFunc.mock.calls[0][0]).toBe(3);
-
     });
 
   });

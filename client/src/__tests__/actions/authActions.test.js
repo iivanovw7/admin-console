@@ -4,13 +4,13 @@ import moxios from 'moxios';
 import { loginUser, logoutUser } from '../../actions';
 import * as types from '../../constants/actionTypes';
 import { createMemoryHistory } from 'history';
-import userMock from './../../__mocks__/user.js';
+import * as mocks from './../../__mocks__/';
 
+//Applying middlewares and history object
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const history = createMemoryHistory('/dashboard');
-
-let headers = {
+const headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
 };
@@ -27,8 +27,11 @@ const setup = () => {
       moxios.uninstall();
     });
 
+    /**
+     *  Dispatching logout, then imitating response 200
+     *  and comparing action type to expected one.
+     */
     it('Performs Logout action', () => {
-
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -40,7 +43,6 @@ const setup = () => {
       const expectedActions = [
         { type: types.UNAUTHENTICATED },
       ];
-
       const store = mockStore({
         user: {
           authenticated: false,
@@ -54,37 +56,42 @@ const setup = () => {
       });
     });
 
+    /**
+     *  Dispatching login with mock user, then imitating response 200 with user data
+     *  Comparing action type and payload to expected ones.
+     */
     it('Performs Login action', () => {
-
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
           headers: headers,
-          response: {
-            userMock
-          },
+          response: mocks.USER,
         });
       });
 
       const expectedActions = [
         { type: types.AUTHENTICATED },
       ];
-
       const store = mockStore({
         user: {
           authenticated: true,
-          loggedUserObject: userMock
+          loggedUserObject: undefined
         },
         error: null
       });
 
       return store.dispatch(loginUser({email: 'admin@company.org', password: 'password'}, history)).then(() => {
         const storeActions = store.getActions();
+        expect(storeActions[0].payload.data).toEqual(mocks.USER);
         expect(storeActions[0].type).toBe(expectedActions[0].type);
       });
     });
 
+    /**
+     *  Dispatching login with wrong credentials, then imitating response 403
+     *  and comparing action type to expected one.
+     */
     it('Login attempt with wrong password', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
@@ -97,7 +104,6 @@ const setup = () => {
       const expectedActions = [
         { type: types.AUTHENTICATION_ERROR },
       ];
-
       const store = mockStore({
         user: {
           authenticated: false,

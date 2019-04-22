@@ -1,4 +1,4 @@
-export const userMock = {
+export const USER = {
   status:true,
   _id:"5c8f97c5cece9911f01dd561",
   name:"Admin",
