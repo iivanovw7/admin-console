@@ -24,8 +24,6 @@ export const TopInfoBarButton = props => {
 };
 
 TopInfoBarButton.propTypes = {
-  alt: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired,
   handleClick: PropTypes.func.isRequired,
   image: PropTypes.any.isRequired
 };

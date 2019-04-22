@@ -493,7 +493,6 @@ describe('Verifying GROUP routes.', () => {
       .set('cookie', cookie)
       .set('user', testUser._id)
       .then((response) => {
-
         expect(response).not.toBeNull();
         expect(response.statusCode).toBe(200);
         expect(response.body.output[0]._id).toMatch(testGroup._id.toString());
@@ -675,6 +674,104 @@ describe('Verifying MESSAGES routes.', () => {
         done();
       });
   });
+
+});
+
+
+describe('Verifying STATISTICS routes.', () => {
+
+  it('Checking - GET /api/stats/users route, expect code 200', async (done) => {
+    request(app)
+      .get(`/api/stats/users`)
+      .set('cookie', cookie)
+      .query({months: 24})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.body[0].view_mode).toMatch('ADMIN');
+        expect(response.body[1].months).toBe(24);
+        expect(response.body[2].total).toBe(1);
+        expect(response.body[2].active).toBe(1);
+        expect(response.body[2].disabled).toBe(0);
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+  });
+
+  it('Checking - GET /api/stats/permissions route, expect code 200', async (done) => {
+    request(app)
+      .get(`/api/stats/permissions`)
+      .set('cookie', cookie)
+      .query({months: 24})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.statusCode).toBe(200);
+        expect(response.body.total).toBe(2);
+        expect(response.body.active).toBe(0);
+        expect(response.body.disabled).toBe(2);
+        done();
+      });
+  });
+
+  it('Checking - GET /api/stats/tickets route, expect code 200', async (done) => {
+    request(app)
+      .get(`/api/stats/tickets`)
+      .set('cookie', cookie)
+      .query({months: 24})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.statusCode).toBe(200);
+        expect(response.body[0].view_mode).toMatch('ADMIN');
+        expect(response.body[1].months).toBe(24);
+        done();
+      });
+  });
+
+  it('Checking - GET /api/stats/groups route, expect code 200', async (done) => {
+    request(app)
+      .get(`/api/stats/groups`)
+      .set('cookie', cookie)
+      .query({months: 24})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.statusCode).toBe(200);
+        expect(response.body.total).toBe(2);
+        expect(response.body.active).toBe(2);
+        expect(response.body.disabled).toBe(0);
+        done();
+      });
+  });
+
+  it('Checking - GET /api/stats/messages route, expect code 200', async (done) => {
+    request(app)
+      .get(`/api/stats/messages`)
+      .set('cookie', cookie)
+      .query({months: 24})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.statusCode).toBe(200);
+        expect(response.body[0].view_mode).toMatch('ADMIN');
+        expect(response.body[2].total).toBe(1);
+        expect(response.body[1].months).toBe(24);
+        done();
+      });
+  });
+
+  it('Checking - GET /api/stats/branch route, expect code 200', async (done) => {
+
+    request(app)
+      .get(`/api/stats/branch`)
+      .set('cookie', cookie)
+      .query({branch: testBranch._id.toString()})
+      .then((response) => {
+        expect(response).not.toBeNull();
+        expect(response.statusCode).toBe(200);
+        expect(response.body.total).toBe(1);
+        expect(response.body.active).toBe(1);
+        expect(response.body.disabled).toBe(0);
+        done();
+      });
+  });
+
 
 });
 

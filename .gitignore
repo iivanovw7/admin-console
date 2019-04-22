@@ -5,9 +5,10 @@
 # service derectories (postman tests, samples data and etc.)
 server/samples
 server/api.yaml
+server/build
 server/node_modules
 client/node_modules
-
+client/build
 
 /.pnp
 .pnp.js

@@ -19,7 +19,6 @@
   "author": "iivanovw7",
   "license": "ISC",
   "dependencies": {
-    "@getify/eslint-plugin-proper-ternary": "^1.0.2",
     "@types/express": "^4.16.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",

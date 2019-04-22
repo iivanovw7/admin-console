@@ -28,9 +28,11 @@ export const getStatistics = (dataType, history, months) => {
 };
 
 export const changeChartStyle = (dataType, chartStyle) => {
+  const categoryName = dataType.toLocaleString();
   return {
-    type: types[`SET_${dataType.toUpperCase()}_CHARTS_STYLE`],
-    payload: chartStyle
+    type: types.SET_CHART_STYLE,
+    payload: chartStyle,
+    categoryName
   };
 };
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getSingleBranch } from '../../actions';
 import { Container } from '../UI/ThemeProperties';
+import { BranchesContainerElement } from './BranchesContainerElement';
 
 const BranchesContainer = props => {
   const { classes, history, dispatch, branches } = props;
@@ -39,30 +40,13 @@ const BranchesContainer = props => {
         </TableHead>
         <TableBody>
           {branches.map(row => (
-            <TableRow
+            <BranchesContainerElement
               key={row._id}
-              onClick={() => {
-                handleBranchClick(row._id);
-              }}
-              className={classes.branchRowClass}
-            >
-              <TableCell
-                component="th"
-                scope="row"
-                className={classes.branchNameCell}
-              >
-                {row.name}
-              </TableCell>
-              <TableCell className={classes.branchAddressCell} align="center">
-                {row.address}
-              </TableCell>
-              <TableCell className={classes.branchEmployeesCell} align="center">xxx</TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                <strong>
-                  {displayStatus(row.status)}
-                </strong>
-              </TableCell>
-            </TableRow>
+              displayStatus={displayStatus}
+              handleBranchClick={handleBranchClick}
+              row={row}
+              classes={classes}
+            />
           ))}
         </TableBody>
       </Table>

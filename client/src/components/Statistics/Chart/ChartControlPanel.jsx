@@ -16,19 +16,21 @@ export const ChartControlPanel = props => {
   const { classes, dataType, limit, limits, handleLimitSelect, handleTypeSelect, total, style, stats } = props;
   const [appendCsv, setCsvReport] = useState(false);
 
-  //find chart container by ID, then append content to iframe to focus and print
-  function print() {
+  function sendChartToPrint() {
+
+    //gets component with chart by id
     const content = document.getElementById(dataType);
+
+    //gets empty iframe by id
     const pri = document.getElementById('ifmcontentstoprint').contentWindow;
-    pri.document.open();
-    pri.document.write(content.innerHTML);
-    pri.document.close();
-    pri.focus();
-    pri.print();
+    pri.document.open(); //opens iframe
+    pri.document.write(content.innerHTML); //writes chart into iframe
+    pri.document.close(); //closes iframe
+    pri.focus(); //send iframe to the front)
+    pri.print(); //triggers browser built-in print function
   }
 
-  //Create and save XLSX report
-  function xlsxExport() {
+  function exportToXlsx() {
     const data = formDataForExcel(stats);
     const worksheet = XLSX.utils.aoa_to_sheet(data);
     const new_workbook = XLSX.utils.book_new();
@@ -104,7 +106,7 @@ export const ChartControlPanel = props => {
           image={xlsxIcon}
           alt={'Create excel report'}
           handleClick={() => {
-            xlsxExport();
+            exportToXlsx();
           }}
         />
         <TopInfoBarButton
@@ -113,7 +115,7 @@ export const ChartControlPanel = props => {
           image={pdfIcon}
           alt={'Create pdf report'}
           handleClick={() => {
-            print();
+            sendChartToPrint();
           }}
         />
       </div>
@@ -128,11 +130,8 @@ export const ChartControlPanel = props => {
 };
 
 ChartControlPanel.propTypes = {
-  classes: PropTypes.object.isRequired,
-  dataType: PropTypes.string.isRequired,
   handleLimitSelect: PropTypes.func.isRequired,
   handleTypeSelect: PropTypes.func.isRequired,
   stats: PropTypes.any,
-  style: PropTypes.any.isRequired,
   total: PropTypes.number.isRequired
 };
