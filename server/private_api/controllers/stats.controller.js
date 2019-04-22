@@ -343,7 +343,9 @@ const branchStats = async (req, res) => {
   const disabledUserPromise = User.countDocuments({ branch: req.query.branch, status: false });
 
   const [countUser, activeUser, disabledUser] = await Promise.all([
-    countUserPromise, activeUserPromise, disabledUserPromise
+    countUserPromise,
+    activeUserPromise,
+    disabledUserPromise
   ]);
 
   res.json({ total: countUser, active: activeUser, disabled: disabledUser });
