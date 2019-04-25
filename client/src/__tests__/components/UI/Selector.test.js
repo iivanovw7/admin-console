@@ -33,7 +33,7 @@ const setup = (initialState = {}) => {
 
   describe('Should render Selector with styles and options', () => {
 
-    it('Should render Components of correct type', () => {
+    it('Should render components of correct type', () => {
       wrapper = mount(<Composition {...props}/>);
       expect(wrapper.find('select')).not.toBe(undefined);
     });

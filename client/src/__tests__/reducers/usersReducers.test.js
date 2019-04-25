@@ -1,6 +1,5 @@
 import * as types from '../../constants/actionTypes';
 import { formLocalizedNotification as message } from '../../localization/notifications';
-import branchesReducer from '../../reducers/branchesReducer';
 import usersReducer, { displayStatus } from '../../reducers/usersReducer';
 import * as mocks from './../../__mocks__/';
 
@@ -75,7 +74,7 @@ const setup = () => {
           expectedActions.payload.data.name + ' ' + expectedActions.payload.data.surname,
           expectedActions,
           'en',
-          displayStatus(expectedActions.payload.data.active)
+          displayStatus(expectedActions.payload.data.status)
         ),
         confirmed: false
       });
@@ -135,7 +134,7 @@ const setup = () => {
         confirmed: true
       };
 
-      expect(branchesReducer({}, expectedActions)).toMatchSnapshot();
+      expect(usersReducer({}, expectedActions)).toMatchSnapshot();
     });
 
   });

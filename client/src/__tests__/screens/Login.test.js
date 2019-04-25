@@ -46,22 +46,25 @@ const setup = (initialState = {}) => {
           <Composition {...props} onSubmit={mockFunc()}/>
         </Provider>
       );
-
       expect(wrapper.html()).not.toBe(null);
+      expect(wrapper.html()).not.toBe(undefined);
       expect(wrapper.length).toEqual(1);
 
+      //checking email field properties
       wrapper.find(Login).at(0).props().value = 'email@test.com';
       expect(wrapper.find(Login).at(0).props().value).toBe('email@test.com');
 
+      //checking email and password field events
       wrapper.find('input').first().simulate('change', { target: { value: 'email@test.com' } });
       expect(wrapper.find('input').first().props().value).toBe('email@test.com');
       wrapper.find('input').last().simulate('change', { target: { value: 'password' } });
       expect(wrapper.find('input').last().props().value).toBe('password');
 
+      //simulating click on submit action
       wrapper.find('button').last().simulate('click');
       expect(mockFunc).toHaveBeenCalled();
       expect(mockFunc).toHaveBeenCalledTimes(1);
-
+      expect(wrapper.html()).toMatchSnapshot();
     });
   });
 };

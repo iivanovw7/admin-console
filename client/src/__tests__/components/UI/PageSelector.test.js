@@ -54,13 +54,10 @@ const setup = (initialState = {}) => {
     it('Should handle onChange event', () => {
       const mockFunc = jest.fn();
       wrapper = mount(<Composition {...props} handlePage={mockFunc}/>);
-
       wrapper.find('NavigateNextIcon').simulate('click');
       wrapper.find('NavigateNextIcon').simulate('click');
-
       wrapper.find('NavigateBeforeIcon').simulate('click');
       wrapper.find('NavigateBeforeIcon').simulate('click');
-
       expect(mockFunc).toHaveBeenCalled();
       expect(mockFunc).toHaveBeenCalledTimes(4);
 

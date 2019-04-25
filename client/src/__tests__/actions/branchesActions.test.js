@@ -38,7 +38,7 @@ const setup = () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          headers: headers,
+          headers,
           response: mocks.BRANCHES
         });
       });
@@ -69,7 +69,7 @@ const setup = () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          headers: headers,
+          headers,
           response: mocks.BRANCH
         });
       });
@@ -101,7 +101,7 @@ const setup = () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          headers: headers,
+          headers,
           response: mocks.BRANCH
         });
       });
@@ -132,7 +132,7 @@ const setup = () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          headers: headers,
+          headers,
           response: mocks.BRANCH
         });
       });

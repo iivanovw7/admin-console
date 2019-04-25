@@ -26,7 +26,7 @@ export const ChartControlPanel = props => {
     pri.document.open(); //opens iframe
     pri.document.write(content.innerHTML); //writes chart into iframe
     pri.document.close(); //closes iframe
-    pri.focus(); //send iframe to the front)
+    pri.focus(); //send iframe to the front
     pri.print(); //triggers browser built-in print function
   }
 

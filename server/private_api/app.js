@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import { routes } from './app-routes';
-import './config/passport.config.js';
+import './config/passport.config';
 import cors from 'cors';
 
 const allowCrossDomain = function (req, res, next) {

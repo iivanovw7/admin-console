@@ -59,8 +59,8 @@ const setup = (initialState = {}) => {
    *  Renders branch form with styles, imitates users actions:
    *  clicks buttons and input fields
    */
-  describe('Login screen', () => {
-    it('Should render login form with fields and styles', () => {
+  describe('Branch Container', () => {
+    it('Should render branch form with styles', () => {
       const mockFunc = jest.fn();
       wrapper = mount(
         <Provider store={store}>

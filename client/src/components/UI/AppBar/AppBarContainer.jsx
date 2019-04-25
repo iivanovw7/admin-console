@@ -1,4 +1,4 @@
-import { AppBar, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import Cookies from 'js-cookie';
@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { logoutUser } from '../../../actions';
 import { NavigationStyles } from '../ThemeProperties';
+import { LogoutButton } from './LogoutButton';
 
 const AppBarContainer = props => {
   const { classes, handleDrawerToggle, history, dispatch } = props;
@@ -27,15 +28,10 @@ const AppBarContainer = props => {
         <Typography className={classes.toolbarUserName} variant="h6" color="inherit" noWrap>
           {Cookies.get('username')}
           &nbsp;
-          <IconButton
-            style={{ textTransform: 'none', color: 'white' }}
-            aria-label="Delete"
-            onClick={() => {
-              dispatch(logoutUser(history));
-            }}
-          >
-            <Icon>exit_to_app</Icon>
-          </IconButton>
+          <LogoutButton
+            handleLogout={logoutUser}
+            {...props}
+          />
         </Typography>
       </Toolbar>
     </AppBar>

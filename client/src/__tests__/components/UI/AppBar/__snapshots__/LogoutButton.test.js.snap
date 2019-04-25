@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render Logout Button styles and functions Should match snapshot 1`] = `"<button class=\\"MuiButtonBase-root-138 MuiIconButton-root-132\\" tabindex=\\"0\\" type=\\"button\\" style=\\"text-transform: none; color: white;\\" aria-label=\\"Delete\\"><span class=\\"MuiIconButton-label-137\\"><span class=\\"material-icons MuiIcon-root-141\\" aria-hidden=\\"true\\">exit_to_app</span></span><span class=\\"MuiTouchRipple-root-150\\"></span></button>"`;

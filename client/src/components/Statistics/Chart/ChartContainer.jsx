@@ -1,16 +1,16 @@
 import { Grid, withWidth } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { debounce } from 'debounce';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { changeChartStyle, getStatistics } from '../../../actions';
 import { ChartsComponents } from '../../../constants/chartsStyles';
+import { statsQueryTimeLimits } from '../../../constants/defaultLimits';
 import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../utils';
 import Spinner from '../../UI/Spinner';
 import { Container } from '../../UI/ThemeProperties';
 import { ChartControlPanel } from './ChartControlPanel';
-import { statsQueryTimeLimits } from '../../../constants/defaultLimits';
-import { debounce } from 'debounce';
 
 const ChartContainer = props => {
 

@@ -16,7 +16,7 @@ const Role = props => {
     <main className={classes.contentSingle}>
       <Paper className={classes.titleContainer}>
         <div className={classes.selectorsContainer}>
-          <h2>Create/Edit group</h2>
+          <h2>Create/Edit role</h2>
         </div>
       </Paper>
       <RoleContainer role={role} history={history} dispatch={dispatch}/>

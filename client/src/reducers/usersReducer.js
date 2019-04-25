@@ -64,7 +64,7 @@ export default function (state = initialState, action) {
           action.payload.data.name + ' ' + action.payload.data.surname,
           action,
           'en',
-          displayStatus(action.payload.data.active)
+          displayStatus(action.payload.data.status)
         ),
         confirmed: false,
       };

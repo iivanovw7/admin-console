@@ -25,6 +25,15 @@ export const BRANCHES = {
       status: true,
       __v: 0,
       _id: '5c8f96b9cece9911f01dd093'
+    },
+    {
+      status:false,
+      _id:"5c8f96b9cece9911f01dd0a0",
+      name:"Cantao-an",
+      email:"atroye@dailymail.co.uk",
+      phone:"+63 269 360 0515",
+      fax:"+86 713 306 1827",
+      address:"7827 Luster Point",
     }
   ]
 };

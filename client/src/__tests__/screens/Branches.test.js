@@ -50,11 +50,11 @@ const setup = (initialState = {}) => {
           </MemoryRouter>
         </Provider>
       );
-
       expect(wrapper.html()).not.toBe(null);
+      expect(wrapper.html()).not.toBe(undefined);
       expect(wrapper.length).toEqual(1);
       expect(wrapper.find('h2').text()).toBe('Branches');
-
+      expect(wrapper.html()).toMatchSnapshot();
     });
   });
 };

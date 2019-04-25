@@ -23,7 +23,7 @@ const setup = (initialState = {}) => {
   const Composition = connect(null, { getUsers })(withStyles(Wrapper, { withTheme: true })(withRouter(Users)));
   const props = {
     history: history,
-    branches: mocks.USERS
+    users: mocks.USERS
   };
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ const setup = (initialState = {}) => {
   });
 
   /**
-   *  Renders branches main screen form with styles,
+   *  Renders users main screen form with styles,
    *  Checks if component rendered properly.
    */
   describe('Users screen', () => {
@@ -50,11 +50,11 @@ const setup = (initialState = {}) => {
           </MemoryRouter>
         </Provider>
       );
-
       expect(wrapper.html()).not.toBe(null);
+      expect(wrapper.html()).not.toBe(undefined);
       expect(wrapper.length).toEqual(1);
       expect(wrapper.find('h2').text()).toBe('Users');
-
+      expect(wrapper.html()).toMatchSnapshot();
     });
   });
 };
