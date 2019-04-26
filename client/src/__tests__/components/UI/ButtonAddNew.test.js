@@ -13,7 +13,6 @@ const setup = () => {
   let shallow;
   const history = createMemoryHistory('/dashboard');
   const Composition = withStyles(Buttons, { withTheme: true })(ButtonAddNew);
-
   const props = {
     history: history,
     element: 'test'

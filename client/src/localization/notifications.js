@@ -1,7 +1,6 @@
 import * as types from '../constants/actionTypes';
 
 export function formLocalizedNotification(name, action, locale, newState) {
-
   const actionString = action.type.split('_')[0];
   const modelName = strings[locale][action.type.split('_')[1].toLocaleLowerCase()];
 

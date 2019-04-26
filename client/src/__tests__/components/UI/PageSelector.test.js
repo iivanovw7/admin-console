@@ -12,7 +12,6 @@ const setup = (initialState = {}) => {
   let mount;
   let shallow;
   let store = storeFactory(initialState);
-
   const Composition = withStyles(Wrapper, { withTheme: true })(PageSelector);
 
   //Mocks of components props for testing

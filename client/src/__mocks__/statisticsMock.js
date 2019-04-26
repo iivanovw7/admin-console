@@ -36,4 +36,5 @@ export const STATS_TICKETS = [
     closed: 23,
     reopened: 2,
     cannot_be_done: 11
-  }];
+  }
+];

@@ -1,16 +1,14 @@
 import { withStyles } from '@material-ui/core';
-import { createMount, createShallow } from '@material-ui/core/test-utils';
-import jest from 'jest-mock';
+import { createMount } from '@material-ui/core/test-utils';
 import { createMemoryHistory } from 'history';
+import jest from 'jest-mock';
 import React from 'react';
 import { LogoutButton } from '../../../../components/UI/AppBar/LogoutButton';
 import { NavigationStyles } from '../../../../components/UI/ThemeProperties';
 
 const setup = () => {
   let wrapper;
-  let shallowWithDive;
   let mount;
-  let shallow;
   const history = createMemoryHistory('/dashboard');
   const mockDispatch = jest.fn();
   const mockLogout = jest.fn();
@@ -24,8 +22,6 @@ const setup = () => {
   const Composition = withStyles(NavigationStyles, { withTheme: true })(LogoutButton);
 
   beforeEach(() => {
-    shallow = createShallow();
-    shallowWithDive = createShallow({ dive: true });
     mount = createMount();
   });
 

@@ -11,3 +11,4 @@ export * from './ticketsMock';
 export * from './messageMocks';
 export * from './messagesMocks';
 export * from './statisticsMock';
+export * from './chartStyleMock';
