@@ -468,6 +468,9 @@ export const Container = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
+  },
+  actionCheckBox: {
+    height: 16
   }
 
 });

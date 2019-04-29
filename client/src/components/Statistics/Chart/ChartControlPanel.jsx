@@ -7,7 +7,7 @@ import { ChartsComponents } from '../../../constants/chartsStyles';
 import csvIcon from '../../../icons/csv-file-format-symbol.svg';
 import pdfIcon from '../../../icons/pdf-file-format-symbol.svg';
 import xlsxIcon from '../../../icons/xlsx-file-format-symbol.svg';
-import { formDataForExcel } from '../../../utils';
+import { formDataForExcel } from '../../../utils/chartsHelpers';
 import { ChartTypeSelector } from './ControlElements/ChartTypeSelector';
 import { TopInfoBarButton } from './ControlElements/ReportButton';
 import { TimeLimitSelector } from './ControlElements/TimeLimitSelector';

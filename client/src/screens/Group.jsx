@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleGroup } from '../actions';
 import GroupContainer from '../components/Group/GroupContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
@@ -35,4 +34,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getSingleGroup })(withStyles(Wrapper, { withTheme: true })(withRouter(Group)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Group)));

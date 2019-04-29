@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleRole } from '../actions';
 import RoleContainer from '../components/Role/RoleContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
@@ -35,4 +34,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getSingleRole })(withStyles(Wrapper, { withTheme: true })(withRouter(Role)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Role)));

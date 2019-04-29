@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { updateTicket } from '../../actions';
 import { statuses } from '../../constants/ticketStatuses';
+import { validateTicket } from '../../utils/formsValidator';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import { validateTicket } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
 
@@ -111,25 +112,13 @@ const TicketContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/tickets`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            UPDATE
-          </Button>
+          />
+          <FormsButton title={'UPDATE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>

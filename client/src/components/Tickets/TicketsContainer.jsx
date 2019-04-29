@@ -73,4 +73,4 @@ TicketsContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null, { getSingleTicket })(withStyles(Container)(withRouter(TicketsContainer)));
+export default connect(null)(withStyles(Container)(withRouter(TicketsContainer)));

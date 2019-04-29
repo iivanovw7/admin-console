@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { changeGroupStatus, deleteGroup, getGroups, getSingleGroup } from '../../actions';
+import { deleteGroup, getGroups, getSingleGroup } from '../../actions';
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
@@ -150,8 +150,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getSingleGroup,
-  deleteGroup,
-  changeGroupStatus
-})(withStyles(Container)(withRouter(GroupsContainer)));
+export default connect(mapStateToProps)(withStyles(Container)(withRouter(GroupsContainer)));

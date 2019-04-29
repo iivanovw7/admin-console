@@ -101,5 +101,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getUsers })(withStyles(Wrapper, { withTheme: true })(withRouter(Users)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Users)));
 

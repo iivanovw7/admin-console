@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { changeRoleStatus, deleteRole, getRoles, getSingleRole } from '../../actions';
+import { deleteRole, getRoles, getSingleRole } from '../../actions';
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
@@ -150,8 +150,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getSingleRole,
-  deleteRole,
-  changeRoleStatus
-})(withStyles(Container)(withRouter(RolesContainer)));
+export default connect(mapStateToProps)(withStyles(Container)(withRouter(RolesContainer)));

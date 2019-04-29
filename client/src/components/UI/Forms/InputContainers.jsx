@@ -1,10 +1,14 @@
-import { FormControl, FormControlLabel, Grid, InputLabel, MenuItem } from '@material-ui/core';
+import {
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field } from 'redux-form';
-import { Select } from 'redux-form-material-ui';
-import { renderCheckbox } from './Checkbox';
-import { renderTextField } from './TextField';
+import { Select, TextField, Checkbox } from 'redux-form-material-ui';
 
 export const CheckboxContainer = props => {
 
@@ -19,9 +23,10 @@ export const CheckboxContainer = props => {
               name={name}
               type={'checkbox'}
               value={value}
-              component={renderCheckbox}
+              component={Checkbox}
               id={name}
               disabled={disabled}
+              color={'primary'}
             />
           }
           label={label}
@@ -40,7 +45,7 @@ CheckboxContainer.propTypes = {
 
 export const TextInputContainer = props => {
 
-  const { dataType, rows, rowsMax, type, required, normalize, disabled } = props;
+  const { dataType, rows = 1, rowsMax = 1, type, required, normalize, disabled, variant } = props;
 
   return (
     <Grid container spacing={16} alignItems="flex-end">
@@ -48,7 +53,7 @@ export const TextInputContainer = props => {
         <Field
           name={dataType}
           type={type}
-          component={renderTextField}
+          component={TextField}
           label={dataType}
           id={dataType}
           normalize={normalize}
@@ -56,7 +61,9 @@ export const TextInputContainer = props => {
           rowsMax={rowsMax}
           disabled={disabled}
           required={required}
-          variant={'outlined'}
+          variant={variant ? variant : 'outlined'}
+          multiline={rows > 1}
+          fullWidth
         />
       </Grid>
     </Grid>
@@ -69,7 +76,6 @@ TextInputContainer.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool
 };
-
 
 export const SelectInputContainer = props => {
 

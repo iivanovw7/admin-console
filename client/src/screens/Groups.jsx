@@ -69,6 +69,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getGroups })(withStyles(Wrapper, { withTheme: true })(withRouter(Groups)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Groups)));
 
 

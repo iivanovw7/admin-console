@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { logoutUser, sendMessage } from '../../actions';
 import { branchAccess, fullAccess } from '../../constants/messagesAccess';
+import { validateMessage } from '../../utils';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import { validateMessage } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
 import { DestinationSwitch, ifArrayContains } from './DestinationSwitch';
@@ -99,27 +100,16 @@ const CreateMessageContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/messages`);
             }}
-          >
-            CANCEL
-          </Button>
-          {!message._id && (
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              style={
-                { textTransform: 'none', margin: 5 }
-              }
-            >
-              SEND
-            </Button>
-          )}
+          />
+          <FormsButton
+            title={'SEND'}
+            type={'submit'}
+          />
         </Grid>
       </form>
     </Paper>

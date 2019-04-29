@@ -52,7 +52,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {})(withStyles(Wrapper, { withTheme: true })(withRouter(Statistics)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Statistics)));
 
 
 

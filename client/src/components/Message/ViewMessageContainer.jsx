@@ -1,8 +1,9 @@
-import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import { Grid, Paper, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { Container } from '../UI/ThemeProperties';
 
 const ViewMessageContainer = props => {
@@ -61,15 +62,12 @@ const ViewMessageContainer = props => {
           rowsMax='12'
         />
         <Grid container justify='flex-end' style={{ marginTop: '10px' }}>
-          <Button
-            variant='contained' color='primary'
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'BACK'}
+            handleClick={() => {
               history.push(`/messages`);
             }}
-          >
-            BACK
-          </Button>
+          />
         </Grid>
       </div>
     </Paper>

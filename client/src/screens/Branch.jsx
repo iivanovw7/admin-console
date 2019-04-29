@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleBranch } from '../actions';
 import BranchContainer from '../components/Branch/BranchContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
@@ -35,4 +34,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getSingleBranch })(withStyles(Wrapper, { withTheme: true })(withRouter(Branch)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Branch)));

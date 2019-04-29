@@ -2,68 +2,60 @@ import { Button, Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { loginUser } from '../actions';
-import { LoginField } from '../components/Login/LoginField';
 import { errorMessage } from '../components/UI/Forms/ErrorMessage';
-import { validateLogin } from '../components/UI/Forms/validate';
+import { FormsButton } from '../components/UI/Forms/FormsButton';
+import { validateLogin } from '../utils/formsValidator';
 import { LoginFormStyles } from '../components/UI/ThemeProperties';
+import { TextInputContainer } from '../components/UI/Forms/InputContainers';
 
 const Login = props => {
 
   const { classes, handleSubmit } = props;
-
   const submit = formValues => {
     props.loginUser(formValues, props.history);
   };
 
+  useEffect(() => {
+    if (props.authenticated) {
+      props.history.push('/statistics');
+    }
+  }, []);
+
   return (
-    <Paper className={classes.loginFormContainer}>
-      <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
-        <Typography variant="h5" component="h3">
-          Sign In
-        </Typography>
-        <hr/>
-        <LoginField dataType={'email'}/>
-        <LoginField dataType={'password'}/>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <Button
-              disableFocusRipple
-              disableRipple
-              style={{ textTransform: 'none' }}
-              variant="text"
-              color="primary"
-            >
-              Forgot password ?
-            </Button>
+    <div className={classes.loginWrapper}>
+      <Paper className={classes.loginFormContainer}>
+        <form className={classes.formPaper} onSubmit={handleSubmit(submit)}>
+          <Typography variant="h5" component="h3">
+            Sign In
+          </Typography>
+          <hr/>
+          <TextInputContainer dataType={'email'} type={'email'} variant={'standard'}/>
+          <TextInputContainer dataType={'password'} type={'password'} variant={'standard'}/>
+          <Grid container justify="flex-start" style={{ marginTop: '10px' }}>
+            <FormsButton title={'SIGN IN'} type={'submit'}/>
+            {errorMessage(props)}
           </Grid>
-        </Grid>
-        <Grid container justify="flex-start" style={{ marginTop: '10px' }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            type="submit"
-            style={{ textTransform: 'none' }}
-          >
-            SIGN IN
-          </Button>
-          {errorMessage(props)}
-        </Grid>
-      </form>
-    </Paper>
+        </form>
+      </Paper>
+    </div>
   );
 };
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func
+  handleSubmit: PropTypes.func,
+  theme: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
+  return {
+    authenticated: state.auth.user.authenticated,
+    errorMessage: state.auth.error
+  };
 }
 
 const reduxFormLogin = reduxForm({
@@ -72,4 +64,4 @@ const reduxFormLogin = reduxForm({
   fields: ['email', 'password']
 })(Login);
 
-export default connect(mapStateToProps, { loginUser })(withStyles(LoginFormStyles)(reduxFormLogin));
+export default connect(mapStateToProps, { loginUser })(withStyles(LoginFormStyles, { withTheme: true })(reduxFormLogin));

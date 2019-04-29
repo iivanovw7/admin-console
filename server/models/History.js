@@ -16,7 +16,7 @@ const historySchema = mongoose.Schema({
   actionTargetModel: String,
   actionTarget: { type: mongoose.Schema.ObjectId, required: true },
   actionType: String,
-  created: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now() },
   actionChanges: {}
 });
 

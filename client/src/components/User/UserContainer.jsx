@@ -1,10 +1,11 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { getBranches, getGroups, getRoles, updateUser } from '../../actions';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import {
   CheckboxContainer,
   SelectInputContainer,
@@ -92,25 +93,13 @@ const UserContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/users`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            SAVE
-          </Button>
+          />
+          <FormsButton title={'SAVE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>

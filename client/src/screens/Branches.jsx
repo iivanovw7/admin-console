@@ -69,5 +69,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getBranches })(withStyles(Wrapper, { withTheme: true })(withRouter(Branches)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Branches)));
 

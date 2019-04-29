@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { changeChartStyle, getStatistics } from '../../../actions';
 import { ChartsComponents } from '../../../constants/chartsStyles';
-import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../utils';
+import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../utils/chartsHelpers';
 import Spinner from '../../UI/Spinner';
 import { Container } from '../../UI/ThemeProperties';
 import { ChartControlPanel } from './ChartControlPanel';
@@ -104,7 +104,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getStatistics,
-  changeChartStyle
-})(withWidth()(withStyles(Container)(ChartContainer)));
+export default connect(mapStateToProps)(withWidth()(withStyles(Container)(ChartContainer)));

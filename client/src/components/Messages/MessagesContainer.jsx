@@ -138,4 +138,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getSingleMessage })(withStyles(Container)(withRouter(MessagesContainer)));
+export default connect(mapStateToProps)(withStyles(Container)(withRouter(MessagesContainer)));

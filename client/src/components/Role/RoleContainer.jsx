@@ -1,12 +1,13 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { addNewRole, updateRole } from '../../actions';
+import { validateRole } from '../../utils/formsValidator';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import { validateRole } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
 
@@ -63,25 +64,16 @@ const RoleContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/roles`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            SAVE
-          </Button>
+          />
+          <FormsButton
+            title={'SAVE'}
+            type={'submit'}
+          />
         </Grid>
       </form>
     </Paper>
@@ -97,7 +89,7 @@ function mapStateToProps(state) {
   return {
     errorMessage: state.roles.error,
     successMessage: state.roles.success,
-    messageConfirmed: state.roles.confirmed,
+    messageConfirmed: state.roles.confirmed
   };
 }
 

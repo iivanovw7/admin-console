@@ -103,5 +103,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getMessages })(withStyles(Wrapper, { withTheme: true })(withRouter(Messages)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Messages)));
 

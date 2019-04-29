@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   surname: { type: String, required: true },
   branch: { type: mongoose.Schema.ObjectId, ref: 'Branch' },
   group: { type: mongoose.Schema.ObjectId, ref: 'Group' },
-  created: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now() },
   status: { type: Boolean, default: false },
   role: { type: mongoose.Schema.ObjectId, ref: 'Role', required: true }
 

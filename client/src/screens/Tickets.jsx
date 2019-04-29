@@ -101,5 +101,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getTickets })(withStyles(Wrapper, { withTheme: true })(withRouter(Tickets)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Tickets)));
 

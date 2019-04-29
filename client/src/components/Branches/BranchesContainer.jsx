@@ -58,4 +58,4 @@ BranchesContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(null, { getSingleBranch })(withStyles(Container)(withRouter(BranchesContainer)));
+export default connect(null)(withStyles(Container)(withRouter(BranchesContainer)));
