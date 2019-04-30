@@ -15,6 +15,7 @@ import { Container } from '../UI/ThemeProperties';
 
 const TicketContainer = props => {
   const { classes, history, handleSubmit, ticket, dispatch } = props;
+  const disabledTextInputs = ['author', 'branch', 'message', 'created', 'closed'];
 
   useEffect(() => {
     props.initialize({
@@ -47,38 +48,23 @@ const TicketContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer
-          dataType={'author'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'branch'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'message'}
-          type={'text'}
-          rows={4}
-          rowsMax={12}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'created'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
+        {disabledTextInputs.map(
+          input => (
+            <TextInputContainer
+              className={
+                (ticket.closed && input === 'closed') || (input !== 'closed') ?
+                  classes.block : classes.hidden
+              }
+              key={input}
+              dataType={input}
+              type={'text'}
+              rows={input === 'message' ? 4 : 1}
+              rowsMax={input === 'message' ? 12 : 1}
+              disabled={true}
+              required={false}
+            />
+          ))
+        }
         <div style={{ marginBottom: '20px', marginTop: '10px' }}>
           <SelectInputContainer
             dataType={'status'}
@@ -87,16 +73,6 @@ const TicketContainer = props => {
             valueField={'name'}
           />
         </div>
-        {ticket.closed && (
-          <TextInputContainer
-            dataType={'closed'}
-            type={'text'}
-            rows={1}
-            rowsMax={1}
-            disabled={true}
-            required={false}
-          />
-        )}
         <TextInputContainer
           dataType={'note'}
           type={'text'}

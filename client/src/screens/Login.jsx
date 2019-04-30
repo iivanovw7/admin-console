@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
@@ -8,9 +8,9 @@ import { reduxForm } from 'redux-form';
 import { loginUser } from '../actions';
 import { errorMessage } from '../components/UI/Forms/ErrorMessage';
 import { FormsButton } from '../components/UI/Forms/FormsButton';
-import { validateLogin } from '../utils/formsValidator';
-import { LoginFormStyles } from '../components/UI/ThemeProperties';
 import { TextInputContainer } from '../components/UI/Forms/InputContainers';
+import { LoginFormStyles } from '../components/UI/ThemeProperties';
+import { validateLogin } from '../utils/formsValidator';
 
 const Login = props => {
 

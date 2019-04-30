@@ -7,9 +7,8 @@ import { ChartsComponents } from '../../../constants/chartsStyles';
 import csvIcon from '../../../icons/csv-file-format-symbol.svg';
 import pdfIcon from '../../../icons/pdf-file-format-symbol.svg';
 import xlsxIcon from '../../../icons/xlsx-file-format-symbol.svg';
-import { formDataForExcel } from '../../../utils/chartsHelpers';
+import { formDataForExcel } from '../../../utils';
 import { ChartTypeSelector } from './ControlElements/ChartTypeSelector';
-import { TopInfoBarButton } from './ControlElements/ReportButton';
 import { TimeLimitSelector } from './ControlElements/TimeLimitSelector';
 
 export const ChartControlPanel = props => {
@@ -91,33 +90,7 @@ export const ChartControlPanel = props => {
         </div>
       </div>
       <div className={classes.reportBtnContainer}>
-        <TopInfoBarButton
-          classes={classes}
-          title={'CSV'}
-          image={csvIcon}
-          alt={'Create csv report'}
-          handleClick={() => {
-            setCsvReport(true);
-          }}
-        />
-        <TopInfoBarButton
-          classes={classes}
-          title={'XLSX'}
-          image={xlsxIcon}
-          alt={'Create excel report'}
-          handleClick={() => {
-            exportToXlsx();
-          }}
-        />
-        <TopInfoBarButton
-          classes={classes}
-          title={'PDF'}
-          image={pdfIcon}
-          alt={'Create pdf report'}
-          handleClick={() => {
-            sendChartToPrint();
-          }}
-        />
+
       </div>
       {appendCsv && (
         <CSVDownload

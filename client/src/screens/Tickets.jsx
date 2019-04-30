@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getTickets, searchTickets } from '../actions';
 import TicketsContainer from '../components/Tickets/TicketsContainer';
-import { Selector } from '../components/UI/Selector';
+import { NumbersSelector } from '../components/UI/NumbersSelector';
 import { PageSelector } from '../components/UI/PageSelector';
 import SearchBar from '../components/UI/SearchBar';
 import Spinner from '../components/UI/Spinner';
@@ -76,7 +76,7 @@ const Tickets = props => {
         className={classes.controlsContainer}
         style={{ marginTop: '24px', marginBottom: '24px' }}
       >
-        <Selector
+        <NumbersSelector
           classes={classes}
           title={'Results limit'}
           option={limit}

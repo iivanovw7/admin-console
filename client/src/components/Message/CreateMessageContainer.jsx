@@ -5,13 +5,13 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { logoutUser, sendMessage } from '../../actions';
-import { branchAccess, fullAccess } from '../../constants/messagesAccess';
-import { validateMessage } from '../../utils';
+import { branchAccess, fullAccess, groupAccess } from '../../constants/messagesAccess';
+import { ifArrayContains, validateMessage } from '../../utils';
 import { FormsButton } from '../UI/Forms/FormsButton';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
+import { Switcher } from '../UI/Switcher';
 import { Container } from '../UI/ThemeProperties';
-import { DestinationSwitch, ifArrayContains } from './DestinationSwitch';
 
 const CreateMessageContainer = props => {
 
@@ -63,10 +63,15 @@ const CreateMessageContainer = props => {
   return (
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
-        <DestinationSwitch
-          user={user}
+        <Switcher
+          title={'Destination'}
+          classes={classes}
           value={destination}
           handleSwitchAction={handleDestination}
+          options={[
+            { name: 'Branch', accessRights: ifArrayContains(user.role.code, branchAccess) },
+            { name: 'Group', accessRights: ifArrayContains(user.role.code, groupAccess) }
+          ]}
         />
         <div style={{ marginBottom: '20px', marginTop: '10px' }}>
           <SelectInputContainer

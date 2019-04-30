@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { deleteGroup, getGroups, getSingleGroup } from '../../actions';
+import { changeGroupStatus, deleteGroup, getGroups, getSingleGroup } from '../../actions';
+import { defaultGroups } from '../../constants/defaultGroups';
+import { TextButton } from '../UI/TextButton';
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
-import { actionButton } from './GroupsActionButton';
-import { deleteButton } from './GroupsDeleteButton';
 
 const GroupsContainer = props => {
   const { classes, history, dispatch, groups, page, limit } = props;
@@ -77,15 +77,33 @@ const GroupsContainer = props => {
 
   //Function returns control buttons according to current elements state
   function showActionButton(row) {
-    if (row.status) {
-      return actionButton('Disable', 'secondary', row, classes, dispatch);
-    }
-    return actionButton('Activate', 'primary', row, classes, dispatch);
+    return (
+      <TextButton
+        classes={classes}
+        color={row.status ? 'secondary' : 'primary'}
+        disabled={defaultGroups.includes(row.name)}
+        text={row.status ? 'Disable' : 'Activate'}
+        handleClick={() => {
+          dispatch(changeGroupStatus(row._id, !row.status));
+        }}
+      />
+    );
   }
 
   //Function returns delete button with parameters
   function showDeleteButton(row) {
-    return deleteButton(row, classes, handleDeleteAction);
+    return (
+      <TextButton
+        classes={classes}
+        color={'secondary'}
+        disabled={defaultGroups.includes(row.name)}
+        variant={'contained'}
+        text={'DELETE'}
+        handleClick={() => {
+          handleDeleteAction(row._id);
+        }}
+      />
+    );
   }
 
   return (

@@ -38,4 +38,3 @@ ChartTypeSelector.propTypes = {
   handleSelect: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired
 };
-

@@ -6,9 +6,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { deleteMessage, getMessages, getSingleMessage } from '../../actions';
-import { deleteButton } from '../Messages/MessagesDeleteButton';
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
+import { TextButton } from '../UI/TextButton';
 import { Container } from '../UI/ThemeProperties';
 
 const MessagesContainer = props => {
@@ -68,7 +68,17 @@ const MessagesContainer = props => {
 
   //Function returns delete button with parameters
   function showDeleteButton(row) {
-    return deleteButton(row, classes, handleDeleteAction);
+    return (
+      <TextButton
+        classes={classes}
+        color={'secondary'}
+        variant={'contained'}
+        text={'DELETE'}
+        handleClick={() => {
+          handleDeleteAction(row._id);
+        }}
+      />
+    );
   }
 
   return (

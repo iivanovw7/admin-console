@@ -45,10 +45,10 @@ CheckboxContainer.propTypes = {
 
 export const TextInputContainer = props => {
 
-  const { dataType, rows = 1, rowsMax = 1, type, required, normalize, disabled, variant } = props;
+  const { dataType, className, rows = 1, rowsMax = 1, type = 'text', required, normalize, disabled, variant } = props;
 
   return (
-    <Grid container spacing={16} alignItems="flex-end">
+    <Grid container spacing={16} alignItems="flex-end" className={className}>
       <Grid item md={true} sm={true} xs={true}>
         <Field
           name={dataType}

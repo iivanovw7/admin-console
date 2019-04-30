@@ -2,7 +2,7 @@ import { Button, IconButton, ListItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export const TopInfoBarButton = props => {
+export const ImageButton = props => {
 
   const { classes, image, alt, handleClick, title } = props;
 
@@ -23,7 +23,7 @@ export const TopInfoBarButton = props => {
   );
 };
 
-TopInfoBarButton.propTypes = {
+ImageButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
   image: PropTypes.any.isRequired
 };

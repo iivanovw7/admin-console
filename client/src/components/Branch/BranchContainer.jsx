@@ -15,6 +15,7 @@ import { Container } from '../UI/ThemeProperties';
 const BranchContainer = props => {
 
   const { classes, history, handleSubmit, dispatch, branch } = props;
+  const textInputs = ['name', 'email', 'phone', 'fax', 'address', 'information'];
 
   useEffect(() => {
     props.initialize({
@@ -47,24 +48,16 @@ const BranchContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
-        <TextInputContainer dataType={'email'} type={'email'} required={true} rows={1}/>
-        <TextInputContainer
-          dataType={'phone'}
-          type={'phone'}
-          required={true}
-          rows={1}
-          normalize={normalizePhone}
-        />
-        <TextInputContainer
-          dataType={'fax'}
-          type={'fax'}
-          required={true}
-          rows={1}
-          normalize={normalizePhone}
-        />
-        <TextInputContainer dataType={'address'} required={true} type={'text'} rows={4}/>
-        <TextInputContainer dataType={'information'} required={true} type={'text'} rows={4}/>
+        {textInputs.map(input => (
+          <TextInputContainer
+            key={input}
+            dataType={input}
+            type={input !=='text' ? input : 'text'}
+            normalize={(input === 'phone' || input === 'phone') ? normalizePhone : null}
+            required={false}
+            rows={(input === 'address' || input === 'information') ? 4 : 1}
+          />
+        ))}
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)

@@ -16,6 +16,12 @@ import { Container } from '../UI/ThemeProperties';
 
 const UserContainer = props => {
   const { classes, history, handleSubmit, user, roles, branches, groups, dispatch } = props;
+  const textInputs = ['name', 'surname', 'email'];
+  const selectorInputs = [
+    { name: 'Group', data: groups },
+    { name: 'Branch', data: branches },
+    { name: 'Role', data: roles }
+  ];
 
   useEffect(() => {
     props.initialize({
@@ -48,43 +54,30 @@ const UserContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        <TextInputContainer
-          dataType={'surname'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-        />
-        <TextInputContainer dataType={'email'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        {groups && (
-          <SelectInputContainer
-            dataType={'group'}
-            list={groups}
-            valueField={'_id'}
-            label={'Group'}
+        {textInputs.map(input => (
+          <TextInputContainer
+            key={input}
+            dataType={input}
+            type={'text'}
+            rows={1}
+            rowsMax={1}
+            disabled={true}
           />
-        )}
-        {branches && (
-          <SelectInputContainer
-            dataType={'branch'}
-            list={branches}
-            valueField={'_id'}
-            label={'Branch'}
-          />
-        )}
-        {roles && (
-          <SelectInputContainer
-            dataType={'role'}
-            list={roles}
-            valueField={'_id'}
-            label={'Role'}
-          />
-        )}
+        ))}
+        {groups && branches && roles ?
+          selectorInputs.map(input => (
+            <SelectInputContainer
+              key={input.name}
+              dataType={input.name.toLocaleLowerCase()}
+              list={input.data}
+              valueField={'_id'}
+              label={input.name}
+            />
+          )) : ''
+        }
         <CheckboxContainer
           name={'status'}
           label={'Active'}
-          value={''}
         />
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)

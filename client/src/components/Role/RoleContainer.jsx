@@ -54,9 +54,9 @@ const RoleContainer = props => {
           rows={4}
           rowsMax={12}
         />
-        <CheckboxContainer name={'isPublic'} label={'Public'} value={''}/>
-        <CheckboxContainer name={'isEditable'} label={'Editable'} value={''}/>
-        <CheckboxContainer name={'active'} label={'Active'} value={''}/>
+        <CheckboxContainer name={'isPublic'} label={'Public'} />
+        <CheckboxContainer name={'isEditable'} label={'Editable'} />
+        <CheckboxContainer name={'active'} label={'Active'} />
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)
         )}
