@@ -114,7 +114,7 @@ export default function (state = initialState, action) {
         ...state,
         [action.category]: {
           ...state[action.category],
-          chartStyle: action.payload
+          chartsStyle: action.payload
         }
       };
     }
