@@ -7,7 +7,7 @@ const ticketSchema = mongoose.Schema({
   note: String,
   subject: String,
   status: String,
-  created: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now() },
   closed: Date
 });
 

@@ -8,8 +8,8 @@ import { changeRoleStatus, deleteRole, getRoles, getSingleRole } from '../../act
 import Warning from '../UI/Dialogs/Warning';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
-import { actionButton } from './RolesActionButton';
-import { deleteButton } from './RolesDeleteButton';
+import { TextButton } from '../UI/TextButton';
+import { defaultRoles, mainRoles } from '../../constants/defaultRoles';
 
 const RolesContainer = props => {
   const { classes, history, dispatch, roles, page, limit } = props;
@@ -77,15 +77,33 @@ const RolesContainer = props => {
 
   //Function returns control buttons according to current elements state
   function showActionButton(row) {
-    if (row.active) {
-      return actionButton('Disable', 'secondary', row, classes, dispatch);
-    }
-    return actionButton('Activate', 'primary', row, classes, dispatch);
+    return (
+      <TextButton
+        classes={classes}
+        color={row.active ? 'secondary' : 'primary'}
+        disabled={mainRoles.includes(row.code)}
+        text={row.active ? 'Disable' : 'Activate'}
+        handleClick={() => {
+          dispatch(changeRoleStatus(row._id, !row.active));
+        }}
+      />
+    );
   }
 
   //Function returns delete button with parameters
   function showDeleteButton(row) {
-    return deleteButton(row, classes, handleDeleteAction);
+    return (
+      <TextButton
+        classes={classes}
+        color={'secondary'}
+        variant={'contained'}
+        disabled={defaultRoles.includes(row.code)}
+        text={'DELETE'}
+        handleClick={() => {
+          handleDeleteAction(row._id);
+        }}
+      />
+    );
   }
 
   return (
@@ -150,8 +168,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getSingleRole,
-  deleteRole,
-  changeRoleStatus
-})(withStyles(Container)(withRouter(RolesContainer)));
+export default connect(mapStateToProps)(withStyles(Container)(withRouter(RolesContainer)));

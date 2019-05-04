@@ -249,6 +249,12 @@ export const Container = theme => ({
     justifyContent: 'center',
     overflow: 'hidden'
   },
+  hidden: {
+    display: 'none'
+  },
+  block: {
+    display: 'block'
+  },
   [theme.breakpoints.down('sm')]: {
     mobile: {
       display: 'flex'
@@ -468,6 +474,9 @@ export const Container = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
+  },
+  actionCheckBox: {
+    height: 16
   }
 
 });

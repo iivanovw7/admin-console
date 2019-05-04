@@ -1,16 +1,16 @@
 import { Grid, withWidth } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { debounce } from 'debounce';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { changeChartStyle, getStatistics } from '../../../actions';
 import { ChartsComponents } from '../../../constants/chartsStyles';
-import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../utils';
+import { statsQueryTimeLimits } from '../../../constants/defaultLimits';
+import SwitchedComponent, { calculateWidth, formDataForCharts } from '../../../utils/chartsHelpers';
 import Spinner from '../../UI/Spinner';
 import { Container } from '../../UI/ThemeProperties';
 import { ChartControlPanel } from './ChartControlPanel';
-import { statsQueryTimeLimits } from '../../../constants/defaultLimits';
-import { debounce } from 'debounce';
 
 const ChartContainer = props => {
 
@@ -45,7 +45,7 @@ const ChartContainer = props => {
   useEffect(() => {
     dispatch(changeChartStyle(dataType, chartType));
     dispatch(getStatistics(dataType, history, limit));
-  }, [limit, chartType]);
+  }, [limit, chartType, props.style]);
 
   const handleLimitSelect = event => {
     setLimit(event.target.value);
@@ -74,7 +74,6 @@ const ChartContainer = props => {
         limit={limit}
         handleLimitSelect={handleLimitSelect}
         handleTypeSelect={handleTypeSelect}
-        style={props.style}
         classes={props.classes}
         stats={!props.stats ? {} : props.stats}
         total={!props.stats ? 0 : props.stats[0].total}
@@ -104,7 +103,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getStatistics,
-  changeChartStyle
-})(withWidth()(withStyles(Container)(ChartContainer)));
+export default connect(mapStateToProps)(withWidth()(withStyles(Container)(ChartContainer)));

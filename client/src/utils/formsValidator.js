@@ -71,7 +71,7 @@ export const validateLogin = values => {
   return errors;
 };
 
-export const validateGroup = values => {
+export const validateGroup = (values, props) => {
 
   const errors = {};
 

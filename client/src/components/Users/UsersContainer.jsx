@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSingleUser, getUsers, searchUsers } from '../../actions/index';
+import { changeUserStatus, getSingleUser, getUsers, searchUsers } from '../../actions/index';
 import AlertSnackbar from '../UI/Notifications/Snackbar';
 import { Container } from '../UI/ThemeProperties';
-import { actionCheckBox } from './UsersActionCheckBox';
+import { ActionCheckBox } from '../../components/UI/Checkbox';
 
 const UsersContainer = props => {
   const { classes, history, dispatch, users, limit, page, search } = props;
@@ -20,6 +20,10 @@ const UsersContainer = props => {
 
   function handleUserClick(id) {
     dispatch(getSingleUser(id, history, true));
+  }
+
+  function handleStatusClick(row) {
+    dispatch(changeUserStatus(row._id, !row.status, history));
   }
 
   //Triggers notification if there are any messages in props
@@ -89,7 +93,11 @@ const UsersContainer = props => {
                 </strong>
               </TableCell>
               <TableCell className={classes.userControlCell} align="center">
-                {actionCheckBox(row, classes, dispatch, history)}
+                <ActionCheckBox
+                  status={row.status}
+                  classes={classes}
+                  handleClick={() => {handleStatusClick(row)}}
+                />
               </TableCell>
             </TableRow>
           ))}
@@ -112,7 +120,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  getUsers,
-  getSingleUser
-})(withStyles(Container)(withRouter(UsersContainer)));
+export default connect(mapStateToProps)(withStyles(Container)(withRouter(UsersContainer)));

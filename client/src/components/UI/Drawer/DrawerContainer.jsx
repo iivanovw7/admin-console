@@ -19,6 +19,7 @@ const DrawerContainer = props => {
           variant="temporary"
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={mobileOpen}
+          onClick={handleDrawerToggle}
           onClose={handleDrawerToggle}
           classes={{
             paper: classes.drawerPaper

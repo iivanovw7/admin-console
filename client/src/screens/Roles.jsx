@@ -77,6 +77,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getRoles })(withStyles(Wrapper, { withTheme: true })(withRouter(Roles)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Roles)));
 
 

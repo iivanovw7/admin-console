@@ -1,19 +1,21 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { addNewBranch, updateBranch } from '../../actions';
+import { validateBranch } from '../../utils/formsValidator';
+import normalizePhone from '../../utils/phoneNormalizer';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import normalizePhone from '../UI/Forms/normalizer';
-import { validateBranch } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
 
 const BranchContainer = props => {
 
   const { classes, history, handleSubmit, dispatch, branch } = props;
+  const textInputs = ['name', 'email', 'phone', 'fax', 'address', 'information'];
 
   useEffect(() => {
     props.initialize({
@@ -46,24 +48,16 @@ const BranchContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
-        <TextInputContainer dataType={'email'} type={'email'} required={true} rows={1}/>
-        <TextInputContainer
-          dataType={'phone'}
-          type={'phone'}
-          required={true}
-          rows={1}
-          normalize={normalizePhone}
-        />
-        <TextInputContainer
-          dataType={'fax'}
-          type={'fax'}
-          required={true}
-          rows={1}
-          normalize={normalizePhone}
-        />
-        <TextInputContainer dataType={'address'} required={true} type={'text'} rows={4}/>
-        <TextInputContainer dataType={'information'} required={true} type={'text'} rows={4}/>
+        {textInputs.map(input => (
+          <TextInputContainer
+            key={input}
+            dataType={input}
+            type={input !=='text' ? input : 'text'}
+            normalize={(input === 'phone' || input === 'phone') ? normalizePhone : null}
+            required={false}
+            rows={(input === 'address' || input === 'information') ? 4 : 1}
+          />
+        ))}
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)
@@ -72,24 +66,13 @@ const BranchContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/branches`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={{ textTransform: 'none', margin: 5 }}
-          >
-            SAVE
-          </Button>
+          />
+          <FormsButton title={'SAVE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>
@@ -105,7 +88,7 @@ function mapStateToProps(state) {
   return {
     errorMessage: state.branches.error,
     successMessage: state.branches.success,
-    messageConfirmed: state.branches.confirmed,
+    messageConfirmed: state.branches.confirmed
   };
 }
 

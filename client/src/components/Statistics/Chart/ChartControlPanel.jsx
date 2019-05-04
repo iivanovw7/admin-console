@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { CSVDownload } from 'react-csv';
 import XLSX from 'xlsx';
+import { ImageButton } from '../../../components/UI/ImageButton';
+import { NumbersSelector } from '../../../components/UI/NumbersSelector';
+import { Selector } from '../../../components/UI/Selector';
 import { ChartsComponents } from '../../../constants/chartsStyles';
 import csvIcon from '../../../icons/csv-file-format-symbol.svg';
 import pdfIcon from '../../../icons/pdf-file-format-symbol.svg';
 import xlsxIcon from '../../../icons/xlsx-file-format-symbol.svg';
-import { formDataForExcel } from '../../../utils';
-import { ChartTypeSelector } from './ControlElements/ChartTypeSelector';
-import { TopInfoBarButton } from './ControlElements/ReportButton';
-import { TimeLimitSelector } from './ControlElements/TimeLimitSelector';
+import { formDataForExcel } from '../../../utils/chartsHelpers';
 
 export const ChartControlPanel = props => {
   const { classes, dataType, limit, limits, handleLimitSelect, handleTypeSelect, total, style, stats } = props;
   const [appendCsv, setCsvReport] = useState(false);
+  const hideSelector = ['Permissions', 'Groups'].indexOf(dataType) > -1;
 
   function sendChartToPrint() {
 
@@ -62,16 +63,21 @@ export const ChartControlPanel = props => {
         }}>
       </iframe>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <TimeLimitSelector
+        <NumbersSelector
           classes={classes}
           dataType={dataType}
-          limit={limit}
-          limits={limits}
-          handleLimit={handleLimitSelect}
+          title={'Months'}
+          disabled={hideSelector}
+          help={'Time limit'}
+          option={hideSelector ? 'Total' : limit}
+          options={hideSelector ? ['Total'] : limits}
+          handleSelect={handleLimitSelect}
         />
-        <ChartTypeSelector
+        <Selector
           classes={classes}
           dataType={dataType}
+          title={'Chart'}
+          help={'Select styles'}
           option={style}
           options={ChartsComponents}
           handleSelect={handleTypeSelect}
@@ -91,7 +97,7 @@ export const ChartControlPanel = props => {
         </div>
       </div>
       <div className={classes.reportBtnContainer}>
-        <TopInfoBarButton
+        <ImageButton
           classes={classes}
           title={'CSV'}
           image={csvIcon}
@@ -100,7 +106,7 @@ export const ChartControlPanel = props => {
             setCsvReport(true);
           }}
         />
-        <TopInfoBarButton
+        <ImageButton
           classes={classes}
           title={'XLSX'}
           image={xlsxIcon}
@@ -109,7 +115,7 @@ export const ChartControlPanel = props => {
             exportToXlsx();
           }}
         />
-        <TopInfoBarButton
+        <ImageButton
           classes={classes}
           title={'PDF'}
           image={pdfIcon}

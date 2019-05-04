@@ -1,10 +1,11 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { getBranches, getGroups, getRoles, updateUser } from '../../actions';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import {
   CheckboxContainer,
   SelectInputContainer,
@@ -15,6 +16,12 @@ import { Container } from '../UI/ThemeProperties';
 
 const UserContainer = props => {
   const { classes, history, handleSubmit, user, roles, branches, groups, dispatch } = props;
+  const textInputs = ['name', 'surname', 'email'];
+  const selectorInputs = [
+    { name: 'Group', data: groups },
+    { name: 'Branch', data: branches },
+    { name: 'Role', data: roles }
+  ];
 
   useEffect(() => {
     props.initialize({
@@ -47,43 +54,30 @@ const UserContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer dataType={'name'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        <TextInputContainer
-          dataType={'surname'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-        />
-        <TextInputContainer dataType={'email'} type={'text'} rows={1} rowsMax={1} disabled={true}/>
-        {groups && (
-          <SelectInputContainer
-            dataType={'group'}
-            list={groups}
-            valueField={'_id'}
-            label={'Group'}
+        {textInputs.map(input => (
+          <TextInputContainer
+            key={input}
+            dataType={input}
+            type={'text'}
+            rows={1}
+            rowsMax={1}
+            disabled={true}
           />
-        )}
-        {branches && (
-          <SelectInputContainer
-            dataType={'branch'}
-            list={branches}
-            valueField={'_id'}
-            label={'Branch'}
-          />
-        )}
-        {roles && (
-          <SelectInputContainer
-            dataType={'role'}
-            list={roles}
-            valueField={'_id'}
-            label={'Role'}
-          />
-        )}
+        ))}
+        {groups && branches && roles ?
+          selectorInputs.map(input => (
+            <SelectInputContainer
+              key={input.name}
+              dataType={input.name.toLocaleLowerCase()}
+              list={input.data}
+              valueField={'_id'}
+              label={input.name}
+            />
+          )) : ''
+        }
         <CheckboxContainer
           name={'status'}
           label={'Active'}
-          value={''}
         />
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)
@@ -92,25 +86,13 @@ const UserContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/users`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            SAVE
-          </Button>
+          />
+          <FormsButton title={'SAVE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>

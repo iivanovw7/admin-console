@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import loginLayout from './layouts/loginLayout';
-import protectedContent from './layouts/protectedContent';
+import PrivateRoute from './privateRoute';
 import Branch from './screens/Branch';
 import Branches from './screens/Branches';
 import Group from './screens/Group';
@@ -25,25 +24,26 @@ const NoMatch = ({ location }) => (
 
 export default (
   <Switch>
-    <Route exact path={'/'} component={loginLayout(Login)}/>
-    <Route path={'/statistics'} component={protectedContent(Statistics)}/>
-    <Route path={'/users/:id'} component={protectedContent(User)}/>
-    <Route path={'/users/new'} component={protectedContent(User)}/>
-    <Route path={'/users'} component={protectedContent(Users)}/>
-    <Route path={'/messages/:id'} component={protectedContent(Message)}/>
-    <Route path={'/messages/new'} component={protectedContent(Message)}/>
-    <Route path={'/messages'} component={protectedContent(Messages)}/>
-    <Route path={'/tickets/:id'} component={protectedContent(Ticket)}/>
-    <Route path={'/tickets'} component={protectedContent(Tickets)}/>
-    <Route path={'/roles/:id'} component={protectedContent(Role)}/>
-    <Route path={'/roles/new'} component={protectedContent(Role)}/>
-    <Route path={'/roles'} component={protectedContent(Roles)}/>
-    <Route path={'/groups/:id'} component={protectedContent(Group)}/>
-    <Route path={'/groups/new'} component={protectedContent(Group)}/>
-    <Route path={'/groups'} component={protectedContent(Groups)}/>
-    <Route path={'/branches/:id'} component={protectedContent(Branch)}/>
-    <Route path={'/branches/new'} component={protectedContent(Branch)}/>
-    <Route path={'/branches'} component={protectedContent(Branches)}/>
+    <Route exact path={'/'} component={Login}/>
+    <PrivateRoute path={'/statistics'} component={Statistics}/>
+    <PrivateRoute path={'/users/:id'} component={User}/>
+    <PrivateRoute path={'/users/new'} component={User}/>
+    <PrivateRoute path={'/users'} component={Users}/>
+    <PrivateRoute path={'/messages/:id'} component={Message}/>
+    <PrivateRoute path={'/messages/new'} component={Message}/>
+    <PrivateRoute path={'/messages'} component={Messages}/>
+    <PrivateRoute path={'/tickets/:id'} component={Ticket}/>
+    <PrivateRoute path={'/tickets'} component={Tickets}/>
+    <PrivateRoute path={'/roles/:id'} component={Role}/>
+    <PrivateRoute path={'/roles/new'} component={Role}/>
+    <PrivateRoute path={'/roles'} component={Roles}/>
+    <PrivateRoute path={'/groups/:id'} component={Group}/>
+    <PrivateRoute path={'/groups/new'} component={Group}/>
+    <PrivateRoute path={'/groups'} component={Groups}/>
+    <PrivateRoute path={'/branches/:id'} component={Branch}/>
+    <PrivateRoute path={'/branches/new'} component={Branch}/>
+    <PrivateRoute path={'/branches'} component={Branches}/>
     <Route component={NoMatch}/>
   </Switch>
 );
+

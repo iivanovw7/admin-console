@@ -1,18 +1,20 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
+import { formValueSelector, reduxForm } from 'redux-form';
 import { addNewGroup, updateGroup } from '../../actions';
+import { validateGroup } from '../../utils/formsValidator';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { CheckboxContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import { validateGroup } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
 
-const GroupContainer = props => {
+let GroupContainer = props => {
 
-  const { classes, history, handleSubmit, dispatch, group } = props;
+  const { classes, history, handleSubmit, dispatch, group, permissions, status } = props;
+  const validatedPermissions = props.validate({ permissions, status });
 
   useEffect(() => {
     props.initialize({
@@ -44,7 +46,11 @@ const GroupContainer = props => {
         <br/>
         <TextInputContainer dataType={'name'} type={'text'} required={true} rows={1}/>
         <TextInputContainer dataType={'description'} type={'text'} required={true} rows={4}/>
-        <CheckboxContainer name={'permissions'} label={'Available for permissions'} value={''}/>
+        <CheckboxContainer
+          name={'permissions'}
+          label={'Available for permissions'}
+          value={''}
+        />
         <CheckboxContainer name={'status'} label={'Active'} value={''}/>
         {props.errorMessage && !props.messageConfirmed && (
           showAlert(props.errorMessage, false)
@@ -52,26 +58,15 @@ const GroupContainer = props => {
         {props.successMessage && !props.messageConfirmed && (
           showAlert(props.successMessage, true)
         )}
+        <p style={{ color: 'red', height: 20 }}>{validatedPermissions.permissions}</p>
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/groups`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            SAVE
-          </Button>
+          />
+          <FormsButton title={'SAVE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>
@@ -92,13 +87,17 @@ function mapStateToProps(state) {
   };
 }
 
-const reduxFromGroup = reduxForm({
+GroupContainer = reduxForm({
   validate: validateGroup,
   form: 'group',
   fields: ['name', 'description', 'permissions', 'status']
 })(GroupContainer);
 
+GroupContainer = connect(
+  state => formValueSelector('group')(state, 'permissions', 'status')
+)(GroupContainer);
+
 export default connect(mapStateToProps, {
   addNewGroup,
   updateGroup
-})(withStyles(Container)(reduxFromGroup));
+})(withStyles(Container)(GroupContainer));

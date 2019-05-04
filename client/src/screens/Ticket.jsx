@@ -44,4 +44,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {})(withStyles(Wrapper, { withTheme: true })(withRouter(Ticket)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Ticket)));

@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { updateTicket } from '../../actions';
 import { statuses } from '../../constants/ticketStatuses';
+import { validateTicket } from '../../utils/formsValidator';
+import { FormsButton } from '../UI/Forms/FormsButton';
 import { SelectInputContainer, TextInputContainer } from '../UI/Forms/InputContainers';
-import { validateTicket } from '../UI/Forms/validate';
 import AlertSnackbar from '../UI/Notifications/Snackbar.jsx';
 import { Container } from '../UI/ThemeProperties';
 
 const TicketContainer = props => {
   const { classes, history, handleSubmit, ticket, dispatch } = props;
+  const disabledTextInputs = ['author', 'branch', 'message', 'created', 'closed'];
 
   useEffect(() => {
     props.initialize({
@@ -46,38 +48,23 @@ const TicketContainer = props => {
     <Paper className={classes.root}>
       <form className={classes.branchPaper} onSubmit={handleSubmit(submit)}>
         <br/>
-        <TextInputContainer
-          dataType={'author'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'branch'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'message'}
-          type={'text'}
-          rows={4}
-          rowsMax={12}
-          disabled={true}
-          required={false}
-        />
-        <TextInputContainer
-          dataType={'created'}
-          type={'text'}
-          rows={1}
-          rowsMax={1}
-          disabled={true}
-          required={false}
-        />
+        {disabledTextInputs.map(
+          input => (
+            <TextInputContainer
+              className={
+                (ticket.closed && input === 'closed') || (input !== 'closed') ?
+                  classes.block : classes.hidden
+              }
+              key={input}
+              dataType={input}
+              type={'text'}
+              rows={input === 'message' ? 4 : 1}
+              rowsMax={input === 'message' ? 12 : 1}
+              disabled={true}
+              required={false}
+            />
+          ))
+        }
         <div style={{ marginBottom: '20px', marginTop: '10px' }}>
           <SelectInputContainer
             dataType={'status'}
@@ -86,16 +73,6 @@ const TicketContainer = props => {
             valueField={'name'}
           />
         </div>
-        {ticket.closed && (
-          <TextInputContainer
-            dataType={'closed'}
-            type={'text'}
-            rows={1}
-            rowsMax={1}
-            disabled={true}
-            required={false}
-          />
-        )}
         <TextInputContainer
           dataType={'note'}
           type={'text'}
@@ -111,25 +88,13 @@ const TicketContainer = props => {
           showAlert(props.successMessage, true)
         )}
         <Grid container justify="flex-end" style={{ marginTop: '10px' }}>
-          <Button
-            variant="contained" color="primary"
-            style={{ textTransform: 'none', margin: 5 }}
-            onClick={() => {
+          <FormsButton
+            title={'CANCEL'}
+            handleClick={() => {
               history.push(`/tickets`);
             }}
-          >
-            CANCEL
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            style={
-              { textTransform: 'none', margin: 5 }
-            }
-          >
-            UPDATE
-          </Button>
+          />
+          <FormsButton title={'UPDATE'} type={'submit'}/>
         </Grid>
       </form>
     </Paper>

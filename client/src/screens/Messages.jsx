@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { getMessages, searchMessages } from '../actions';
 import MessagesContainer from '../components/Messages/MessagesContainer';
 import AddNewButton from '../components/UI/AddButton.jsx';
-import { Selector } from '../components/UI/Selector';
+import { NumbersSelector } from '../components/UI/NumbersSelector';
 import { PageSelector } from '../components/UI/PageSelector';
 import SearchBar from '../components/UI/SearchBar';
 import Spinner from '../components/UI/Spinner';
@@ -78,7 +78,7 @@ const Messages = props => {
         className={classes.controlsContainer}
         style={{ marginTop: '24px', marginBottom: '24px' }}
       >
-        <Selector
+        <NumbersSelector
           classes={classes}
           title={'Results limit'}
           option={limit}
@@ -103,5 +103,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getMessages })(withStyles(Wrapper, { withTheme: true })(withRouter(Messages)));
+export default connect(mapStateToProps)(withStyles(Wrapper, { withTheme: true })(withRouter(Messages)));
 
