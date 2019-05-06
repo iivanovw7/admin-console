@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render charts top bar element  Should match snapshot 1`] = `"<li class=\\"MuiListItem-root-175 MuiListItem-default-178 MuiListItem-gutters-183\\"><div class=\\"MuiAvatar-root-187 MuiAvatar-colorDefault-188\\"><span class=\\"material-icons MuiIcon-root-190\\" aria-hidden=\\"true\\">test</span></div><div class=\\"MuiListItemText-root-199\\"><span class=\\"MuiTypography-root-205 MuiTypography-subheading-212 MuiListItemText-primary-202\\">TITLE</span><p class=\\"MuiTypography-root-205 MuiTypography-body1-214 MuiTypography-colorTextSecondary-238 MuiListItemText-secondary-203\\">ADMIN</p></div></li>"`;
