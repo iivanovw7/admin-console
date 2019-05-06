@@ -7,7 +7,7 @@ import AppBarContainer from '../components/UI/AppBar/AppBarContainer';
 import DrawerContainer from '../components/UI/Drawer/DrawerContainer';
 import { Wrapper } from '../components/UI/ThemeProperties';
 
-const ContentLayout = (props) => {
+const ContentLayout = props => {
 
   const { classes, history } = props;
   const [mobileOpen, setDrawerState] = useState(false);
