@@ -6,7 +6,7 @@ import ContentLayout from './layouts/contentLayout';
 const PrivateRoute = ({ component: Component, authenticated, ...rest }) => {
   return (
     <Route  {...rest} render={props => {
-     if(authenticated === true) {
+     if(authenticated) {
        return (
          <ContentLayout>
            <Component {...props} />

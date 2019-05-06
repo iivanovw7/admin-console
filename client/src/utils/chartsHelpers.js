@@ -6,33 +6,26 @@ import VerticalBars from '../components/Statistics/Chart/ChartModes/VerticalBars
 //returns selected component
 export const SwitchedComponent = props => {
 
-  let Output; // save the rendered JSX to return
-
   // check the type of the component given in props
   switch (props.type) {
 
     // render VerticalBars with props
     case 'VBars':
-      Output = (<VerticalBars {...props} />);
-      break;
+      return <VerticalBars {...props} />;
 
     // render HorizontalBars with props
     case 'HBars':
-      Output = (<HorizontalBars {...props} />);
-      break;
+      return <HorizontalBars {...props} />;
 
     //render PieChart with props
     case 'PieChart':
-      Output = (<PieChart {...props} />);
-      break;
+      return <PieChart {...props} />;
 
     // unknown type ... output null to not render
     default:
-      Output = (null); // to return nothing, use null
-      break;
+      return null; // to return nothing, use null
 
   }
-  return Output;
 };
 
 export default SwitchedComponent;
