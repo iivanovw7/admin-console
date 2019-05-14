@@ -138,19 +138,17 @@ Connected to database successfully.
 
 After private api started you should terminate it to make a build: <br />
 `Ctrl + C` <br />
-Then run (assuming you have already completed section [Prepare](#prepare)  :
+Then run (assuming you have already completed section [Prepare](#prepare) ) : <br />
 `npm run client-build` <br /> 
 You should receive message: <br /> 
 `The build folder is ready to be deployed.` <br /> 
-Then start application: 
-`npm run client-build` <br /> 
 
-Then if you are using Nodemon:
+Then if you are using Nodemon: <br />
 `npm run nodemon-client-serve` <br /> 
-If not:
+If not: <br />
 `npm run prod-client-serve` <br /> 
 
-Lst message you should receive:
+Lst message you should receive: <br />
 `INFO: Accepting connections at http://localhost:4782` <br />
 Means that application is served to PORT 4782
 
