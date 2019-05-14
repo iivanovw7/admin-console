@@ -51,13 +51,24 @@ For Ubuntu or Debian-based Linux distributions. <br />
 Tested on: Ubuntu 16.04.6 LTS (Xenial Xerus), Ubuntu 18.04.2 LTS (Bionic Beaver)
 
 -------
+
+### Prepare 
+
 - Clone repository: <br />
 `git clone https://github.com/iivanovw7/admin-console.git` <br />
 - Navigate into the application directory <br />
 `cd admin-console` <br />
 - Install packages: <br />
+`cd client` <br />
 `npm install` <br />
+`cd ..` <br />
+`cd server` <br />
+`npm install` <br />
+`npm install -g serve` <br />
+
 -------
+
+### Configuring private API 
 
 ##### Option 1 (with Nodemon)
 
@@ -75,12 +86,21 @@ with similar contents:
   "env": {
     "PORT_PRIVATE": XXXX,
     "SECRET": "XXXX",
-    "DATABASE": "mongodb://LOGIN:PASSWORD"
+    "DATABASE": "mongodb://LOGIN:PASSWORD",
+    "client": "../client"
   }
 }
 ```
-Save and close `nodemon.json` and run private api: <br />
+Save and close `nodemon.json` and run private api for test: <br />
 `npm run start` <br />
+
+After private API has started you should receive in console something 
+like this:
+
+```
+Private api is available on port XXX
+Connected to database successfully.
+``` 
 
 -------
 
@@ -96,14 +116,43 @@ you can use npm script:
 "config": {
     "port": XXXX,
     "secret": "XXXX",
-    "db": "mongodb://LOGIN:PASSWORD"
+    "db": "mongodb://LOGIN:PASSWORD",
+    "client": "../client"
   }
 ```
 
-Save and close `package.json` and run private api: <br />
+Save and close `package.json` and run private api for test: <br />
 `npm run prod` <br />
 
+After private API has started you should receive in console something 
+like this:
+
+```
+Private api is available on port XXX
+Connected to database successfully.
+``` 
+
 -------
+
+### Build client application and run 
+
+After private api started you should terminate it to make a build: <br />
+`Ctrl + C` <br />
+Then run (assuming you have already completed section [Prepare](#prepare)  :
+`npm run client-build` <br /> 
+You should receive message: <br /> 
+`The build folder is ready to be deployed.` <br /> 
+Then start application: 
+`npm run client-build` <br /> 
+
+Then if you are using Nodemon:
+`npm run nodemon-client-serve` <br /> 
+If not:
+`npm run prod-client-serve` <br /> 
+
+Lst message you should receive:
+`INFO: Accepting connections at http://localhost:4782` <br />
+Means that application is served to PORT 4782
 
 
 ## Features
