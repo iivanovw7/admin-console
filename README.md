@@ -18,6 +18,7 @@ Mongo db is used as a data storage.
 See more details in [Features](#features) section.
 
 > Frontend: ReactJS, Material UI, D3, Redux, Axios
+
 > Backend: NodeJS, Express, MongoDB, Mongoose 
 
 ---
@@ -55,7 +56,7 @@ For Ubuntu or Debian-based Linux distributions
 - Install packages: <br />
 `npm install` <br />
 -------
-#####Option 1 (with Nodemon)
+##### Option 1 (with Nodemon)
 At this point Nodemon is in charge of managing global variables, so you have to create configuration file: 
 <br />
 `nano nodemon.json` <br />
@@ -77,7 +78,7 @@ with similar contents:
 Save and close `nodemon.json` and run private api: <br />
 `npm run start` <br />
 -------
-#####Option 2 (with NPM script)
+##### Option 2 (with NPM script)
 If you don't like Nodemon, or maybe you are going to execute app with pm2, 
 you can use npm script:
 
