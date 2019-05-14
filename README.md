@@ -40,7 +40,6 @@ See more details in [Features](#features) section.
 
 - [NPM 6.4.1](https://www.npmjs.com/get-npm)
 
-Back to [Table of contents](#Table of Contents)
 
 ### Clone
 
@@ -106,7 +105,6 @@ Save and close `package.json` and run private api: <br />
 
 -------
 
-Back to [Table of contents](#Table of Contents)
 
 ## Features
 
@@ -168,8 +166,6 @@ Section used for observing company's offices. Can be used to group and filter em
 Can be disabled (Closed)
 Cannot be removed. Contains only information about branch. (System name, address, contacts, status)
 
-Back to [Table of contents](#Table of Contents)
-
 ## Testing
 
 > Libraries used:
@@ -212,7 +208,6 @@ Should run in directory: `./admin-console/client` <br />
 `npm install` <br />
 `npm run test` <br />
 
-Back to [Table of contents](#Table of Contents)
 
 ## License
 
