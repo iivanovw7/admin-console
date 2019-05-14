@@ -1,4 +1,4 @@
-# Admin-console
+# Admin-console 
 
 Administration console of some IT company. Allows to observe and manage specific company's data.
 Repository contains two separate projects: FE client (React application), and backend API (express server).
@@ -23,7 +23,7 @@ See more details in [Features](#features) section.
 
 ---
 
-## Table of Contents
+## Table of Contents 
 
 - [Requirements](#requirements)
 - [Clone](#clone)
@@ -40,6 +40,7 @@ See more details in [Features](#features) section.
 
 - [NPM 6.4.1](https://www.npmjs.com/get-npm)
 
+Back to [Table of contents](#Table of Contents)
 
 ### Clone
 
@@ -47,8 +48,8 @@ See more details in [Features](#features) section.
 
 ## Installation
 
-For Ubuntu or Debian-based Linux distributions
-(Tested on: Ubuntu 16.04.6 LTS (Xenial Xerus), Ubuntu 18.04.2 LTS (Bionic Beaver))
+For Ubuntu or Debian-based Linux distributions. <br />
+Tested on: Ubuntu 16.04.6 LTS (Xenial Xerus), Ubuntu 18.04.2 LTS (Bionic Beaver)
 
 -------
 - Clone repository: <br />
@@ -105,6 +106,7 @@ Save and close `package.json` and run private api: <br />
 
 -------
 
+Back to [Table of contents](#Table of Contents)
 
 ## Features
 
@@ -166,6 +168,7 @@ Section used for observing company's offices. Can be used to group and filter em
 Can be disabled (Closed)
 Cannot be removed. Contains only information about branch. (System name, address, contacts, status)
 
+Back to [Table of contents](#Table of Contents)
 
 ## Testing
 
@@ -208,6 +211,8 @@ Repository contains postman tests backups, which can be used for API testing.
 Should run in directory: `./admin-console/client` <br />
 `npm install` <br />
 `npm run test` <br />
+
+Back to [Table of contents](#Table of Contents)
 
 ## License
 
