@@ -148,7 +148,7 @@ Then if you are using Nodemon: <br />
 If not: <br />
 `npm run prod-client-serve` <br /> 
 
-Lst message you should receive: <br />
+Last message you should receive: <br />
 `INFO: Accepting connections at http://localhost:4782` <br />
 Means that application is served to PORT 4782
 
