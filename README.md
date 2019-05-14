@@ -102,8 +102,8 @@ you can use npm script:
 
 Save and close `package.json` and run private api: <br />
 `npm run prod` <br />
--------
 
+-------
 
 
 ## Features
