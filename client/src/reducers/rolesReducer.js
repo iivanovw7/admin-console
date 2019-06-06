@@ -54,7 +54,7 @@ export default function (state = initialState, action) {
         role: {},
         error: null,
         success: message(
-          action.payload.data.name,
+          action.payload.data.newRole.name,
           action,
           'en'
         ),
