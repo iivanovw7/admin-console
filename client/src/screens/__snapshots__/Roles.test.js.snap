@@ -1,0 +1,447 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Roles screen Should match snapshot 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Provider
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  >
+    <MemoryRouter>
+      <WithStyles(withRouter(Connect(WithStyles(withRouter(Roles)))))
+        dispatch={[MockFunction]}
+        roles={
+          Object {
+            "limit": 7,
+            "output": Array [
+              Object {
+                "_id": "5c8f96bbcece9911f01dd0ab",
+                "active": true,
+                "code": "ADMIN",
+                "description": "Main System Administrator with full access",
+                "editable": false,
+                "name": "Administrator",
+                "public": false,
+              },
+              Object {
+                "_id": "5c8f96bbcece9911f01dd0ac",
+                "active": true,
+                "code": "BRANCH_ADMIN",
+                "description": "Administrator with full access to their own branch",
+                "editable": false,
+                "name": "Branch Administrator",
+                "public": false,
+              },
+              Object {
+                "_id": "5c8f96bbcece2211f01dd0ab",
+                "active": true,
+                "code": "USER",
+                "description": "Default user",
+                "editable": false,
+                "name": "User",
+                "public": false,
+              },
+            ],
+            "page": 1,
+            "pages": 4,
+            "results": 25,
+          }
+        }
+      />
+    </MemoryRouter>
+  </Provider>,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": <MemoryRouter>
+        <WithStyles(withRouter(Connect(WithStyles(withRouter(Roles)))))
+          dispatch={[MockFunction]}
+          roles={
+            Object {
+              "limit": 7,
+              "output": Array [
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ab",
+                  "active": true,
+                  "code": "ADMIN",
+                  "description": "Main System Administrator with full access",
+                  "editable": false,
+                  "name": "Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ac",
+                  "active": true,
+                  "code": "BRANCH_ADMIN",
+                  "description": "Administrator with full access to their own branch",
+                  "editable": false,
+                  "name": "Branch Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece2211f01dd0ab",
+                  "active": true,
+                  "code": "USER",
+                  "description": "Default user",
+                  "editable": false,
+                  "name": "User",
+                  "public": false,
+                },
+              ],
+              "page": 1,
+              "pages": 4,
+              "results": 25,
+            }
+          }
+        />
+      </MemoryRouter>,
+      "value": Object {
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "storeState": Object {},
+      },
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <WithStyles(withRouter(Connect(WithStyles(withRouter(Roles)))))
+          dispatch={[MockFunction]}
+          roles={
+            Object {
+              "limit": 7,
+              "output": Array [
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ab",
+                  "active": true,
+                  "code": "ADMIN",
+                  "description": "Main System Administrator with full access",
+                  "editable": false,
+                  "name": "Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ac",
+                  "active": true,
+                  "code": "BRANCH_ADMIN",
+                  "description": "Administrator with full access to their own branch",
+                  "editable": false,
+                  "name": "Branch Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece2211f01dd0ab",
+                  "active": true,
+                  "code": "USER",
+                  "description": "Default user",
+                  "editable": false,
+                  "name": "User",
+                  "public": false,
+                },
+              ],
+              "page": 1,
+              "pages": 4,
+              "results": 25,
+            }
+          }
+        />,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "dispatch": [MockFunction],
+          "roles": Object {
+            "limit": 7,
+            "output": Array [
+              Object {
+                "_id": "5c8f96bbcece9911f01dd0ab",
+                "active": true,
+                "code": "ADMIN",
+                "description": "Main System Administrator with full access",
+                "editable": false,
+                "name": "Administrator",
+                "public": false,
+              },
+              Object {
+                "_id": "5c8f96bbcece9911f01dd0ac",
+                "active": true,
+                "code": "BRANCH_ADMIN",
+                "description": "Administrator with full access to their own branch",
+                "editable": false,
+                "name": "Branch Administrator",
+                "public": false,
+              },
+              Object {
+                "_id": "5c8f96bbcece2211f01dd0ab",
+                "active": true,
+                "code": "USER",
+                "description": "Default user",
+                "editable": false,
+                "name": "User",
+                "public": false,
+              },
+            ],
+            "page": 1,
+            "pages": 4,
+            "results": 25,
+          },
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+    "type": Object {
+      "$$typeof": Symbol(react.provider),
+      "_context": Object {
+        "$$typeof": Symbol(react.context),
+        "Consumer": Object {
+          "$$typeof": Symbol(react.context),
+          "_calculateChangedBits": null,
+          "_context": [Circular],
+        },
+        "Provider": [Circular],
+        "_calculateChangedBits": null,
+        "_currentRenderer": null,
+        "_currentRenderer2": null,
+        "_currentValue": null,
+        "_currentValue2": null,
+        "_threadCount": 0,
+      },
+    },
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <MemoryRouter>
+          <WithStyles(withRouter(Connect(WithStyles(withRouter(Roles)))))
+            dispatch={[MockFunction]}
+            roles={
+              Object {
+                "limit": 7,
+                "output": Array [
+                  Object {
+                    "_id": "5c8f96bbcece9911f01dd0ab",
+                    "active": true,
+                    "code": "ADMIN",
+                    "description": "Main System Administrator with full access",
+                    "editable": false,
+                    "name": "Administrator",
+                    "public": false,
+                  },
+                  Object {
+                    "_id": "5c8f96bbcece9911f01dd0ac",
+                    "active": true,
+                    "code": "BRANCH_ADMIN",
+                    "description": "Administrator with full access to their own branch",
+                    "editable": false,
+                    "name": "Branch Administrator",
+                    "public": false,
+                  },
+                  Object {
+                    "_id": "5c8f96bbcece2211f01dd0ab",
+                    "active": true,
+                    "code": "USER",
+                    "description": "Default user",
+                    "editable": false,
+                    "name": "User",
+                    "public": false,
+                  },
+                ],
+                "page": 1,
+                "pages": 4,
+                "results": 25,
+              }
+            }
+          />
+        </MemoryRouter>,
+        "value": Object {
+          "store": Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          },
+          "storeState": Object {},
+        },
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <WithStyles(withRouter(Connect(WithStyles(withRouter(Roles)))))
+            dispatch={[MockFunction]}
+            roles={
+              Object {
+                "limit": 7,
+                "output": Array [
+                  Object {
+                    "_id": "5c8f96bbcece9911f01dd0ab",
+                    "active": true,
+                    "code": "ADMIN",
+                    "description": "Main System Administrator with full access",
+                    "editable": false,
+                    "name": "Administrator",
+                    "public": false,
+                  },
+                  Object {
+                    "_id": "5c8f96bbcece9911f01dd0ac",
+                    "active": true,
+                    "code": "BRANCH_ADMIN",
+                    "description": "Administrator with full access to their own branch",
+                    "editable": false,
+                    "name": "Branch Administrator",
+                    "public": false,
+                  },
+                  Object {
+                    "_id": "5c8f96bbcece2211f01dd0ab",
+                    "active": true,
+                    "code": "USER",
+                    "description": "Default user",
+                    "editable": false,
+                    "name": "User",
+                    "public": false,
+                  },
+                ],
+                "page": 1,
+                "pages": 4,
+                "results": 25,
+              }
+            }
+          />,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "dispatch": [MockFunction],
+            "roles": Object {
+              "limit": 7,
+              "output": Array [
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ab",
+                  "active": true,
+                  "code": "ADMIN",
+                  "description": "Main System Administrator with full access",
+                  "editable": false,
+                  "name": "Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece9911f01dd0ac",
+                  "active": true,
+                  "code": "BRANCH_ADMIN",
+                  "description": "Administrator with full access to their own branch",
+                  "editable": false,
+                  "name": "Branch Administrator",
+                  "public": false,
+                },
+                Object {
+                  "_id": "5c8f96bbcece2211f01dd0ab",
+                  "active": true,
+                  "code": "USER",
+                  "description": "Default user",
+                  "editable": false,
+                  "name": "User",
+                  "public": false,
+                },
+              ],
+              "page": 1,
+              "pages": 4,
+              "results": 25,
+            },
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      "type": Object {
+        "$$typeof": Symbol(react.provider),
+        "_context": Object {
+          "$$typeof": Symbol(react.context),
+          "Consumer": Object {
+            "$$typeof": Symbol(react.context),
+            "_calculateChangedBits": null,
+            "_context": [Circular],
+          },
+          "Provider": [Circular],
+          "_calculateChangedBits": null,
+          "_currentRenderer": null,
+          "_currentRenderer2": null,
+          "_currentValue": null,
+          "_currentValue2": null,
+          "_threadCount": 0,
+        },
+      },
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "context": Object {},
+  },
+  Symbol(enzyme.__childContext__): null,
+}
+`;

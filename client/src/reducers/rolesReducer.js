@@ -11,7 +11,7 @@ const initialState = {
   confirmed: false,
 };
 
-function displayStatus(status) {
+export function displayStatus(status) {
   return status ? 'Active' : 'Disabled';
 }
 

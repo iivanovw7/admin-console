@@ -11,15 +11,15 @@ export const SwitchedComponent = props => {
 
     // render VerticalBars with props
     case 'VBars':
-      return (<VerticalBars {...props} />);
+      return <VerticalBars {...props} />;
 
     // render HorizontalBars with props
     case 'HBars':
-      return (<HorizontalBars {...props} />);
+      return <HorizontalBars {...props} />;
 
     //render PieChart with props
     case 'PieChart':
-      return (<PieChart {...props} />);
+      return <PieChart {...props} />;
 
     // unknown type ... output null to not render
     default:
