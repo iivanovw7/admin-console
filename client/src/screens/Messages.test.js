@@ -1,4 +1,3 @@
-
 import { withStyles } from '@material-ui/core';
 import { createMount, createShallow } from '@material-ui/core/test-utils';
 import jest from 'jest-mock';
@@ -56,3 +55,6 @@ const setup = (initialState = mockStore({})) => {
 };
 
 setup();
+
+
+

@@ -39,7 +39,7 @@ describe('Should render Snackbar popup with styles and functions', () => {
 
   it('Should render component with correct text', () => {
     wrapper = mount(<Composition {...props} />);
-    expect(typeof wrapper.find('span#client-snackbar').text()).toBe('string');
+    expect(wrapper.find('span#client-snackbar').text()).toBe('    TEST MESSAGE');
   });
 
   it('Should render confirmation button', () => {

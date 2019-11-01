@@ -78,3 +78,4 @@ describe('Should render Selector with styles and options', () => {
   });
 
 });
+
