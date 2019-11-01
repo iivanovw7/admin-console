@@ -3,12 +3,22 @@
   "version": "1.0.0",
   "description": "admin-console server application",
   "main": "index.js",
+  "config": {
+    "port": 8080,
+    "secret": "My secret string",
+    "db": "mongodb://LOGIN:PASSWORD",
+    "client": "../client"
+  },
   "scripts": {
     "test": "jest --passWithNoTests --watchAll --detectOpenHandles --forceExit --config ./private_api/test/jest.config.js",
     "start": "nodemon",
     "purge": "babel-node ./samples/loadSampleData.js --delete",
     "load": "babel-node ./samples/loadSampleData.js",
-    "reload": "concurrently 'npm run purge' 'sleep 15 && npm run load'"
+    "reload": "concurrently 'npm run purge' 'sleep 15 && npm run load'",
+    "prod": "PORT=$npm_package_config_port SECRET=$npm_package_config_secret DATABASE=$npm_package_config_db babel-node -- ./private_api/index.js",
+    "client-build": "npm run build --prefix $npm_package_config_client",
+    "nodemon-client-serve": "concurrently 'npm run start' 'sleep 10 && serve -s ../client/build -l 4782'",
+    "prod-client-serve": "concurrently 'npm run prod' 'sleep 10 && serve -s ../client/build -l 4782'"
   },
   "keywords": [
     "server",
