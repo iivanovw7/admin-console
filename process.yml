@@ -1,0 +1,4 @@
+apps:
+  - script : 'npm'
+    args   : 'run start'
+    name   : 'prod-client-serve'

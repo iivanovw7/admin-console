@@ -4,18 +4,20 @@
   "description": "admin-console server application",
   "main": "index.js",
   "config": {
-    "port": 8080,
-    "secret": "My secret string",
-    "db": "mongodb://LOGIN:PASSWORD",
-    "client": "../client"
+    "port": 7425,
+    "secret": "SECRET",
+    "db": "mongodb://root:o95Q3PaB93ip@ds159185.mlab.com:59185/admin-console",
+    "client": "../client",
+    "url": "http://localhost:4782"
   },
   "scripts": {
-    "test": "jest --passWithNoTests --watchAll --detectOpenHandles --forceExit --config ./private_api/test/jest.config.js",
+    "test": "CI=true jest --passWithNoTests --watchAll --detectOpenHandles --forceExit --config ./private_api/test/jest.config.js",
+    "test:silent": "CI=true jest --config ./private_api/test/jest.config.js",
     "start": "nodemon",
     "purge": "babel-node ./samples/loadSampleData.js --delete",
     "load": "babel-node ./samples/loadSampleData.js",
     "reload": "concurrently 'npm run purge' 'sleep 15 && npm run load'",
-    "prod": "PORT=$npm_package_config_port SECRET=$npm_package_config_secret DATABASE=$npm_package_config_db babel-node -- ./private_api/index.js",
+    "prod": "PORT=$npm_package_config_port SECRET=$npm_package_config_secret DATABASE=$npm_package_config_db URL=$npm_package_config_url babel-node -- ./private_api/index.js",
     "client-build": "npm run build --prefix $npm_package_config_client",
     "nodemon-client-serve": "concurrently 'npm run start' 'sleep 10 && serve -s ../client/build -l 4782'",
     "prod-client-serve": "concurrently 'npm run prod' 'sleep 10 && serve -s ../client/build -l 4782'"
@@ -48,26 +50,26 @@
     "nodemon": "^1.18.10",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^5.0.1",
-    "react-router": "^5.0.0"
+    "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
-    "@babel/cli": "^7.2.3",
     "babel-cli": "^6.26.0",
-    "babel-preset-jest": "^24.3.0",
     "babel-jest": "^24.5.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-jest": "^24.3.0",
     "babel-register": "^6.26.0",
     "jest": "^24.5.0",
     "jest-config": "^24.5.0",
     "jest-environment-node": "^24.5.0",
     "mockdate": "^2.0.2",
     "mongodb-memory-server": "^4.2.1",
+    "serve": "^11.2.0",
     "supertest": "^4.0.2"
   }
 }

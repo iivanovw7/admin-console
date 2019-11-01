@@ -30,8 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:verbose": "react-scripts test --verbose",
+    "test": "react-scripts test --passWithNoTests --watchAll --forceExit --detectOpenHandles --maxWorkers=3",
+    "test:verbose": "react-scripts test --passWithNoTests --watchAll --forceExit --verbose",
+    "test:silent": "CI=true react-scripts test --env=jsdom --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

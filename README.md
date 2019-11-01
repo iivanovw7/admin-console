@@ -36,7 +36,7 @@ See more details in [Features](#features) section.
 
 ## Requirements
 
-- [NodeJS 10.15.3](https://nodejs.org/en/) 
+- [NodeJS 8.x](https://nodejs.org/en/) 
 
 - [NPM 6.4.1](https://www.npmjs.com/get-npm)
 
@@ -79,15 +79,16 @@ with similar contents:
 1. PORT application will run on
 2. Any "SECRET" String 
 3. Mongo DB credentials
+4. Domain name (used in CORS configuration)
 
-```
+```json
 {
   "exec": "babel-node -- ./private_api/index.js --debug",
   "env": {
     "PORT_PRIVATE": XXXX,
     "SECRET": "XXXX",
     "DATABASE": "mongodb://LOGIN:PASSWORD",
-    "client": "../client"
+    "URL": "http://localhost:4782"
   }
 }
 ```
@@ -117,7 +118,7 @@ you can use npm script:
     "port": XXXX,
     "secret": "XXXX",
     "db": "mongodb://LOGIN:PASSWORD",
-    "client": "../client"
+    "url": "http://localhost:4782"
   }
 ```
 
@@ -131,6 +132,39 @@ like this:
 Private api is available on port XXX
 Connected to database successfully.
 ``` 
+
+-------
+##### Option 3 (build application in Docker container)
+This option assumes that you have done previous configurations as in `Option #2` 
+and you also have installed and configured Docker in your hosting system. <br />
+In that case during build it will automatically pull `Node 8` Docker image, install `pm2`, <br />
+install all packets inside, run tests and execute container. <br />
+All `pm2` scripts are configured inside `process.yml` file and are going to be executed during build 
+
+###### Additional Docker configuration:
+Set up `PORT_PRIVATE` and `DIST_PORT` (same as in `.env` file): <br />
+`nano Dockerfile` <br />
+Both ports should be listed as follows in any order: <br />
+```dockerfile
+ # Exposing application ports
+ EXPOSE 7425
+ EXPOSE 4782
+```
+`Ctrl + X` and Save changes <br />
+`nano scripts.sh` <br />
+Both ports should be listed as follows at the top: <br />
+```bash
+# Application ports
+PORT_PRIVATE=7425
+DIST_PORT=4782
+```     
+`Ctrl + X` and Save changes <br />
+Then you probably will need to make it executable: <br />
+`sudo chmod +x ./scripts.sh` <br />
+To run container: <br />
+`./scripts.sh` <br />
+In that case script will find containers listening to configured ports, <br />
+remove them, then build new one and execute it. <br />
 
 -------
 
