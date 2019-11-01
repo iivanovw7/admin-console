@@ -7,8 +7,8 @@
     "build": "cd client && npm run build",
     "start": "cd server && npm run prod-client-serve",
     "test": "run-s \"test:client\" \"test:server\" ",
-    "test:client": "cd client && npm run test",
-    "test:server": "cd server && npm run test",
+    "test:client": "cd client && npm run test:silent",
+    "test:server": "cd server && npm run test:silent",
     "install:all": "run-s \"install:client\" \"install:server\" ",
     "install:client": "cd client && npm install",
     "install:server": "cd server && npm install"
