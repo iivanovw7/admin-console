@@ -40,7 +40,7 @@ docker system prune
 echo "Building docker image..."
 
 # Builds new container
-docker build -t admin-console .
+docker build --memory 2g -t admin-console .
 
 # Runs container with parameters
 echo "Finished..."

@@ -37,9 +37,7 @@ See more details in [Features](#features) section.
 ## Requirements
 
 - [NodeJS 8.x](https://nodejs.org/en/) 
-
 - [NPM 6.4.1](https://www.npmjs.com/get-npm)
-
 
 ### Clone
 
@@ -65,6 +63,9 @@ Tested on: Ubuntu 16.04.6 LTS (Xenial Xerus), Ubuntu 18.04.2 LTS (Bionic Beaver)
 `cd server` <br />
 `npm install` <br />
 `npm install -g serve` <br />
+
+Private API URL should be set in `client/src/constants/api.js` file <br />
+Example value: `'https://admin-console.cf/api'`;
 
 -------
 
@@ -201,7 +202,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header HOST $http_host;
         proxy_set_header X-NginX-Proxy true;
-        proxy_pass http://localhost:4782;
+        proxy_pass http://admin-console.cf:4782;
         proxy_redirect off;
     }
 
@@ -209,7 +210,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header HOST $http_host;
         proxy_set_header X-NginX-Proxy true;
-        proxy_pass http://localhost:5923;
+        proxy_pass http://admin-console.cf:7425;
         proxy_redirect off;
     } 
 }    

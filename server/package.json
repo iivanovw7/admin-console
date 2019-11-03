@@ -6,7 +6,7 @@
   "config": {
     "port": 7425,
     "secret": "SECRET",
-    "db": "mongodb://root:o95Q3PaB93ip@ds159185.mlab.com:59185/admin-console",
+    "db": "mongodb://LOGIN:PASSWORD@URL",
     "client": "../client",
     "url": "http://localhost:4782"
   },
