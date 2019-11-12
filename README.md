@@ -153,11 +153,12 @@ Both ports should be listed as follows in any order: <br />
 ```
 `Ctrl + X` and Save changes <br />
 `nano scripts.sh` <br />
-Both ports should be listed as follows at the top: <br />
+Both ports and preferred container name should be listed as follows at the top: <br />
 ```bash
-# Application ports
-PORT_PRIVATE=7425
-DIST_PORT=4782
+#---File configuration---
+PORTS=(7425 4782) # Ports list to be exposed
+CONTAINER_NAME='admin-console'
+#------------------------
 ```     
 `Ctrl + X` and Save changes <br />
 Then you probably will need to make it executable: <br />
