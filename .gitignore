@@ -10,6 +10,7 @@ server/node_modules
 server/nodemon.json
 client/node_modules
 client/build
+/node_modules
 
 /.pnp
 .pnp.js
