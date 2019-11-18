@@ -7,6 +7,7 @@ import Role from '../../models/Role';
 import User from '../../models/User';
 import { app } from '../app';
 import mongoose from 'mongoose';
+import { docsRoutes } from '../config/constants.config';
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.set('useFindAndModify', false);
@@ -37,7 +38,7 @@ const removeData = async () => {
 
 beforeAll(async (done) => {
 
-  await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true })
+  await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useUnifiedTopology: true })
                 .then(() => {
                   console.log('Connected to database successfully.');
                 })
@@ -84,7 +85,6 @@ beforeAll(async (done) => {
 
 });
 
-
 afterAll(async (done) => {
 
   await removeData().catch(e => {
@@ -95,6 +95,7 @@ afterAll(async (done) => {
 
   done();
 });
+
 
 
 /**
@@ -757,7 +758,6 @@ describe('Verifying STATISTICS routes.', () => {
   });
 
   it('Checking - GET /api/stats/branch route, expect code 200', async (done) => {
-
     request(app)
       .get(`/api/stats/branch`)
       .set('cookie', cookie)
@@ -772,8 +772,32 @@ describe('Verifying STATISTICS routes.', () => {
       });
   });
 
-
 });
 
+describe('Verifying API DOCS routes.', () => {
 
+    it(`Checking - GET /api/docs/swagger route, expect code 200`, async (done) => {
+        request(app)
+            .get(`/api/docs/swagger`)
+            .set('cookie', cookie)
+            .then((response) => {
+                expect(response.statusCode).toBe(200);
+                expect(response.type).toBe('application/json');
+                expect(response).not.toBeNull();
+                done();
+            });
+    });
 
+    it(`Checking - GET /api/docs/parameters.json route, expect code 200`, async (done) => {
+        request(app)
+            .get(`/api/docs/parameters.json`)
+            .set('cookie', cookie)
+            .then((response) => {
+                expect(response.statusCode).toBe(200);
+                expect(response.type).toBe('application/json');
+                expect(response).not.toBeNull();
+                done();
+            });
+    });
+
+});

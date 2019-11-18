@@ -28,9 +28,9 @@ export const updateUser = {
     id: Joi.objectId().required()
   },
   body: Joi.object().keys({
-    branch: Joi.objectId().min(3).max(50),
-    role: Joi.objectId().min(3).max(50),
-    group: Joi.objectId().min(3).max(50),
+    branch: Joi.objectId(),
+    role: Joi.objectId(),
+    group: Joi.objectId(),
     status: Joi.boolean()
   }).or('role', 'status', 'group', 'branch')
 };

@@ -15,7 +15,6 @@ export const catchErrors = fn => {
   };
 };
 
-
 /**
  * Forms value in months for date filter
  * Originally, time periods starting from 3 up to 12 months should be used
@@ -63,10 +62,8 @@ export const getUserRoleCode = async id => {
                          .populate({ path: 'role', model: Role });
 
   if (user) {
-    //console.log('User has role parameter');
     return user.role.code;
   } else {
-    //console.log('User does not have role parameter!');
     return null;
   }
 
@@ -118,9 +115,7 @@ export const getUserGroup = async id => {
  */
 export const checkAccess = async (req, res, next) => {
 
-  if (!ObjectId.isValid(req.user._id)) {
-    //console.log('Wrong user id!');
-    console.log(req)
+  if (!req.user || !ObjectId.isValid(req.user._id)) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   } else {
 
@@ -129,11 +124,8 @@ export const checkAccess = async (req, res, next) => {
     const role = await getUserRoleCode(id);
 
     if (!role || !ifArrayContains(role, authRoles)) {
-      //console.log('Authentication error');
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
-
-    //console.log('Request authorised!');
 
     return next();
 

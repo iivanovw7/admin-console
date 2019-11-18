@@ -103,6 +103,9 @@ like this:
 Private api is available on port XXX
 Connected to database successfully.
 ``` 
+API documentation is created with `swagger-ui` and should become available: <br />
+`http://{application path}:{PORT_PRIVATE}/api/docs` <br />
+Note that link will only become available in user got logged in main admin-console application, and has `ADMIN` access rights <br />
 
 -------
 
@@ -141,32 +144,46 @@ and you also have installed and configured Docker in your hosting system. <br />
 In that case during build it will automatically pull `Node 8` Docker image, install `pm2`, <br />
 install all packets inside, run tests and execute container. <br />
 All `pm2` scripts are configured inside `process.yml` file and are going to be executed during build 
-
+ 
 ###### Additional Docker configuration:
 Set up `PORT_PRIVATE` and `DIST_PORT` (same as in `.env` file): <br />
-`nano Dockerfile` <br />
+`cd docker` <br />
+`nano config.sh` <br />
 Both ports should be listed as follows in any order: <br />
 ```dockerfile
- # Exposing application ports
- EXPOSE 7425
- EXPOSE 4782
+PORTS=(7425 4782) # Ports list to be exposed
+CONTAINER_NAME='admin-console'
+```
+The rest part of file relates to API documentation container made in Swagger, <br />
+In most cases only `API_PATH` field should be changed before Documentation build <br /> 
+```dockerfile
+# swagger.sh File configuration
+# relates to Swagger docker container and image
+PORT=80 # PORT documentation will be served on
+API_PATH='localhost:7425' # 'admin-console.cf' # Ending of Base API path
+
+DOCS_PATH='/server/docs' # Swagger conf filepath
+DOCS_BASE_URL='/swagger' # Base docs URL
 ```
 `Ctrl + X` and Save changes <br />
 `nano scripts.sh` <br />
-Both ports and preferred container name should be listed as follows at the top: <br />
-```bash
-#---File configuration---
-PORTS=(7425 4782) # Ports list to be exposed
-CONTAINER_NAME='admin-console'
-#------------------------
-```     
-`Ctrl + X` and Save changes <br />
+
 Then you probably will need to make it executable: <br />
-`sudo chmod +x ./scripts.sh` <br />
-To run container: <br />
-`./scripts.sh` <br />
+All scripts separately: <br />
+`sudo chmod +x ./build.sh` <br />
+`sudo chmod +x ./config.sh` <br />
+`sudo chmod +x ./helpers.sh` <br />
+`sudo chmod +x ./swagger.sh` <br />
+Or docker the folder itself: <br />
+`cd ..` <br />
+`sudo -R chmod +x docker` <br />
+To run Admin-console container: <br />
+`./build.sh` <br />
 In that case script will find containers listening to configured ports, <br />
 remove them, then build new one and execute it. <br />
+To run API documentation container: <br />
+`./swagger.sh` <br />
+In that case swagger docs will become available by default on `http://{configured path}/swagger`
 
 -------
 ##### Nginx configuration
@@ -237,6 +254,32 @@ Last message you should receive: <br />
 `INFO: Accepting connections at http://localhost:4782` <br />
 Means that application is served to PORT 4782
 
+### API Documentation
+In order to preview only API documentation in using Swagger-ui <br />
+Docker container could be used, following steps could be done: <br />
+`sudo -R chmod +x docker` <br />
+`cd docker` <br />
+`nano ./config.sh` <br />
+Make config changes if needed:
+```bash
+# swagger.sh File configuration
+# relates to Swagger docker container and image
+PORT=80 # PORT documentation will be served on
+API_PATH='localhost:7425' # 'admin-console.cf' # Ending of Base API path
+
+DOCS_PATH='/server/docs' # Swagger conf filepath
+DOCS_BASE_URL='/swagger' # Base docs URL
+
+# Listing all swagger configuration files
+DOCS_PRIVATE_API='private.json'
+DOCS_PUBLIC_API='public.json'
+DOCS_PETSTORE='swagger.json'
+```    
+Execute docker scripts: <br />
+`jq` and `moreutils` packages will be downloaded <br />
+`./swagger.sh` <br />
+Navigate in browser: <br />
+`http://{config.path}/swagger` <br />
 
 ## Features
 
@@ -319,7 +362,7 @@ Should run in directory: `./admin-console/server` <br />
 
 #### Backend Postman testing
 
-Repository contains postman tests backups, which can be used for API testing.
+Repository contains postman automated tests, which can be used for API testing.
 
 > How to run postman tests  
 

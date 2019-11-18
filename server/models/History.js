@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
  * actionAuthor: action authors`s id, stores id of user performed an action
  * actionTargetModel: action target model`s id, stores id of changed model
  * actionTarget: target id, stores id of object which was changes
- * actionType: tye of action performed: Update, Delete, Add
+ * actionType: type of action performed: Update, Delete, Add
  * created: timestamp
  * actionChanges: fields changed in object
  *

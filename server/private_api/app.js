@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
@@ -41,7 +42,6 @@ app.use(passport.session());
 
 /** mount all routes on "/api" path */
 app.use('/api', routes);
-
 
 export { app };
 

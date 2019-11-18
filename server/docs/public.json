@@ -1,0 +1,23 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Public API",
+    "description": "Reserved for future use",
+    "version": "1.0.0",
+    "contact": {
+      "email": "admin@company.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "components": {},
+  "host": "localhost:7425",
+  "basePath": "/api/V2",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {}
+}

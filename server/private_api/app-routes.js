@@ -1,4 +1,5 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
 import { isLoggedIn } from './controllers/auth.controller';
 import { authRoutes } from './routes/auth.route';
 import { branchRoutes } from './routes/branch.route';
@@ -8,9 +9,9 @@ import { userRoutes } from './routes/user.route';
 import { ticketRoutes } from './routes/ticket.route';
 import { messageRoutes } from './routes/message.route';
 import { statsRoutes } from './routes/stats.route';
+import { docsRoutes } from './routes/docs.route';
 
 const routes = express();
-
 
 /** Contains Routes structure for "Private API" logic */
 
@@ -42,6 +43,11 @@ routes.use('/messages', isLoggedIn, messageRoutes);
 
 /** Mount stats routes at /stats */
 routes.use('/stats', isLoggedIn, statsRoutes);
+
+/** Mount docs routes at /docs */
+// TODO Switch to protected route after testing
+routes.use('/docs', swaggerUi.serve, docsRoutes);
+//routes.use('/docs', isLoggedIn, swaggerUi.serve, docsRoutes);
 
 export { routes };
 

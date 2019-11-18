@@ -1,10 +1,8 @@
 import httpStatus from 'http-status';
 import Branch from '../../models/Branch';
 
-
 /**
- * Gets one listRoles of branches if called with listRoles and limit,
- * if not - returns full list of branches
+ * Gets one list of branches with pagination
  *
  * @query {number} listRoles: req.body.listRoles
  * @query {number} limit: req.body.limit

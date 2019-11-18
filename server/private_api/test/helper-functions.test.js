@@ -26,9 +26,18 @@ let testBranch;
 let testUser;
 let testRole;
 
+const removeData = async () => {
+  const cleanUsers = User.deleteMany({}); //removing user object used for testing
+  const cleanGroups = Group.deleteMany({}); //removing group object used for testing
+  const cleanBranch = Branch.deleteMany({}); //removing branch object used for testing
+  const cleanRoles = Role.deleteMany({}); //removing role object used for testing
+
+  await Promise.all([cleanUsers, cleanGroups, cleanBranch, cleanRoles]);
+};
+
 beforeAll(async (done) => {
 
-  mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true })
+  mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useUnifiedTopology: true })
           .then(() => {
             console.log('Connected to database successfully.');
           })
@@ -91,6 +100,10 @@ beforeAll(async (done) => {
 });
 
 afterAll(async (done) => {
+
+  await removeData().catch(e => {
+    console.log(e);
+  });
 
   await db.close();
 

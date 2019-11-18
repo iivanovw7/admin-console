@@ -25,11 +25,11 @@ router.route('/history/:id')
       .get(checkAccess, validate(paramValidation.getUserHistory), catchErrors(users.getUserHistory));
 
 router.route('/branch/:id')
-      // GET /api/users/listRoles/branch - Get listRoles from users list by branch
+      // GET /api/users/branch/:id - Get listRoles from users list by branch
       .get(checkAccess, validate(paramValidation.getPageBranch), catchErrors(users.getUsersByBranch));
 
 router.route('/group/:id')
-      // GET /api/users/listRoles/group - Get listRoles from users list by group
+      // GET /api/users/group/:id - Get listRoles from users list by group
       .get(checkAccess, validate(paramValidation.getPageGroup), catchErrors(users.getUsersByGroup));
 
 export { router as userRoutes };

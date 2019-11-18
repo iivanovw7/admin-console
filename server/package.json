@@ -6,7 +6,7 @@
   "config": {
     "port": 7425,
     "secret": "SECRET",
-    "db": "mongodb://LOGIN:PASSWORD@URL",
+    "db": "mongodb://admin:1Y!j*S6sER#n@ds159185.mlab.com:59185/admin-console",
     "client": "../client",
     "url": "http://localhost:4782"
   },
@@ -69,7 +69,10 @@
     "jest-environment-node": "^24.5.0",
     "mockdate": "^2.0.2",
     "mongodb-memory-server": "^4.2.1",
+    "npm": "^6.13.0",
     "serve": "^11.2.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "swagger-ui-express": "^4.1.2",
+    "yamljs": "^0.3.0"
   }
 }
