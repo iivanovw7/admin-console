@@ -22,7 +22,7 @@ export const updateBranch = {
     id: Joi.objectId().required()
   },
   body: {
-    name: Joi.string().required(),
+    name: Joi.string().min(3).max(30).required(),
     email: Joi.string().email({ minDomainAtoms: 2 }).required(),
     phone: Joi.string().required(),
     fax: Joi.string().required(),
@@ -34,7 +34,7 @@ export const updateBranch = {
 //POST /api/branches/
 export const addBranch = {
   body: {
-    name: Joi.string().required(),
+    name: Joi.string().min(3).max(30).required(),
     email: Joi.string().email({ minDomainAtoms: 2 }).required(),
     phone: Joi.string().required(),
     fax: Joi.string().required(),

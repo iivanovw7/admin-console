@@ -60,7 +60,6 @@ export const defaultStatuses = [
  * List of statuses for statistics controller, used to apply search queries dynamically
  * in order to perform search according to current ticket status field.
  * Lowercase letters are used here because the same letters are used in database model
- *
  */
 export const defaultStatusModels = {
   open: 'Opened',
@@ -69,4 +68,17 @@ export const defaultStatusModels = {
   reopened: 'Reopened',
   cannot_be_done: 'Cannot be done'
 };
+
+/**
+ * List of API documentation routes, used after "/api/docs" route
+ * @type {string[]}
+ */
+export const docsRoutes = [
+  '/private', // Description of Private API
+  '/public', // Description of Public API
+  '/swagger', // Swagger API V2 default page
+  '/openapi', // Swagger Openapi default page
+  '/parameters.json', // Components used on docs pages
+  '/responses.json' // Response examples used on docs pages
+];
 

@@ -1,0 +1,701 @@
+{
+  "components": {
+    "responses": {
+      "pagination": {
+        "limit": {
+          "name": "limit",
+          "in": "body",
+          "description": "The numbers of items to return",
+          "schema": {
+            "type": "integer",
+            "maximum": 2000,
+            "minimum": 1,
+            "example": 15,
+            "default": 20
+          }
+        },
+        "page": {
+          "name": "page",
+          "in": "body",
+          "description": "The number of items to skip before starting to collect the result set",
+          "schema": {
+            "type": "integer",
+            "maximum": 2000,
+            "minimum": 1,
+            "example": 5,
+            "default": 1
+          }
+        },
+        "pages": {
+          "name": "pages",
+          "in": "body",
+          "description": "Sum of pages",
+          "schema": {
+            "type": "integer",
+            "example": 15
+          }
+        },
+        "results": {
+          "name": "results",
+          "in": "body",
+          "description": "Sum of results found",
+          "schema": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "examples": {
+        "loginSuccessResp": {
+          "created": "2019-03-18T13:06:13.037Z",
+          "status": true,
+          "_id": "5c8f97c5cece9911f01dd561",
+          "name": "Admin",
+          "surname": "ADMIN",
+          "email": "admin@company.org",
+          "role": {
+            "public": false,
+            "editable": false,
+            "_id": "5c8f96bbcece9911f01dd0ab",
+            "name": "Administrator",
+            "code": "ADMIN",
+            "description": "Main System Administrator with full access",
+            "active": true,
+            "__v": 0
+          },
+          "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+          "__v": 0,
+          "branch": {
+            "status": false,
+            "_id": "5c8f96b9cece9911f01dd0a0",
+            "name": "Cantao-an",
+            "email": "atroye@dailymail.co.uk",
+            "phone": "+63 269 360 0515",
+            "fax": "+86 713 306 1827",
+            "address": "7827 Luster Point",
+            "__v": 0
+          },
+          "group": {
+            "status": false,
+            "permissions": true,
+            "_id": "5cade7a578f0a97097c972c5",
+            "name": "TEST",
+            "description": "TEST",
+            "__v": 0
+          }
+        },
+        "branchesListResp": {
+          "limit": 7,
+          "output": [
+            {
+              "address": "938 Barby Way",
+              "email": "mbrazier0@amazon.co.uk",
+              "fax": "+86 829 425 7497",
+              "information": "1888",
+              "name": "San Martín de los Andes",
+              "phone": "+54 275 474 9318",
+              "status": true,
+              "__v": 0,
+              "_id": "5c8f96b9cece9911f01dd092"
+            },
+            {
+              "address": "903 Dottie Street",
+              "email": "inerger1@businesswire.com",
+              "fax": "+86 230 609 6364",
+              "information": "t",
+              "name": "Dingzhai",
+              "phone": "+86 103 802 9655",
+              "status": true,
+              "__v": 0,
+              "_id": "5c8f96b9cece9911f01dd093"
+            }
+          ],
+          "page": 1,
+          "pages": 4,
+          "results": 25
+        },
+        "singleBranchResp": {
+          "address": "903 Dottie Street",
+          "email": "inerger1@businesswire.com",
+          "fax": "+86 230 609 6364",
+          "information": "t",
+          "name": "Dingzhai",
+          "phone": "+86 103 802 9655",
+          "status": true,
+          "__v": 0,
+          "_id": "5c8f96b9cece9911f01dd093"
+        },
+        "groupsListResp": {
+          "page": 1,
+          "limit": 7,
+          "pages": 2,
+          "results": 8,
+          "output": [
+            {
+              "status": true,
+              "permissions": true,
+              "_id": "5c8f96bacece9911f01dd0a6",
+              "name": "Front-End Pool",
+              "description": "Group of all employees with Front-End expertise",
+              "__v": 0
+            },
+            {
+              "status": true,
+              "permissions": false,
+              "_id": "5c8f96bacece9911f01dd0a7",
+              "name": "Back-End Pool",
+              "description": "Group of all employees with Back-End expertise",
+              "__v": 0
+            }
+          ]
+        },
+        "singleGroupResp": {
+          "status": true,
+          "permissions": true,
+          "_id": "5c8f96bacece9911f01dd0a6",
+          "name": "Front-End Pool",
+          "description": "Group of all employees with Front-End expertise",
+          "__v": 0
+        },
+        "removeGroupResp": [
+          {
+            "requestGroupId": "5cb831d95042891fe2afa15f"
+          },
+          {
+            "removedGroup": {
+              "status": true,
+              "permissions": false,
+              "_id": "5cb831d95042891fe2afa15f",
+              "name": "NEW TEST GROUP",
+              "description": "GROUP",
+              "__v": 0
+            }
+          },
+          {
+            "newGroup": {
+              "status": true,
+              "permissions": false,
+              "_id": "5c8f96bacece9911f01dd0aa",
+              "name": "Other",
+              "description": "Default group for all employees who does not match any other group",
+              "__v": 0
+            }
+          },
+          {
+            "changes": {
+              "n": 0,
+              "nModified": 0,
+              "opTime": {
+                "ts": "6761391800901959681",
+                "t": 2
+              },
+              "electionId": "7fffffff0000000000000002",
+              "ok": 1,
+              "operationTime": "6761391800901959681",
+              "$clusterTime": {
+                "clusterTime": "6761391800901959681",
+                "signature": {
+                  "hash": "tqHrGIATgE7wJnH3P8A9bUHp3yQ=",
+                  "keyId": "6712806834496864257"
+                }
+              }
+            }
+          }
+        ],
+        "rolesListResp": {
+          "page": 1,
+          "limit": 7,
+          "pages": 2,
+          "results": 9,
+          "output": [
+            {
+              "public": false,
+              "editable": false,
+              "_id": "5c8f96bbcece9911f01dd0ab",
+              "name": "Administrator",
+              "code": "ADMIN",
+              "description": "Main System Administrator with full access",
+              "active": true,
+              "__v": 0
+            },
+            {
+              "public": true,
+              "editable": true,
+              "_id": "5c8f96bbcece9911f01dd0ac",
+              "name": "Branch Administrator",
+              "code": "BRANCH_ADMIN",
+              "description": "Administrator with full access to their own branch",
+              "active": true,
+              "__v": 0
+            },
+            {
+              "public": false,
+              "editable": false,
+              "_id": "5c8f96bbcece9911f01dd0ad",
+              "name": "Manager",
+              "code": "MANAGER",
+              "description": "An employee with preview access to employees from their own group",
+              "active": false,
+              "__v": 0
+            },
+            {
+              "public": true,
+              "editable": false,
+              "_id": "5c8f96bbcece9911f01dd0ae",
+              "name": "Support",
+              "code": "SUPPORT",
+              "description": "An employee with full access to all tickets in the system",
+              "active": false,
+              "__v": 0
+            },
+            {
+              "public": false,
+              "editable": false,
+              "_id": "5c8f96bbcece9911f01dd0af",
+              "name": "Branch Support",
+              "code": "BRANCH_SUPPORT",
+              "description": "An employee with full access to all tickets of their own branch",
+              "active": false,
+              "__v": 0
+            }
+          ]
+        },
+        "singleRoleResp": {
+          "public": false,
+          "editable": false,
+          "_id": "5c8f96bbcece9911f01dd0ab",
+          "name": "Administrator",
+          "code": "ADMIN",
+          "description": "Main System Administrator with full access",
+          "active": true,
+          "__v": 0
+        },
+        "removeRoleResp": [
+          {
+            "requestRoleId": "5ccfe39e7db9f41b32e79eb4"
+          },
+          {
+            "removedRole": {
+              "public": false,
+              "editable": true,
+              "_id": "5ccfe39e7db9f41b32e79eb4",
+              "name": "sss",
+              "code": "sss",
+              "description": "sss",
+              "active": true,
+              "__v": 0
+            }
+          },
+          {
+            "newRole": {
+              "public": false,
+              "editable": false,
+              "_id": "5c8f96bbcece9911f01dd0b0",
+              "name": "User",
+              "code": "USER",
+              "description": "Default role for all employees without other privileges",
+              "active": true,
+              "__v": 0
+            }
+          },
+          {
+            "changes": {
+              "n": 0,
+              "nModified": 0,
+              "opTime": {
+                "ts": "6761412021607989249",
+                "t": 2
+              },
+              "electionId": "7fffffff0000000000000002",
+              "ok": 1,
+              "operationTime": "6761412021607989249",
+              "$clusterTime": {
+                "clusterTime": "6761412021607989249",
+                "signature": {
+                  "hash": "lUfYhSIjOOplP2VAn1BpLHUoTtg=",
+                  "keyId": "6712806834496864257"
+                }
+              }
+            }
+          }
+        ],
+        "messagesListResponse": {
+          "page": 1,
+          "limit": 10,
+          "pages": 12,
+          "results": 112,
+          "output": [
+            {
+              "created": "2019-04-29T11:58:04.023Z",
+              "_id": "5cc6e6ccafefb168e6b4ee96",
+              "subject": "subject",
+              "message": "message",
+              "senderId": {
+                "created": "2019-03-18T13:06:13.037Z",
+                "status": true,
+                "_id": "5c8f97c5cece9911f01dd561",
+                "name": "Admin",
+                "surname": "ADMIN",
+                "email": "admin@company.org",
+                "role": "5c8f96bbcece9911f01dd0ab",
+                "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+                "__v": 0,
+                "branch": "5c8f96b9cece9911f01dd0a0",
+                "group": "5cade7a578f0a97097c972c5"
+              },
+              "groupId": {
+                "status": false,
+                "permissions": true,
+                "_id": "5cade7a578f0a97097c972c5",
+                "name": "TEST",
+                "description": "TEST",
+                "__v": 0
+              },
+              "__v": 0
+            },
+            {
+              "created": "2019-04-29T10:48:14.508Z",
+              "_id": "5cc6d66e33dafa26da1ae4bf",
+              "subject": "asasasv",
+              "message": "asvasvasvas",
+              "senderId": {
+                "created": "2019-03-18T13:06:13.037Z",
+                "status": true,
+                "_id": "5c8f97c5cece9911f01dd561",
+                "name": "Admin",
+                "surname": "ADMIN",
+                "email": "admin@company.org",
+                "role": "5c8f96bbcece9911f01dd0ab",
+                "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+                "__v": 0,
+                "branch": "5c8f96b9cece9911f01dd0a0",
+                "group": "5cade7a578f0a97097c972c5"
+              },
+              "branchId": {
+                "status": false,
+                "_id": "5c8f96b9cece9911f01dd0a0",
+                "name": "Cantao-an",
+                "email": "atroye@dailymail.co.uk",
+                "phone": "+63 269 360 0515",
+                "fax": "+86 713 306 1827",
+                "address": "7827 Luster Point",
+                "__v": 0
+              },
+              "__v": 0
+            },
+            {
+              "created": "2019-04-18T09:12:10.783Z",
+              "_id": "5cb83f6a5042891fe2afa161",
+              "subject": "ssss",
+              "message": "sssss",
+              "senderId": {
+                "created": "2019-03-18T13:06:13.037Z",
+                "status": true,
+                "_id": "5c8f97c5cece9911f01dd561",
+                "name": "Admin",
+                "surname": "ADMIN",
+                "email": "admin@company.org",
+                "role": "5c8f96bbcece9911f01dd0ab",
+                "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+                "__v": 0,
+                "branch": "5c8f96b9cece9911f01dd0a0",
+                "group": "5cade7a578f0a97097c972c5"
+              },
+              "branchId": {
+                "status": false,
+                "_id": "5c8f96b9cece9911f01dd0a0",
+                "name": "Cantao-an",
+                "email": "atroye@dailymail.co.uk",
+                "phone": "+63 269 360 0515",
+                "fax": "+86 713 306 1827",
+                "address": "7827 Luster Point",
+                "__v": 0
+              },
+              "__v": 0
+            }
+          ]
+        },
+        "singleMessageResp": {
+          "created": "2019-04-29T10:48:14.508Z",
+          "_id": "5cc6d66e33dafa26da1ae4bf",
+          "subject": "asasasv",
+          "message": "asvasvasvas",
+          "senderId": {
+            "created": "2019-03-18T13:06:13.037Z",
+            "status": true,
+            "_id": "5c8f97c5cece9911f01dd561",
+            "name": "Admin",
+            "surname": "ADMIN",
+            "email": "admin@company.org",
+            "role": "5c8f96bbcece9911f01dd0ab",
+            "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+            "__v": 0,
+            "branch": "5c8f96b9cece9911f01dd0a0",
+            "group": "5cade7a578f0a97097c972c5"
+          },
+          "branchId": {
+            "status": false,
+            "_id": "5c8f96b9cece9911f01dd0a0",
+            "name": "Cantao-an",
+            "email": "atroye@dailymail.co.uk",
+            "phone": "+63 269 360 0515",
+            "fax": "+86 713 306 1827",
+            "address": "7827 Luster Point",
+            "__v": 0
+          },
+          "__v": 0
+        },
+        "usersStatsResp": [
+          {
+            "view_mode": "ADMIN"
+          },
+          {
+            "months": 12
+          },
+          {
+            "total": 1205,
+            "active": 1118,
+            "disabled": 87
+          }
+        ],
+        "permissionsStatsResp": {
+          "total": 7,
+          "active": 3,
+          "disabled": 4
+        },
+        "ticketsStatsResp": [
+          {
+            "view_mode": "ADMIN"
+          },
+          {
+            "months": 12
+          },
+          {
+            "total": 23,
+            "opened": 3,
+            "progress": 7,
+            "closed": 8,
+            "reopened": 1,
+            "cannot_be_done": 2
+          }
+        ],
+        "groupsStatsResp": {
+          "total": 7,
+          "active": 4,
+          "disabled": 3
+        },
+        "messagesStatsResp": [
+          {
+            "view_mode": "ADMIN"
+          },
+          {
+            "months": 12
+          },
+          {
+            "total": 19
+          }
+        ],
+        "branchStatsResp": {
+          "total": 1,
+          "active": 1,
+          "disabled": 0
+        },
+        "ticketsListResp": {
+          "page": 1,
+          "limit": 10,
+          "pages": 11,
+          "results": 103,
+          "output": [
+            {
+              "created": "2019-03-19T14:22:16.125Z",
+              "_id": "5c90fb18e5923a656b3c9244",
+              "authorId": {
+                "created": "2019-03-18T13:06:14.397Z",
+                "status": true,
+                "_id": "5c8f97c6cece9911f01dd565",
+                "name": "Manager",
+                "surname": "MANAGER",
+                "email": "manager@company.org",
+                "role": "5c8f96bbcece9911f01dd0ad",
+                "password": "$2a$10$dCpApua5iqYBXSotjy00seiRrO8rDgbe3j7GHqKuJDwWSpJaghMYm",
+                "__v": 0,
+                "branch": "5c8f96b9cece9911f01dd097",
+                "group": "5c8f96bacece9911f01dd0a6"
+              },
+              "branchId": {
+                "status": true,
+                "_id": "5c8f96b9cece9911f01dd097",
+                "name": "Lamphun",
+                "email": "lpizzey5@meetup.com",
+                "phone": "+66 282 844 6385",
+                "fax": "+52 507 162 6450",
+                "address": "27706 Birchwood Pass",
+                "__v": 0,
+                "information": "kkkkk"
+              },
+              "status": "Cannot be done",
+              "subject": "adasgagasgasg",
+              "message": "qwfqwfqwfqwfqwfqwf",
+              "__v": 0,
+              "closed": null,
+              "note": "Ticket note...sssdddccc"
+            },
+            {
+              "created": "2019-03-18T13:58:35.237Z",
+              "_id": "5c8fa40b7dde2c1f5b3f6a6c",
+              "authorId": {
+                "created": "2019-03-18T13:06:14.397Z",
+                "status": true,
+                "_id": "5c8f97c6cece9911f01dd565",
+                "name": "Manager",
+                "surname": "MANAGER",
+                "email": "manager@company.org",
+                "role": "5c8f96bbcece9911f01dd0ad",
+                "password": "$2a$10$dCpApua5iqYBXSotjy00seiRrO8rDgbe3j7GHqKuJDwWSpJaghMYm",
+                "__v": 0,
+                "branch": "5c8f96b9cece9911f01dd097",
+                "group": "5c8f96bacece9911f01dd0a6"
+              },
+              "branchId": {
+                "status": true,
+                "_id": "5c8f96b9cece9911f01dd097",
+                "name": "Lamphun",
+                "email": "lpizzey5@meetup.com",
+                "phone": "+66 282 844 6385",
+                "fax": "+52 507 162 6450",
+                "address": "27706 Birchwood Pass",
+                "__v": 0,
+                "information": "kkkkk"
+              },
+              "status": "In progress",
+              "subject": "adasgagasgasg",
+              "message": "qwfqwfqwfqwfqwfqwf",
+              "__v": 0,
+              "closed": null,
+              "note": "Ticket note...ddd"
+            }
+          ]
+        },
+        "singleTicketResp": {
+          "created": "2019-03-19T14:22:16.125Z",
+          "_id": "5c90fb18e5923a656b3c9244",
+          "authorId": {
+            "created": "2019-03-18T13:06:14.397Z",
+            "status": true,
+            "_id": "5c8f97c6cece9911f01dd565",
+            "name": "Manager",
+            "surname": "MANAGER",
+            "email": "manager@company.org",
+            "role": "5c8f96bbcece9911f01dd0ad",
+            "password": "$2a$10$dCpApua5iqYBXSotjy00seiRrO8rDgbe3j7GHqKuJDwWSpJaghMYm",
+            "__v": 0,
+            "branch": "5c8f96b9cece9911f01dd097",
+            "group": "5c8f96bacece9911f01dd0a6"
+          },
+          "branchId": {
+            "status": true,
+            "_id": "5c8f96b9cece9911f01dd097",
+            "name": "Lamphun",
+            "email": "lpizzey5@meetup.com",
+            "phone": "+66 282 844 6385",
+            "fax": "+52 507 162 6450",
+            "address": "27706 Birchwood Pass",
+            "__v": 0,
+            "information": "kkkkk"
+          },
+          "status": "Cannot be done",
+          "subject": "adasgagasgasg",
+          "message": "qwfqwfqwfqwfqwfqwf",
+          "__v": 0,
+          "closed": null,
+          "note": "Ticket note...sssdddccc"
+        },
+        "usersListResp": {
+          "page": 1,
+          "limit": 10,
+          "pages": 121,
+          "results": 1205,
+          "output": [
+            {
+              "created": "2019-03-18T13:06:13.037Z",
+              "status": true,
+              "_id": "5c8f97c5cece9911f01dd561",
+              "name": "Admin",
+              "surname": "ADMIN",
+              "email": "admin@company.org",
+              "role": {
+                "public": false,
+                "editable": false,
+                "_id": "5c8f96bbcece9911f01dd0ab",
+                "name": "Administrator",
+                "code": "ADMIN",
+                "description": "Main System Administrator with full access",
+                "active": true,
+                "__v": 0
+              },
+              "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+              "__v": 0,
+              "branch": "5c8f96b9cece9911f01dd0a0",
+              "group": {
+                "status": false,
+                "permissions": true,
+                "_id": "5cade7a578f0a97097c972c5",
+                "name": "TEST",
+                "description": "TEST",
+                "__v": 0
+              }
+            },
+            {
+              "created": "2019-03-18T13:03:09.953Z",
+              "status": false,
+              "_id": "5c8f970dcece9911f01dd223",
+              "name": "Holt",
+              "surname": "Aasaf",
+              "email": "haasaf4q@tamu.edu",
+              "role": null,
+              "__v": 0,
+              "branch": "5c8f96bacece9911f01dd0a7",
+              "group": {
+                "status": true,
+                "permissions": true,
+                "_id": "5c8f96bacece9911f01dd0a6",
+                "name": "Front-End Pool",
+                "description": "Group of all employees with Front-End expertise",
+                "__v": 0
+              }
+            }
+          ]
+        },
+        "singleUserResp":  {
+          "created": "2019-03-18T13:06:13.037Z",
+          "status": true,
+          "_id": "5c8f97c5cece9911f01dd561",
+          "name": "Admin",
+          "surname": "ADMIN",
+          "email": "admin@company.org",
+          "role": {
+            "public": false,
+            "editable": false,
+            "_id": "5c8f96bbcece9911f01dd0ab",
+            "name": "Administrator",
+            "code": "ADMIN",
+            "description": "Main System Administrator with full access",
+            "active": true,
+            "__v": 0
+          },
+          "password": "$2a$10$mNoHh1swsVyvIu4IILOoCu5E8FKFynxXHEe5G3GpYA8OjCpGcs3l.",
+          "__v": 0,
+          "branch": "5c8f96b9cece9911f01dd0a0",
+          "group": {
+            "status": false,
+            "permissions": true,
+            "_id": "5cade7a578f0a97097c972c5",
+            "name": "TEST",
+            "description": "TEST",
+            "__v": 0
+          }
+        }
+      }
+    }
+  }
+}

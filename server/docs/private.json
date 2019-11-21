@@ -1,0 +1,3094 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Private API",
+    "description": "Includes `authentication`, statistics, users, groups, roles, tickets and messages application routes.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "admin@company.org"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:7425",
+  "basePath": "/api",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "components": {},
+  "tags": [
+    {
+      "name": "common",
+      "description": "Common API methods"
+    },
+    {
+      "name": "authentication",
+      "description": "User login, registration and auth logic"
+    },
+    {
+      "name": "branches",
+      "description": "Operations with company branches (List, update, create branches etc.)"
+    },
+    {
+      "name": "messages",
+      "description": "Messages logic, creating and editing messages"
+    },
+    {
+      "name": "roles",
+      "description": "Company staff roles management"
+    },
+    {
+      "name": "statistics",
+      "description": "Collecting statistics related to staff, messages and tickets"
+    },
+    {
+      "name": "users",
+      "description": "System users management"
+    },
+    {
+      "name": "tickets",
+      "description": "Operations with tickets"
+    }
+  ],
+  "paths": {
+    "/check": {
+      "get": {
+        "tags": [
+          "common"
+        ],
+        "summary": "Private API check - Public route",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Login user - Public route",
+        "description": "Check user`s email and password",
+        "security": [],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/loginParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK, Response contains User Data and AUTH cookie (connect.sid=abcde12345), used to get access to API requests",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/loginSuccessResp"
+              }
+            }
+          },
+          "400": {
+            "description": "FORBIDDEN"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Logout user - Public route",
+        "description": "Logout current user",
+        "security": [],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          }
+        }
+      }
+    },
+    "/branches": {
+      "get": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Get branches - Private route",
+        "description": "Returns one limited list of branches with pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Branch"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/branchesListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Create new branch - Private route",
+        "description": "Creates new Branch if it does not exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/name"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/email"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/phone"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/fax"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/information"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/add/status"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleBranchResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/branches/{id}": {
+      "get": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Get single branch - Private route",
+        "description": "Get single existing branch if it exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Branch"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleBranchResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "branches"
+        ],
+        "summary": "Update branch - Private route",
+        "description": "Update existing single branch if it exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/name"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/email"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/phone"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/fax"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/information"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branch/update/status"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleBranchResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Get groups - Private route",
+        "description": "Returns one limited list of groups with pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Group"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/groupsListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Create new group - Private route",
+        "description": "Creates new Group if it does not exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/add/name"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/add/description"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/add/permissions"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/add/status"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleGroupResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Get group - Private route",
+        "description": "Get single existing group if it exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleGroupResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Delete group - Private route",
+        "description": "Deletes group by id and applies default group to users",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/removeGroupResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Update group - Private route",
+        "description": "Update existing group fields by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/update/name"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/update/description"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/update/permissions"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/group/update/status"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleGroupResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Get role - Private route",
+        "description": "Get listRoles from roles list with limit and pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Role"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/rolesListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Add new role - Private route",
+        "description": "Create new role",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/name"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/code"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/description"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/active"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/isPublic"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/isEditable"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleRoleResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Get role - Private route",
+        "description": "Get single role by id if exists in db",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleRoleResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Delete role - Private route",
+        "description": "Deletes role, removes all same roles in Users list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/id"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/removeRoleResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Update role - Private route",
+        "description": "Update existing role by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/id"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/description"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/active"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/isPublic"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/role/add/isEditable"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleRoleResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/messages": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages - Private route",
+        "description": "Get listMessages from messages list with limit and pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Message"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/messages/search": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Search messages - Private route",
+        "description": "Finds messages by subject, name or surname",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/search"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Message"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/messages/new": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Add new message - Private route",
+        "description": "Sends new message to group or branch members",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/messages/add/branchId"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/messages/add/groupId"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/messages/add/subject"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/messages/add/message"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleMessageResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/messages/{id}": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get single message - Private route",
+        "description": "Finds single message in db by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleMessageResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/messages/group/{id}": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages by Group Id - Private route",
+        "description": "Finds all messages by provided Group id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Message"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/messages/branch/{id}": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages by Branch Id - Private route",
+        "description": "Finds all messages by provided Branch id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Message"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/messages/user/{id}": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Get messages by User Id - Private route",
+        "description": "Finds all messages by provided User id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Message"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/users": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get users statistics - Private route",
+        "description": "Gets users statistics, limited by month set, passed in params and user access level",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/months"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "view_mode": {
+                    "type": "string",
+                    "description": "Users statistics view mode",
+                    "example": "ADMIN"
+                  },
+                  "months": {
+                    "type": "integer",
+                    "description": "Moths limit for statistics query",
+                    "example": 5
+                  },
+                  "total": {
+                    "type": "integer",
+                    "description": "Users in total",
+                    "example": 199
+                  },
+                  "active": {
+                    "type": "integer",
+                    "description": "Number of active users",
+                    "example": 400
+                  },
+                  "disabled": {
+                    "type": "integer",
+                    "description": "Number of disabled users",
+                    "example": 200
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/usersStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/permissions": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get permissions statistics - Private route",
+        "description": "Gets permissions statistics, limited by month set, passed in params",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/months"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer",
+                    "description": "Permissions in total",
+                    "example": 7
+                  },
+                  "active": {
+                    "type": "integer",
+                    "description": "Number of active permissions",
+                    "example": 3
+                  },
+                  "disabled": {
+                    "type": "integer",
+                    "description": "Number of disabled permissions",
+                    "example": 4
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/permissionsStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/tickets": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get tickets statistics - Private route",
+        "description": "Gets tickets statistics, limited by month set, passed in params and user access level",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/months"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "view_mode": {
+                    "type": "string",
+                    "description": "Tickets statistics view mode",
+                    "example": "ADMIN"
+                  },
+                  "months": {
+                    "type": "integer",
+                    "description": "Moths limit for statistics query",
+                    "example": 5
+                  },
+                  "total": {
+                    "type": "integer",
+                    "description": "Tickets in total",
+                    "example": 199
+                  },
+                  "opened": {
+                    "type": "integer",
+                    "description": "Opened tickets",
+                    "example": 3000
+                  },
+                  "progress": {
+                    "type": "integer",
+                    "description": "Tickets in progress",
+                    "example": 199
+                  },
+                  "closed": {
+                    "type": "integer",
+                    "description": "Closed tickets",
+                    "example": 20
+                  },
+                  "reopened": {
+                    "type": "integer",
+                    "description": "Reopened tickets",
+                    "example": 2
+                  },
+                  "cannot_be_done": {
+                    "type": "integer",
+                    "description": "Tickets marked as 'cannot be one at the moment'",
+                    "example": 199
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/ticketsStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/groups": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get groups statistics - Private route",
+        "description": "Gets groups statistics, limited by month set, passed in params",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/months"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "integer",
+                    "description": "Groups in total",
+                    "example": 7
+                  },
+                  "active": {
+                    "type": "integer",
+                    "description": "Number of active groups",
+                    "example": 3
+                  },
+                  "disabled": {
+                    "type": "integer",
+                    "description": "Number of disabled groups",
+                    "example": 4
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/groupsStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/messages": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get messages statistics - Private route",
+        "description": "Gets messages statistics, limited by month set, passed in params and user access level",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/months"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "view_mode": {
+                    "type": "string",
+                    "description": "Messages statistics view mode",
+                    "example": "ADMIN"
+                  },
+                  "months": {
+                    "type": "integer",
+                    "description": "Moths limit for statistics query",
+                    "example": 5
+                  },
+                  "total": {
+                    "type": "integer",
+                    "description": "Messages in total",
+                    "example": 199
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/messagesStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/stats/branch": {
+      "get": {
+        "tags": [
+          "statistics"
+        ],
+        "summary": "Get tickets statistics - Private route",
+        "description": "Gets tickets statistics, limited by month set, passed in params and user access level",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/branchId"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "Branch users in total",
+                  "example": 199
+                },
+                "active": {
+                  "type": "integer",
+                  "description": "Active branch users",
+                  "example": 1
+                },
+                "disabled": {
+                  "type": "integer",
+                  "description": "Disabled branch users",
+                  "example": 198
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/branchStatsResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/tickets": {
+      "get": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Get tickets - Private route",
+        "description": "Get list of tickets from db with limit and pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Ticket"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/ticketsListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Add new ticket - Private route",
+        "description": "Creates new ticket",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/author"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/branch"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/status"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/subject"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/message"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/add/note"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Ticket"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleTicketResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/tickets/search": {
+      "get": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Search tickets - Private route",
+        "description": "Finds tickets by subject, name or surname of the author",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/search"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Ticket"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/ticketsListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Get single ticket - Private route",
+        "description": "Finds single ticket in db by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Ticket"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleTicketResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Update group - Private route",
+        "description": "Update existing group fields by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/update/status"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/tickets/update/note"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Ticket"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleTicketResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users - Private route",
+        "description": "Get users list with limit and pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/usersListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/users/search": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Search users - Private route",
+        "description": "Queries users by input string and returns users lists with pagination and limited results",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/search"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/usersListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get single user - Private route",
+        "description": "Finds single user in db by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleUserResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update group - Private route",
+        "description": "Update existing group fields by id",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/users/update/branchId"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/users/update/roleId"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/users/update/groupId"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/users/update/status"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/singleUserResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          },
+          "500": {
+            "description": "INTERNAL SERVER ERROR"
+          }
+        }
+      }
+    },
+    "/users/history/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users history objects by User Id - Private route",
+        "description": "Finds all history records by provided User id, return list with limits and pagination",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/History"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/users/branch/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users by branch - Private route",
+        "description": "Finds all branch users, return list with pagination and limits",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/usersListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
+    "/users/group/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users by group - Private route",
+        "description": "Finds all group users, return list with pagination and limits",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "$ref": "parameters.json#/components/parameters/login/authParam"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/limit"
+          },
+          {
+            "$ref": "parameters.json#/components/parameters/pagination/page"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/x-www-form-urlencoded"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "$ref": "responses.json#/components/responses/pagination/limit"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                },
+                "page": {
+                  "$ref": "responses.json#/components/responses/pagination/page"
+                },
+                "pages": {
+                  "$ref": "responses.json#/components/responses/pagination/pages"
+                },
+                "results": {
+                  "$ref": "responses.json#/components/responses/pagination/results"
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "$ref": "responses.json#/components/responses/examples/usersListResp"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "BAD REQUEST"
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Branch": {
+      "type": "object",
+      "required": [
+        "email",
+        "phone",
+        "fax",
+        "address",
+        "status"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "name": {
+          "type": "string",
+          "description": "Branch name",
+          "example": "San Martín de los Andes"
+        },
+        "email": {
+          "uniqueItems": true,
+          "type": "string",
+          "description": "Branch email",
+          "example": "mbrazier0@amazon.co.uk"
+        },
+        "phone": {
+          "type": "string",
+          "uniqueItems": true,
+          "description": "Branch phone",
+          "example": "+86 829 222 71247"
+        },
+        "fax": {
+          "type": "string",
+          "uniqueItems": true,
+          "description": "Branch fax",
+          "example": "+86 829 425 7497"
+        },
+        "address": {
+          "type": "string",
+          "description": "Branch address",
+          "example": "938 Barby Way"
+        },
+        "information": {
+          "type": "string",
+          "description": "Branch description",
+          "example": "1888"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "Branch status",
+          "example": true
+        }
+      },
+      "xml": {
+        "name": "Branch"
+      }
+    },
+    "Group": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "name": {
+          "uniqueItems": true,
+          "type": "string",
+          "description": "Group name"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "Group status",
+          "example": true,
+          "default": false
+        },
+        "description": {
+          "type": "string",
+          "description": "Group description",
+          "example": "Group description"
+        },
+        "permissions": {
+          "type": "boolean",
+          "description": "Group permission status",
+          "example": true,
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Group"
+      }
+    },
+    "History": {
+      "type": "object",
+      "required": [
+        "actionAuthor",
+        "actionTarget"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "actionAuthor": {
+          "$ref": "#/definitions/User"
+        },
+        "actionTargetModel": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Action target model`s id, stores id of changed model",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "actionTarget": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Target id, stores id of object which was changes",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "actionType": {
+          "type": "string",
+          "description": "Type of action performed: Update, Delete, Add"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actionChanges": {
+          "type": "object",
+          "description": "Fields changed in object"
+        }
+      },
+      "xml": {
+        "name": "History"
+      }
+    },
+    "Message": {
+      "type": "object",
+      "required": [
+        "subject",
+        "message"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Message subject",
+          "example": "Message subject"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message content",
+          "example": "Message content"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "branchId": {
+          "$ref": "#/definitions/Branch"
+        },
+        "groupId": {
+          "$ref": "#/definitions/Group"
+        },
+        "senderId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Sender _id",
+          "example": "5c8f96b9cece9911f01dd092"
+        }
+      },
+      "xml": {
+        "name": "Message"
+      }
+    },
+    "Role": {
+      "type": "object",
+      "required": [
+        "name",
+        "code",
+        "description",
+        "active"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "name": {
+          "type": "string",
+          "description": "Role name",
+          "example": "Role name"
+        },
+        "code": {
+          "type": "string",
+          "description": "Role code",
+          "example": "Role code"
+        },
+        "description": {
+          "type": "string",
+          "description": "Role description",
+          "example": "Role description"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Is Role active",
+          "example": true
+        },
+        "public": {
+          "type": "boolean",
+          "description": "Is Role public",
+          "example": true,
+          "default": false
+        },
+        "editable": {
+          "type": "boolean",
+          "description": "Is Role editable",
+          "example": false,
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Role"
+      }
+    },
+    "Ticket": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "authorId": {
+          "$ref": "#/definitions/User"
+        },
+        "branchId": {
+          "$ref": "#/definitions/Branch"
+        },
+        "message": {
+          "type": "string",
+          "description": "Ticket message",
+          "example": "Ticket message"
+        },
+        "note": {
+          "type": "string",
+          "description": "Ticket note",
+          "example": "Ticket note"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Ticket subject",
+          "example": "Ticket subject"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "Ticket status",
+          "example": true
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closed": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "xml": {
+        "name": "Ticket"
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "email",
+        "name",
+        "surname",
+        "role"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Mongo db unique identification",
+          "example": "5c8f96b9cece9911f01dd092"
+        },
+        "name": {
+          "type": "string",
+          "description": "User name",
+          "example": "User name"
+        },
+        "surname": {
+          "type": "string",
+          "description": "User surname",
+          "example": "User surname"
+        },
+        "email": {
+          "uniqueItems": true,
+          "type": "string",
+          "description": "User email (used for login)",
+          "example": "user@amazon.co.uk"
+        },
+        "phone": {
+          "type": "string",
+          "uniqueItems": true,
+          "description": "User's, phone",
+          "example": "+86 829 222 71247"
+        },
+        "password": {
+          "type": "string",
+          "description": "User's password",
+          "example": "password"
+        },
+        "branch": {
+          "$ref": "#/definitions/Branch"
+        },
+        "group": {
+          "$ref": "#/definitions/Group"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "User status",
+          "example": true
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    }
+  }
+}

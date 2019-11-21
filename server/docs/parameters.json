@@ -1,0 +1,679 @@
+{
+  "components": {
+    "parameters": {
+      "id": {
+        "name": "id",
+        "in": "query",
+        "required": true,
+        "description": "",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5c8f96bbcece9911f01dd0ab"
+        }
+      },
+      "branchId": {
+        "name": "branch",
+        "in": "query",
+        "required": true,
+        "description": "",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "5c8f96bbcece9911f01dd0ab"
+        }
+      },
+      "search": {
+        "name": "search",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minimum": 3,
+          "maximum": 50,
+          "example": "search"
+        }
+      },
+      "login": {
+        "loginParam": {
+          "name": "Login credentials",
+          "in": "body",
+          "description": "Verifies user login credentials",
+          "schema": {
+            "type": "object",
+            "required": [
+              "email",
+              "password"
+            ],
+            "properties": {
+              "email": {
+                "required": true,
+                "type": "string",
+                "format": "email",
+                "example": "admin@company.org"
+              },
+              "password": {
+                "required": true,
+                "type": "string",
+                "format": "password",
+                "example": "admin"
+              }
+            }
+          }
+        },
+        "authParam": {
+          "name": "connect.sid",
+          "in": "cookie",
+          "required": true,
+          "description": "Auth token, provided by API after login",
+          "schema": {
+            "type": "string",
+            "example": "abcde12345"
+          }
+        }
+      },
+      "pagination": {
+        "limit": {
+          "name": "limit",
+          "in": "query",
+          "description": "The numbers of items to return",
+          "schema": {
+            "type": "integer",
+            "maximum": 2000,
+            "minimum": 1,
+            "example": 15,
+            "default": 20
+          }
+        },
+        "page": {
+          "name": "page",
+          "in": "query",
+          "description": "The number of items to skip before starting to collect the result set",
+          "schema": {
+            "type": "integer",
+            "maximum": 2000,
+            "minimum": 1,
+            "example": 5,
+            "default": 1
+          }
+        },
+        "months": {
+          "name": "months",
+          "in": "query",
+          "description": "Months statistics set",
+          "schema": {
+            "type": "integer",
+            "maximum": 2000,
+            "minimum": 1,
+            "example": 5,
+            "default": 1
+          }
+        }
+      },
+      "branch": {
+        "add": {
+          "name": {
+            "name": "name",
+            "description": "New branch name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "email": {
+            "name": "email",
+            "description": "New branch email",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email",
+              "example": "branch@company.org"
+            }
+          },
+          "phone": {
+            "name": "phone",
+            "description": "New branch phone",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "+63 269 360 0515"
+            }
+          },
+          "fax": {
+            "name": "fax",
+            "description": "New branch fax",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "+86 713 306 1827"
+            }
+          },
+          "address": {
+            "name": "address",
+            "description": "New branch address",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "7827 Luster Point"
+            }
+          },
+          "information": {
+            "name": "information",
+            "description": "New branch information",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "7827 Luster Point"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New branch status",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        },
+        "update": {
+          "name": {
+            "name": "name",
+            "description": "New branch name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "email": {
+            "name": "email",
+            "description": "New branch email",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "email",
+              "example": "branch@company.org"
+            }
+          },
+          "phone": {
+            "name": "phone",
+            "description": "New branch phone",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "+63 269 360 0515"
+            }
+          },
+          "fax": {
+            "name": "fax",
+            "description": "New branch fax",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "+86 713 306 1827"
+            }
+          },
+          "address": {
+            "name": "address",
+            "description": "New branch address",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "7827 Luster Point"
+            }
+          },
+          "information": {
+            "name": "information",
+            "description": "New branch information",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "7827 Luster Point"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New branch status",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        }
+      },
+      "group": {
+        "add": {
+          "name": {
+            "name": "name",
+            "description": "New group name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 30,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "description": {
+            "name": "description",
+            "description": "New group description",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "description"
+            }
+          },
+          "permissions": {
+            "name": "permissions",
+            "description": "New group permissions",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New group status",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        },
+        "update": {
+          "name": {
+            "name": "name",
+            "description": "New group name",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maximum": 30,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "description": {
+            "name": "description",
+            "description": "New group description",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "description"
+            }
+          },
+          "permissions": {
+            "name": "permissions",
+            "description": "New group permissions",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New group status",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        }
+      },
+      "role": {
+        "add": {
+          "name": {
+            "name": "name",
+            "description": "New role name",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "code": {
+            "name": "code",
+            "description": "New role code",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "name"
+            }
+          },
+          "description": {
+            "name": "description",
+            "description": "New role description",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "description"
+            }
+          },
+          "active": {
+            "name": "active",
+            "description": "If new role is active",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "isPublic": {
+            "name": "isPublic",
+            "description": "If new role is public",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "isEditable": {
+            "name": "isEditable",
+            "description": "If new role is editable",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        },
+        "update": {
+          "description": {
+            "name": "description",
+            "description": "New role description",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "description"
+            }
+          },
+          "active": {
+            "name": "active",
+            "description": "If new role is active",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "isPublic": {
+            "name": "isPublic",
+            "description": "If new role is public",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "isEditable": {
+            "name": "isEditable",
+            "description": "If new role is editable",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        }
+      },
+      "messages": {
+        "add": {
+          "branchId": {
+            "name": "branchId",
+            "in": "body",
+            "required": false,
+            "description": "Branch id message is being send",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "groupId": {
+            "name": "groupId",
+            "in": "body",
+            "required": false,
+            "description": "Group id message is being send",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "subject": {
+            "name": "subject",
+            "description": "New message subject",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "subject"
+            }
+          },
+          "message": {
+            "name": "message",
+            "description": "New message text",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "message text"
+            }
+          }
+        }
+      },
+      "tickets": {
+        "add": {
+          "author": {
+            "name": "author",
+            "in": "body",
+            "required": false,
+            "description": "Ticket's author id",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "branch": {
+            "name": "branch",
+            "in": "body",
+            "required": false,
+            "description": "Branch id ticket is being send",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New ticket status (resolved/not resolved)",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "subject": {
+            "name": "subject",
+            "description": "New ticket subject",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 50,
+              "minimum": 3,
+              "example": "subject"
+            }
+          },
+          "message": {
+            "name": "message",
+            "description": "New message text",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "minimum": 3,
+              "example": "message text"
+            }
+          },
+          "note": {
+            "name": "note",
+            "in": "body",
+            "required": false,
+            "description": "Ticket note",
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "example": "note"
+            }}
+        },
+        "update": {
+          "status": {
+            "name": "status",
+            "description": "New ticket status (resolved/not resolved)",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          },
+          "note": {
+            "name": "note",
+            "in": "body",
+            "required": false,
+            "description": "Ticket note",
+            "schema": {
+              "type": "string",
+              "maximum": 500,
+              "example": "note"
+            }}
+        }
+      },
+      "users": {
+        "update": {
+          "branchId": {
+            "name": "branchId",
+            "in": "body",
+            "required": false,
+            "description": "User's branch identification",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "roleId": {
+            "name": "roleId",
+            "in": "body",
+            "required": false,
+            "description": "User's role identification",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "groupId": {
+            "name": "groupId",
+            "in": "body",
+            "required": false,
+            "description": "User's group identification",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "5c8f96bbcece9911f01dd0ab"
+            }
+          },
+          "status": {
+            "name": "status",
+            "description": "New user status (active/disabled)",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "allowEmptyValue": false,
+              "example": "true"
+            }
+          }
+        }
+      }
+    }
+  }
+}

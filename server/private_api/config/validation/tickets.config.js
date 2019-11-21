@@ -45,8 +45,8 @@ export const getTicket = {
 export const getPageSearch = {
   query: {
     search: Joi.string().min(3).max(50).required(),
-    page: Joi.number().required(),
-    limit: Joi.number().required()
+    page: Joi.number().min(1).max(2000).required(),
+    limit: Joi.number().min(1).max(2000).required()
   }
 };
 

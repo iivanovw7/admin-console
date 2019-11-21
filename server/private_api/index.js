@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import mongoose from 'mongoose';
 import { app } from './app';
 
@@ -6,7 +7,7 @@ mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true })
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => {
           console.log('Connected to database successfully.');
         })

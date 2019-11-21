@@ -44,7 +44,7 @@ function swapGroups(req, res, params) {
 }
 
 /**
- * Function creates new Group if it doesn`t exists in db
+ * Function creates new Group if it does not exists in db
  *
  * @requires name: req.query.name,
  * @requires description: req.query.description,
