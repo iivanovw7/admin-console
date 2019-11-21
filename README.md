@@ -23,6 +23,11 @@ See more details in [Features](#features) section.
 
 ---
 
+Admin panel is available as [Demo](https://admin-console.cf) with mocked data <br />
+[API documentation](https://admin-console.cf/api/docs) page is available after login/registration <br />  
+
+---
+
 ## Table of Contents 
 
 - [Requirements](#requirements)
