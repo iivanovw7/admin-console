@@ -45,9 +45,7 @@ routes.use('/messages', isLoggedIn, messageRoutes);
 routes.use('/stats', isLoggedIn, statsRoutes);
 
 /** Mount docs routes at /docs */
-// TODO Switch to protected route after testing
-routes.use('/docs', swaggerUi.serve, docsRoutes);
-//routes.use('/docs', isLoggedIn, swaggerUi.serve, docsRoutes);
+routes.use('/docs', isLoggedIn, swaggerUi.serve, docsRoutes);
 
 export { routes };
 

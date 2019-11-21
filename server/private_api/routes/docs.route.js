@@ -7,9 +7,7 @@ const router = express.Router();
 
 router.route('/')
       // GET /docs - Get default API documentation
-      // TODO switch to checkAccess after testing
-      .get(docs.getDocs());
-      //.get(checkAccess, docs.getDocs());
+      .get(checkAccess, docs.getDocs());
 
 router.route(docsRoutes)
       // GET /docs/private - returns swagger config page for private API
@@ -18,8 +16,7 @@ router.route(docsRoutes)
       // GET /docs/openapi - returns Swagger "openapi" default page
       // GET /docs/parameters.json - returns Swagger components json file
       // GET /docs/responses.json - returns Swagger responses json file
-      // TODO switch to checkAccess after testing
-      .get(docs.getDocsConfig);
-      //.get(checkAccess, docs.getDocsConfig);
+
+      .get(checkAccess, docs.getDocsConfig);
 
 export { router as docsRoutes };
